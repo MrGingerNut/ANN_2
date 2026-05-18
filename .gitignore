@@ -65,3 +65,7 @@ Thumbs.db
 desktop.ini
 *.swp
 *.swo
+
+
+Datasets/
+tf_clean_env/
