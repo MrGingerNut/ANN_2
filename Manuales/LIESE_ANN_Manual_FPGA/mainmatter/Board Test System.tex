@@ -1,0 +1,507 @@
+\chapter{Board Test System}
+
+El FPGA Agilex 7 I-Series Transceiver-SoC Development Kit incluye diseños de ejemplo y la GUI Board Test System (BTS) para probar el funcionamiento de la tarjeta. Este software provee una interfaz fácil de usar para alterar la configuración funcional y observar los resultados. Además, se puede utilizar para probar y verificar el funcionamiento de componentes (DDR4, QSPI, USB, PCIe, FMC, trasceptores, etc.), modificar parámetros funcionales (frecuencia, voltaje, modo del transceptor, etc.), observar el rendimiento y medir el consumo de energía por bloque o interfaz. 
+
+Mientras se est\'a usando el BTS se realiza una reconfiguraci\'on del FPGA varias veces con diseños de prueba específicos para la funcionalidad que se está probando. El BTS también es útil como referencia para diseño de sistemas. El BTS se comunica a través del puerto JTAG a un diseño de pruebas ejecutandose en la tarjeta de desarrollo.
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{image2.png}
+        \caption{BTS GUI.}
+        \label{fig:image2}
+    \end{figure}
+
+
+
+\section{Ejecuci\'on del Board Test System}
+
+        Para abrir el \bts (BTS) tenemos que seguir los siguientes pasos. 
+
+        \begin{enumerate}
+            \item Conectar el cable USB2.0 tipo B de la tarjeta a la estaci\'on de trabajo.
+            \item Revisar que la configuraci\'on de la tarjeta sea correcta. En la mayor\'ia de los casos el BTS requiere que el MAX 10 y el FPGA Agilex 7 est\'en en la cadena JTAG, mientras que el Controlador del Reloj y el Monitor de Energ\'ia solo requiere el MAX 10.
+            \item Revisa el estatus de los m\'odulos externos: cable MXPM/QSFP/QSFPDD/FMC/DIMM
+            \item Enciende la tarjeta.
+            \item En la estaci\'on de trabajo, en una nueva terminal ejecutar el comando \texttt{\textcolor{blue}{bts}}.
+        \end{enumerate}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{terminal1.png}
+            \caption{Comando de ejecuci\'on para lanzar el BTS.}
+            \label{terminal1}
+        \end{figure}
+
+        Cuando se ejecuta el BTS aparece inicialmente una pequeña ventana que indica que el software se ejecut\'o correctamente y se est\'a preparando para lanzarse (\cref{fig:image1}), o bien una ventana de error que indica que la tarjeta no est\'a conectada (\cref{fig:image10}). Después de un momento se muestra la GUI del BTS (\cref{fig:image2}).
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[c]{0.4\linewidth}
+            \includegraphics[width=\linewidth]{image1.png}
+            \caption{Ventana de preparaci\'on de lanzamiento para el BTS.}
+        \label{fig:image1}
+        \end{subfigure} \hspace{.5cm}
+        \begin{subfigure}[c]{0.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{image10.png}
+        \caption{Ventana de error al ejecutar el BTS.}
+        \label{fig:image10}
+        \end{subfigure}
+        \caption{Casos que se presentan al ejecutar \texttt{\textcolor{blue}{bts}} desde terminal.}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{image2.png}
+        \caption{Ventana inicial del BTS.}
+        \label{fig:image2}
+    \end{figure}
+
+\subsection{Inicializaci\'on de variables}
+        
+    \textcolor{blue}{\textit{Nota: Lo que se explica en esta secci\'on solamente es el funcionamiento del comando} \texttt{bts}\textit{, el cual es una simplificaci\'on del proceso normal para abrir el BTS.}}
+
+    Para inicializar las variables que requiere el BTS se modifica el archivo \curl{~/.bashrc} para que exporte las variables contenidas en el archivo \curl{~/Desktop/Variables\_BTS.txt}, que es donde se almacenan las variables de entorno.
+    
+\begin{lstlisting}[language=bash, label=cod1]    
+#Variables de entorno para inicializar el BTS
+
+export QSYS_ROOTDIR=/home/liese2/intelFPGA_pro/24.3.1/qsys/bin
+export QUARTUS_ROOTDIR=/home/liese2/intelFPGA_pro/24.3.1/quartus\end{lstlisting}
+    Despu\'es de establecer estas variables se debe ejecutar el archivo \curl{/home/liese2/Documents/agilex-agib027r31b1e1vb-si-nen-revc-v24-3b194-v1-0/examples/board\_test\_system/BoardTestSystem.sh}. 
+
+    % \begin{figure}[H]
+    %     \centering
+    %     \includegraphics[width=0.6\linewidth]{terminal2.png}
+    %     \caption{Instrucciones necesarias para lanzar el BTS de forma normal.}
+    %     \label{terminal2}
+    % \end{figure}
+
+    Para ahorrarnos estos pasos se agrega la siguiente linea en el archivo \curl{~/.bashrc}:
+
+\begin{lstlisting}[language=bash, label=cod1]
+alias bts='source ~/Desktop/Variables_BTS.txt && cd /home/liese2/Documents/agilex-agib027r31b1e1vb-si-nen-revc-v24-3b194-v1-0/examples/board_test_system && ./BoardTestSystem.sh'\end{lstlisting}
+
+\textit{Nota:} Para modificar el archivo \curl{~/.bashrc} se debe ejecutar el siguiente comando en una terminal, aunque se recomienda no realizar ninguna modificaci\'on.
+\begin{lstlisting}[language=bash, label=cod1]
+sudo nano ~/.bashrc\end{lstlisting}
+
+
+\section{Probando el BTS.}
+
+\subsection{Informaci\'on del borde inferior}   
+
+    La barra de informaci\'on del borde inferior muestra el estatus de la conexi\'on, la versi\'on de Quartus Prime y el reloj JTAG.
+
+    \begin{description}
+        \item[System Connected/Disconnected:] Muestra si la tarjeta est\'a conectada a la estaci\'on de trabajo. Si la tarjeta se desconecta la señal verde se vuelve gris.
+        \item[Quartus Prime Version:] Muestra la versi\'on actual de Quartus Prime instalada en la estaci\'on de trabajo. El texto se vuelve rojo si la versi\'on actual es m\'as antigua que la versi\'on requerida. Si se tiene instalada la versi\'on correcta pero la versi\'on activa no cumple los requisitos cambia la variable de entorno \texttt{\textcolor{blue}{QUARTUS\_ROOTDIR}}.
+        \item[JTAG:] Muestra la frecuencia del reloj JTAG.
+    \end{description}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth, clip, trim={0 0 0 19cm}]{image2.png}
+        \caption{Informaci\'on del borde inferior del BTS.}
+        \label{fig:image2}
+    \end{figure}
+
+
+\subsection{Men\'u de configuraci\'on}
+
+    Usa el men\'u de configuraci\'on para seleccionar el diseño que se va a utilizar. Cada diseño de ejemplo prueba diferentes funcionalidades que corresponden a una o a m\'as pestañas de aplicación.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{image3.png}
+        \caption{Opciones de configuraci\'on para la tarjeta.}
+        % \label{fig:image3}
+    \end{figure}
+
+    Para configurar la FPGA con un diseño de prueba se realiza lo siguiente:
+
+    \begin{enumerate}
+        \item En el men\'u \texttt{\textcolor{DarkOrchid1}{Configure}} dar click a la opci\'on que corresponde a la funcionalidad que se quiere probar.
+        \item En la ventana del programador que aparece, dar click en \texttt{\textcolor{DarkOrchid1}{Configure}} para descargar el archivo SRAM Object File (\texttt{\textcolor{blue}{.sof}}) correspondiente a la FPGA. Este proceso usualmente tarda menos de un minuto.
+        \item Cuando la configuraci\'on termina, el diseño empieza a ejecutarse en la FPGA. La pestaña correspondiente a la aplicación que nos permite interactuar con el diseño se habilita en la GUI. Si se us\'o Quartus Prime Programmer para la configuraci\'on, en vez de la BTS GUI, puede que sea necesario reiniciar la GUI.
+    \end{enumerate}
+
+\subsubsection{Ejemplo usando el diseño de prueba para GPIO.}
+
+    Siguiendo los pasos anteriores, en el menú de configuración seleccionaremos la opci\'on \texttt{\textcolor{DarkOrchid1}{Configure with GPIO Design}}, al seleccionar se abre una ventana del programador (\cref{fig:image4}), en la cual simplemente se tiene que dar click en el bot\'on \texttt{\textcolor{DarkOrchid1}{Configure}}. En este caso nos apareció un error propio de la GUI que indica que se tiene que reinciar el BTS (\cref{fig:image5}).
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[c]{0.4\linewidth}
+        \includegraphics[width=\linewidth]{image4.png}
+        \caption{Programador para el primer ejemplo.}
+        \label{fig:image4}
+        \end{subfigure}\hspace{.5cm}
+        \begin{subfigure}[c]{.45\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{image5.png}
+        \caption{Error que se lanza cuando el programador termina de configurarse.}
+        \label{fig:image5}
+        \end{subfigure}
+        \caption{Cargador del programa y error al completarse.}
+    \end{figure}
+
+     Para reiniciar la GUI seleccionamos en el menú de configuración \texttt{\textcolor{DarkOrchid1}{Exit}} y volvemos a ejecutar el comando \texttt{\textcolor{blue}{bts}} en terminal.
+
+    % \begin{figure}[H]
+    %     \centering
+    %     \includegraphics[width=0.6\linewidth]{image6.png}
+    %     \caption{Instrucci\'on para salir del BTS.}
+    %     \label{fig:image6}
+    % \end{figure}
+    
+    % \begin{figure}[H]
+    %     \centering
+    %     \includegraphics[width=0.6\linewidth]{image7.png}
+    %     \caption{Relanzamiento del BTS.}
+    %     \label{fig:image7}
+    % \end{figure}
+
+    Cuando el BTS se lanza nuevamente, ahora aparece una interfaz diferente, ya que se habilita la pestaña de \textit{GPIO}, el cual muestra el programa configurado anteriormente (\cref{fig:image8}) que nos permite observar los cambios en los puertos I/O de usuario (LED's, dip-switches y push-buttons). Adem\'as, podemos darnos cuenta de que el programa se carg\'o correctamente al observar que en el FPGA se encendieron los LED's de usuario (\cref{fig:image11}). Tanto en el BTS como en la tarjeta se muestran los LED's de usuario numerados del 0 al 7.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{image8.png}
+        \caption{Programa cargado al ejecutar \textit{Configure with GPIO Design}.}
+        \label{fig:image8}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth, clip, trim=5cm 5cm 12cm 9cm]{image11.png}
+        \caption{LED's de usuario que se encienden al cargar el programa.}
+        \label{fig:image11}
+    \end{figure}
+
+    Podemos hacer click sobre los íconos de LED's mostrados en el BTS para encenderlos o apagarlos y esto se ver\'a reflejado en la tarjeta. De igual forma, al modificar en la tarjeta la posición de los dip-switches o presionar los push-button esto se refleja en la GUI.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{image9.png}
+        \caption{Modificaci\'on del estado de los LED's de usuario desde el BTS.}
+        \label{fig:image9}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{image12.png}
+        \caption{Respuesta en los LED's de usuario en la tarjeta a los cambios realizados en el BTS.}
+        \label{fig:image12}
+    \end{figure}
+
+\subsection{Pestaña de información del sistema}
+
+    La pestaña de información del sistema muestra información acerca de la configuración actual de la tarjeta. En la pestaña se despliega la información de la tarjeta, los dispositivos de la cadena JTAG y otros detalles almacenados en la tarjeta.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images/Parte2/systab.png}
+        \caption{Pestaña de información de la tarjeta.}
+        \label{fig:systab}
+    \end{figure}
+
+    Las siguientes secciones describen los controles en la pestaña de información del sistema.
+
+\subsubsection{Informaci\'on de la tarjeta}
+
+    El control de informaci\'on de la tarjeta muestra informaci\'on est\'atica acerca de la tarjeta.
+
+    \begin{itemize}
+        \item \textbf{Board Name:} Indica el nombre oficial de la tarjeta dado por el BTS.
+        \item \textbf{Board Revision:} Indica la revisi\'on de la tarjeta.
+        \item \textbf{MAX Version:} Indica la versi\'on del sistema MAX 10.
+    \end{itemize}
+
+\subsubsection{Cadena JTAG}
+
+    El control de la cadena JTAG muestra todos los dispositivos conectados actualmente a la cadena JTAG. 
+
+    Se deben poner el MAX 10 y la FPGA en la cadena JTAG cuando se está ejecutando el BTS.
+
+\subsection{Pestaña de GPIO}
+
+    La pestaña GPIO nos permite interactuar con todos los componentes de propósito general E/S en la tarjeta. Se pueden encender o apagar los LEDs y observar el estatus de los push buttons y los dip switches.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte2/gpiotab.png}
+        \caption{Pestaña GPIO.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    La siguientes secciones describen los controles en la pesta\n a GPIO.
+
+\begin{description}
+    \item[LEDs de usuario:] 
+    El control de LEDs de usuario muestra el estado actual de los LEDs de usuario. Al dar click en los botones de los LEDs se puede encender o apagar los LEDs de la tarjeta. El bot\'on \texttt{\textcolor{DarkOrchid1}{All}} sirve para modificar el estado de todos los LEDs.
+    \item[Dip switches de usuario:]
+    El control de los dip switches de usuario muestra el estado de los switches \texttt{\textcolor{red}{USER\_SW[0:3](S1)}} y \texttt{\textcolor{red}{USER\_SW[4:7](S6)}}.
+    \item[Push buttons:]
+    El control de los push buttons muestra el estado de \texttt{\textcolor{red}{PB0}} y \texttt{\textcolor{red}{PB1}}
+    \item[Qsys Memory Map:]
+    El control Qsys Memory Map muestra el mapa de memoria del dise\n o \texttt{\textcolor{blue}{bts\_config.sof}} ejecut\'andose en la tarjeta.
+\end{description}
+
+
+\subsection{Pesta\n a XCVR}
+
+    La pesta\n a XCVR permite realizar pruebas de transreceptores en la tarjeta de desarrollo. Se pueden realizar las pruebas ya sea usando un m\'odulo de loopback el\'ectrico o m\'odulos de fibra \'optica.
+
+\subsubsection{La pesta\n a QSFPDD NRZ}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{Images//Parte2/qsfpddnrz.png}
+        \caption{La pesta\n a QSFPDD NRZ.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+    Las siguientes secciones describen los controles en la pesta\n a QSFPDD.
+
+    \paragraph{Estado}
+
+        El control de estado muestra la siguiente informaci\'on durante la prueba de loopback:
+
+        \begin{itemize}
+            \item \textbf{PLL lock:} Muestra el estado de PLL bloqueado o desbloqueado.
+            \item \textbf{Pattern Sync:} Muestra el patr\'on de estado sincronizado o no sincronizado. El patr\'on se considera sincronizado cuando se detecta el inicio de la secuencia de datos.
+            \item \textbf{Detail:} Muestra el patr\'on de estado de sincronizaci\'on de cada canal. Tambi\'en muestra el n\'umero de bits de error de cada canal.
+        \end{itemize}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\linewidth]{Images//Parte2/status.png}
+            \caption{QSFPDD NRZ - PLL and Pattern Status.}
+            % \label{fig:enter-label}
+        \end{figure}
+
+    \paragraph{Control}
+
+        Se deben de usar los siguientes controles para seleccionar una interfaz para aplicar la configuraci\'on PMA, tipo de dato y control de error:
+
+        \begin{itemize}
+            \item QSFPDD0 x8
+            \item QSFPDD1 x8
+        \end{itemize}
+
+    \paragraph{Configuraci\'on PMA}
+
+        Permite realizar cambios a los par\'ametros PMA que afectan la interfaz del transceptor activo. Los siguientes ajustes est\'an disponibles para an\'alisis:
+
+        \begin{itemize}
+            \item \textbf{Serial Loopback:} Muestra la se\n al de estado entre el transmisor y el receptor.
+            \item \textbf{VOD:} Especifica la salida de voltaje diferencial del buffer del transmisor.
+            \item \textbf{Pre-emphasis tap:} 
+            \begin{itemize}
+                \item Pre-tap 1: Especifica la cantidad de pre\'enfasis de la primera pre-tap del buffer del transmisor.
+                \item Pre-tap 2: Especifica la cantidad de pre\'enfasis en la segunda pre-tap del buffer del transmisor.
+                \item Post-tap 1: Especifica la cantidad de pre\'enfasis en la post-tap del buffer del transmisor.
+            \end{itemize}
+        \end{itemize}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.4\linewidth]{Images//Parte2/pmasett.png}
+            \caption{QSFPDD NRZ - PMA setting.}
+            \label{fig:pmaset}
+        \end{figure}
+    
+    \paragraph{Tipo de dato}
+
+        El control de tipo de dato especifica el tipo de patr\'on de datos contenido en las transacciones. Se debe seleccionar alguno de los siguientes tipos de dato para an\'alisis:
+
+        \begin{itemize}
+            \item \textbf{PRBS7:} secuencias binarias pseudo-aleatorias de 7 bits .
+            \item \textbf{PRBS15:} secuencias binarias pseudo-aleatorias de 15 bits.
+            \item \textbf{PRBS23:} secuencias binarias pseudo-aleatoria de 23 bits.
+            \item \textbf{PRBS32:} secuencias binarias pseudo-aleatoria de 31 bits (predeterminado).
+        \end{itemize}
+
+    \paragraph{Control de error}
+
+        Este control muestra errores de datos detectados durante el an\'alisis y nos permite inyectar errores.
+
+        \begin{itemize}
+            \item \textbf{Detected Errors:} Muestra el n\'umero de errores de datos detectados en la transmisi\'on de datos.
+            \item \textbf{Inserted Errors:} Muestra el n\'umero de errores insertados en el flujo de transmisi\'on de datos.
+            \item \textbf{Bit Error Rate:} Calcula la tasa de bits de error en el flujo de transmisi\'on de datos.
+            \item \textbf{Insert:} Inserta un error de una palabra en el flujo de transmisi\'on de datos cada vez que se da click en el bot\'on. La inserci\'on de errores solo se habilita durante el an\'alisis de rendimiento de transacci\'on.
+            \textbf{Clear:} Resetea el contador de errores detectados y el contador de errores insertados a cero.
+        \end{itemize}
+
+    \paragraph{Control de ejecuci\'on}
+
+        \begin{itemize}
+            \item \textbf{Barras de rendimiento TX y RX:} muestra el porcentaje de la m\'axima tasa de datos te\'orica que las transacciones solicitadas pueden llegar a alcanzar.
+            \item \textbf{Start:} Este control inicia el test de loopback.
+            \item \textbf{Data rate:} Muestra el tipo XCVR y la tasa de datos de cada canal.
+        \end{itemize}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.4\linewidth]{Images//Parte2/datarate.png}
+            \caption{QSFPDD NRZ - Data Rate.}
+            % \label{fig:enter-label.}
+        \end{figure}
+
+\subsubsection{La pesta\n a QSFPDD PAM4}
+
+    Esta pesta\n a tiene funciones de control similares a la pesta\n a QSFPDD NRZ.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{Images//Parte2/qsfpddpam4.png}
+        \caption{La pesta\n a QSFPDD PAM4.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+\subsubsection{La pesta\n a FMCA NRZ}
+
+    Esta pesta\n a tiene funciones de control similares a la pesta\n a QSFPDD NRZ, excepto por la selecci\'on de puertos.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{Images//Parte2/fmcanrz.png}
+        \caption{La peta\n a FMCA NRZ.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+\subsubsection{La pesta\n a FMCB NRZ}
+
+    Esta pesta\n a tiene funciones de control similares a la pesta\n a QSFPDD NRZ, excepto por la selecci\'on de puertos.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{Images//Parte2/fmcbnrz.png}
+        \caption{La pesta\n a FMCB NRZ.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+\subsubsection{La pesta\n a QSFPDD800 PAM4}
+
+    Esta pesta\n a tiene funciones de control similares a la pesta\n a QSFPDD NRZ.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{Images//Parte2/qsfpdd800pam4.png}
+        \caption{La pesta\n a QSFPDD800 PAM4.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\linewidth]{Images//Parte2/pmasett.png}
+        \caption{QSFPDD800 PAM4 - PMA Setting.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+    \paragraph{Ajustes PMA}
+
+        Adem\'as de los ajustes PMA listados en la \cref{fig:pmaset}, hay ajustes adicionales disponibles para el F-Tile FHT PMA. El PMA est\'a configurado para valores predeterminados en los dise\n os PMA4.
+
+        \begin{itemize}
+            \item \textbf{Serial Loopback:} Muestra la se\n al de estado entre el transmisor y el receptor.
+            \item \textbf{VOD:} Especifica la salida de voltaje diferencial del buffer del transmisor.
+            \item \textbf{Pre-emphasis tap:} 
+            \begin{itemize}
+                \item Post-tap 2: Especifica la cantidad de pre\'enfasis de la segunda post-tap del buffer del transmisor.
+                \item Post-tap 3: Especifica la cantidad de pre\'enfasis en la tercer post-tap del buffer del transmisor.
+                \item Post-tap 4: Especifica la cantidad de pre\'enfasis en la cuarta post-tap del buffer del transmisor.
+                \item Pre-tap 3: Especifica la cantidad de pre\'enfasis en la tercer pre-tap del buffer del transmisor.
+            \end{itemize}
+        \end{itemize}
+
+    \subsubsection{La pesta\n a MXPM NRZ}
+
+        Esta pesta\n a tiene funciones de control similares a la pesta\n a QSFPDD NRZ, excepto por la selecci\'on de puertos.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\linewidth]{Images//Parte2/mxpmnrz.png}
+            \caption{La pesta\n a MXPM NRZ.}
+            % \label{fig:enter-label}
+        \end{figure}
+
+    \subsubsection{La pesta\n a MXPM PAM4}
+
+        Esta pesta\n a tiene funciones de control similares a la pesta\n a QSFPDD NRZ.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\linewidth]{Images//Parte2/mxpmpam4.png}
+            \caption{La pesta\n a MXPM PAM4.}
+            % \label{fig:enter-label}
+        \end{figure}
+
+    \subsection{La pesta\n a SDI}
+
+        Esta pesta\n a tiene funciones de control similares a la pesta\n a QSFPDD NRZ.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\linewidth]{Images//Parte2/sdi.png}
+            \caption{La pesta\n a SDI.}
+            % \label{fig:enter-label}
+        \end{figure}
+
+\subsection{La pesta\n a de memoria}
+
+    Esta pesta\n a nos permite leer y escribir en las memorias DDR4 DIMM-2A (DIMM-I) y DDR4 DIMM-2B (DIMM-II) de la tarjeta de desarrollo. RDIMMS solo realiza pruebas DIMM-II mientras que se realizan las pruebas pruebas RDIMMD DIMM-I y DIMM-II. Descarga el dise\n o a trav\'es del men\'u de configuraci\'on.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte2/memorytab.png}
+        \caption{La pesta\n a  RDIMMS.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+    Las siguientes secciones describen los controles en esta pesta\n a.
+
+\begin{description}
+    \item[Start:] 
+        Inicializa el an\'alisis de rendimiento de trasacci\'on de memoria DDR4.
+    \item[Stop:]
+        Finaliza el an\'alisis de rendimiento de transacci\'on.
+    \item[Reset:]
+        Reincia el an\'alisis de rendimieto de transacci\'on.
+\end{description}
+
+    \paragraph{Performance Indicators}
+
+        Estos controles muestran la informaci\'on actual del an\'alisis de rendimiento de transacci\'on colectada desde que se dio click en \texttt{\textcolor{DarkOrchid1}{Start}}.
+
+        \begin{itemize}
+            \item \textbf{Write and Read performance bars}: Muestra el porcentaje de la m\'axima tasa de datos te\'orica que las transacciones requeridas son capaces de alcanzar.
+            \item \textbf{Write (MBps) and Read (MBps):} Muestra el n\'umero de bytes analizados por segundo.
+            \item \textbf{Data Bus:} 72 bits (8 bits ECC) de ancho, reloj de referencia de 166.666 MHz, y la frecuencia es 1333.33 MHz tasa de datos doble 2666.66 MT/s.
+        \end{itemize}
+
+    \paragraph{Test Control}
+
+        \begin{itemize}
+            \item \textbf{Test Size:} Se puede elegir el tama\n o de la memoria a probar. Las opciones disponibles son 64 KB, 1 MB, 16 MB, 64 MB, 256 MB, 1 GB, 4 GB, 8 GB, y 16 GB (por default).
+            \item \textbf{Offset (Hex):} Se puede definir la direcci\'on de memoria de inicio para probar.
+            \item \textbf{Test Mode:} Lectura y Escritura infinita (default), Lectura y Escritura singular.
+            \item \textbf{Test Pattern:} PRBS (default), Constante Definida por Usuario, Walking '0', Walking '1'.
+        \end{itemize}
+
+    \paragraph{Error Control}
+
+        Este control muestra errores de datos detectados durante el an\'alisis y te permite insertar errores.
+
+        \begin{itemize}
+            \item \textbf{Detected Errors:} Muestra el n\'umero de errores de dato detectados en el hardware.
+            \item \textbf{Inserted Errors:} Muestra el n\'umero de errores insertados en la transmisi\'on de transacciones.
+            \item \textbf{Insert:} Inserta un error de una palabra en el flujo de transacciones cada vez que se da click en el bot\'on. El bot\'on de inserci\'on de errores solamente se habilita durante el an\'alisis de rendimiento de transacci\'on.
+        \end{itemize}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{Images//Parte2/rdimmstest.png}
+            \caption{La pesta\n a RdIMMD. El tama\n o de prueba se puede establecer a 32 GB con dos RDIMMs.}
+            % \label{fig:enter-label}
+        \end{figure}

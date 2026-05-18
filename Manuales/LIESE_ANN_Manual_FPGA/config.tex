@@ -1,0 +1,246 @@
+% Idioma
+\usepackage[spanish]{babel}
+\usepackage{csquotes} % Facilidades avanzadas, complemento del idioma
+\renewcommand{\spanishlisttablename}{Índice de tablas}
+\renewcommand{\spanishtablename}{Tabla}
+
+% Formato del documento
+\usepackage[top=2cm, bottom=3.5cm, left=1cm, right=1cm]{geometry}
+\setlength{\headheight}{1.8cm} % Espacio entre el header y el contenido de la página
+% \usepackage[hidelinks]{hyperref}
+\usepackage{hyperref}
+\setlength{\parskip}{11pt} % Espacio entre párrafos
+
+\usepackage{tocloft} % Habilitar la modificación de la tipografía de ToC, LoF, LoT
+\newcommand{\divider}{ % Línea horizontal para los títulos de ToC, LoF, LoT
+    \begin{center}
+        \vspace*{-1.3cm}
+        \rule{\textwidth}{1pt}
+    \end{center}
+}
+\usepackage{float}
+
+% Formato del Índice general (ToC)
+\renewcommand{\cftbeforetoctitleskip}{5.4mm} % Espacio antes del título del ToC
+\renewcommand{\cftaftertoctitleskip}{5mm}
+\renewcommand{\cfttoctitlefont}{\huge\scshape}  % Título del ToC
+\renewcommand{\cftchapfont}{\scshape}           % Títulos (capítulos en ToC)
+\renewcommand{\cftchappagefont}{\scshape}       % Páginas (capítulos en ToC)
+\addtocontents{toc}{\hfil\divider\protect\hfil\par}
+
+% Formato del Índice de figuras (LoF)
+\renewcommand{\cftbeforeloftitleskip}{5.4mm}    % Espacio antes del título del LoF
+\renewcommand{\cftafterloftitleskip}{5mm}
+\renewcommand{\cftloftitlefont}{\huge\scshape}  % Título del LoF
+\addtocontents{lof}{\hfil\divider\protect\hfil\par}
+
+% Formato del Índice de figuras (LoT)
+\renewcommand{\cftbeforelottitleskip}{5.4mm}    % Espacio antes del título del LoT
+\renewcommand{\cftafterlottitleskip}{5mm}
+\renewcommand{\cftlottitlefont}{\huge\scshape}  % Título del LoT
+\addtocontents{lot}{\hfil\divider\protect\hfil\par}
+
+% Acrónimos
+\usepackage[nohyperlinks]{acronym}
+
+% Formato de los encabezados y pies de página
+\usepackage{fancyhdr} % Personalizar los encabezados y pies de página
+\fancyhf{} % Borrar la configuración por defecto
+\lhead{\includegraphics[height=15mm]{Images/LIESE-LogoName.pdf}} % Campo a la izquierda del encabezado (título del elemento en el nivel superior)
+\rhead{\leftmark} % Campo a la derecha del encabezado (número de página)
+\lfoot{\documento \\ \docID~(\version)~\fecha}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{2pt} % Ancho de línea debajo del encabezado
+\renewcommand{\footrulewidth}{2pt} % Ancho de línea arriba del pie de mágina
+
+% Formato de los títulos
+\usepackage{titlesec}
+\titleformat{\chapter}[block]{\huge\scshape}{\raggedleft Capítulo~\thechapter \\ \rule{\textwidth}{1pt}}{1cm}{\huge}[\vspace{-0.8cm}\rule{\textwidth}{1pt}]
+\titlespacing{\chapter}{0cm}{-2cm}{0cm}
+\titleformat{\section}[block]{\Large\slshape}{\thesection}{0.8cm}{\Large}[\vspace{-0.8cm}\rule{\textwidth}{0.5pt}]
+\titlespacing{\section}{0cm}{0cm}{0cm}
+\titleformat{\subsection}[block]{\large\slshape}{\thesubsection}{0.8cm}{\large}
+\titlespacing{\subsection}{0cm}{0cm}{0cm}
+\titlespacing{\paragraph}{0cm}{0cm}{0cm}
+\titlespacing{\subparagraph}{0.6cm}{0cm}{0.4cm}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\usepackage[width=0.75\textwidth]{caption} % Formato de las captions. Modificación del ancho de página del caption
+\captionsetup[lstlisting]{labelformat=empty}
+% Figuras
+\usepackage{graphicx} % Manipulación de imágenes
+\renewcommand{\cftfigfont}{Figura } % Nombre de las figuras en el LoF
+\usepackage{wrapfig} % Colocar texto alrededor de las figuras
+\usepackage{subcaption} % Manipulación de subfiguras
+
+% Tablas
+\usepackage{longtable} % Uso de tablas que continúan en la siguiente página
+\usepackage{booktabs} % Uso de tablas más bonitas
+\usepackage{multirow} % Uso de multirows en tablas
+\usepackage{array} % Complemento para manejo de ambientes de tabulación
+\renewcommand{\cfttabfont}{Tabla } % Nombre de las tablas en el LoT
+
+% Entorno multicolumna
+\usepackage{multicol}
+\setlength{\columnseprule}{0.5pt}
+
+% Matemáticas
+\usepackage{amsmath} % Expresiones matemáticas
+\usepackage{amssymb} % Colección de símbolos matemáticos
+\usepackage{textcomp}
+% Referencias
+\usepackage[backend=biber, style=ieee, sorting=none]{biblatex}
+\addbibresource{References.bib} % Archivo de referencias
+
+% Otrosi
+
+\usepackage{listings} % Ambiente para códigos de programación
+\usepackage{xurl} % Permite los saltos de línea en cualquier caracter alfanúmerico en url grandes
+\usepackage{gensymb}
+\usepackage{tabularx}
+\usepackage{footnote}
+% \usepackage{times}
+% \usepackage{svg}
+% \svgsetup{inkscapelatex=false} % evita que use texto de LaTeX
+\usepackage{upquote}
+
+\graphicspath{{./Images/}{./Images/Parte1}{./Images/Parte2}}
+
+\usepackage[dvipsnames, svgnames,table, x11names]{xcolor}
+
+\definecolor{githubgray}{rgb}{0.95,0.95,0.95} % Fondo de los bloques de código de GitHub
+
+\definecolor{githubpurple}{rgb}{0.4,0.1,0.4} % Color para los comentarios de MATLAB
+
+\lstdefinestyle{mystyle}{
+    language=bash,
+	basicstyle=\small\ttfamily,
+	backgroundcolor=\color{githubgray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{violet},
+	stringstyle=\color{red},
+	% numbers=left,
+	% numberstyle=\tiny,
+	% numbersep=5pt,
+	breaklines=true,
+	showstringspaces=false,
+    breakatwhitespace=false,
+    keepspaces=true,
+    columns=fullflexible,
+    upquote=true,
+    showstringspaces=false,
+    % frame=single,
+	tabsize=2,
+	%	frame=single,
+	framexleftmargin=3mm,
+	framexrightmargin=3mm,
+	framextopmargin=3mm, % Margen superior
+	framexbottommargin=3mm, % Margen inferior
+	xleftmargin=10mm,
+	xrightmargin=10mm,
+	framesep=5pt,
+	aboveskip=10pt,
+	belowskip=10pt,
+    caption= ,
+    captionpos=b,
+	% xleftmargin=.1\textwidth, xrightmargin=.1\textwidth,
+	escapeinside={(*@}{@*)}, % Si quieres añadir comentarios LaTeX dentro del código MATLAB
+    title={},
+    literate={@}{{@}}1{.}{{.}}1{"}{{"}}1
+}
+
+\lstset{style=mystyle, caption={}, label={}}
+\lstdefinelanguage{bash}{
+  keywords={sudo, nano, ls, cd, mkdir, rm, mv, cp, echo, cat, chmod, chown, apt, apt-get, yum, systemctl, git, make, export, tar, alias, ssh},
+  sensitive=true,
+  morecomment=[l]{\#},
+  morestring=[b]",
+  morestring=[b]',
+}
+
+% \renewcommand{\lstlistingname}{C\'odigo}% Listing -> Algorithm
+% \renewcommand{\lstlistlistingname}{Lista de \lstlistingname s}% List of Listings -> List of Algorithms
+
+
+% \definecolor{vgreen}{RGB}{104,180,104}
+% \definecolor{vblue}{RGB}{49,49,255}
+% \definecolor{vorange}{RGB}{255,143,102}
+
+% \lstdefinestyle{verilog-style}
+% {
+%     basicstyle=\footnotesize\ttfamily,
+% 	backgroundcolor=\color{githubgray},
+% 	numbers=left,
+% 	numberstyle=\tiny,
+% 	numbersep=5pt,
+% 	breaklines=true,
+% 	showstringspaces=false,
+% 	tabsize=2,
+% 	%	frame=single,
+% 	framexleftmargin=5mm,
+% 	framexrightmargin=5mm,
+% 	framextopmargin=2mm, % Margen superior
+% 	framexbottommargin=2mm, % Margen inferior
+% 	xleftmargin=20mm,
+% 	xrightmargin=20mm,
+% 	framesep=5pt,
+% 	captionpos=b,
+% 	aboveskip=10pt,
+% 	belowskip=10pt,
+% 	caption=\lstname,
+%     language=Verilog,
+%     keywordstyle=\color{vblue},
+%     identifierstyle=\color{black},
+%     commentstyle=\color{vgreen},
+%     moredelim=*[s][\colorIndex]{[}{]},
+%     literate=*{:}{:}1
+% }
+
+ 
+
+
+\makeatletter
+\newcommand*\@lbracket{[}
+\newcommand*\@rbracket{]}
+\newcommand*\@colon{:}
+\newcommand*\colorIndex{%
+    \edef\@temp{\the\lst@token}%
+    \ifx\@temp\@lbracket \color{black}%
+    \else\ifx\@temp\@rbracket \color{black}%
+    \else\ifx\@temp\@colon \color{black}%
+    \else \color{vorange}%
+    \fi\fi\fi
+}
+\makeatother
+
+\usepackage{trace}
+\usepackage{wrapfig}
+
+% \let\oldref\ref
+% \renewcommand{\ref}[1]{\textcolor{red}{\oldref{#1}}}
+\newcommand{\n}{\~n}
+\newcommand{\ais}{FPGA AI Suite }
+
+% Para \ref
+\let\oldref\ref
+\renewcommand{\ref}[1]{\textcolor{blue}{\oldref{#1}}}
+
+% Para \url
+% \let\oldurl\url
+% \renewcommand{\url}[1]{{\oldurl{#1}}}
+\newcommand{\curl}[1]{\textcolor{Turquoise4}{\url{#1}}}
+\newcommand{\comm}[1]{\textcolor{blue}{\texttt{{#1}}}}
+\newcommand{\cbut}[1]{\textcolor{DarkOrchid1}{\texttt{{#1}}}}
+\newcommand{\cred}[1]{\textcolor{red}{\texttt{{#1}}}}
+
+% Para \hyperref (opcional)
+\let\oldhyperref\hyperref
+\renewcommand{\hyperref}[2][]{\oldhyperref[#1]{\textcolor{blue}{#2}}}
+
+
+\newcommand{\cref}[1]{\hyperref[#1]{\textcolor{magenta}{figura \ref*{#1}}}}
+\newcommand{\ctref}[1]{\hyperref[#1]{\textcolor{magenta}{tabla \ref*{#1}}}}

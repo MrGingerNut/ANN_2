@@ -1,0 +1,9 @@
+
+#Method 1
+scp /home/liese2/ANN_project/resnet18_pt/compiled_rn18_mth1/RN18_Performance_no_folding.bin root@agilex7dksiagi027fa.local:~/resnet-18-pt/bin_mth1/.
+
+#Method 2
+scp /home/liese2/ANN_project/resnet18_pt/compiled_rn18_mth2/RN18_Performance_no_folding.bin root@agilex7dksiagi027fa.local:~/resnet-18-pt/bin_mth2/.
+
+#Method 3
+scp /home/liese2/ANN_project/resnet18_pt/compiled_rn18_mth3/RN18_Performance_no_folding.bin root@agilex7dksiagi027fa.local:~/resnet-18-pt/bin_mth3/.

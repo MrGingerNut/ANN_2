@@ -1,0 +1,173 @@
+\chapter{Anexos}
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Images/Anexos/en-construccion1.png}
+	\end{figure}
+
+
+\section{Hard Processor System (HPS)}\label{hpssec}
+
+    El HPS es un sistema que incluye un procesador quad-core ARM Cortex-A53, el cual permite a los usuarios migrar los dise\n os existentes desde dispositivos Intel Stratix 10 SoCs hacia dispositivos Intel Agilex SoC.
+
+    Adem\'as, el HPS habilita las capacidades de virtualizaci\'on de hardware a nivel de sistema mediante la incorporaci\'on de una unidad de gesti\'on de memoria del sistema. Estas mejoras de arquitectura aseguran que los SoCs cumplan los requerimientos de los mercados actuales y futuros de sistemas embebidos, incluyendo comunicaciones al\'ambricas e inal\'ambricas, aceleraci\'on de centros de datos, y numerosas aplicaciones militares. %\cite{hps}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{Images/Anexos/hpsblck.png}
+        \caption{Diagrama de bloques del HPS.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+\begin{longtable}{p{0.3\textwidth} | p{0.6\textwidth}}
+
+\toprule
+\multicolumn{1}{c}{\textbf{Caracter\'istica}} & \multicolumn{1}{c}{\textbf{Descripción}} \\
+\toprule
+\endfirsthead
+
+\toprule
+\multicolumn{1}{c}{\textbf{Caracter\'istica}} & \multicolumn{1}{c}{\textbf{Descripción}} \\
+\toprule
+\endhead
+
+Unidad de procesamiento quad-core ARM Cortex-A53 MPCore &
+\begin{itemize}
+  \item 2.3 $MIPS/MHz$ eficiencia de instrucciones
+  \item Frecuencia del CPU hasta 1.4 $GHz$
+  \item Rendimiento total a 14. $GHz$ de 13,800 MIPS
+  \item Arquitectura ARMv8-A
+  \item Ejecuta instrucciones ARM de 64 y 32 bits
+  \item Instrucciones Thumb 16 y 32 bits para una reducci\'on del 30\% de uso de memoria
+  \item Arquitectura de ejecuci\'on Jazelle RCT con bytecodes Java de 8 bits
+  \item Pipeline fuera de orden, s\'uperescalar, longitud de variable, con predicción de saltos din\'amica
+  \item Motor ARM NEON para procesamiento mejorado
+  \item Unidad de punto flotante de precisi\'on simple y doble
+  \item Tecnolog\'ia de de depurado y trazado CoreSight
+\end{itemize} \\ \midrule
+
+Unidad de gestión de memoria del sistema &
+
+ Habilita un modelo de memoria unificada y extiende la virtualización de hardware a los periféricos de f\'abrica implementados en la FPGA \\ \midrule
+
+Unidad de coherencia de caché &
+ Cambios en los datos compartidos almacenados en cach\'e se propagan a trav\'es del sistema proveyendo coherencia bidireccional para elementos coprocesadores \\ \midrule
+
+Memoria caché &
+\begin{itemize}
+  \item L1 Cache\begin{itemize}
+        \item Cach\'e de instrucci\'on de 32 KB con verificaci\'on de paridad
+        \item Cach\'e de datos de L1 de 32 KB con ECC
+        \item Verificaci\'on de paridad
+    \end{itemize}
+  \item L2 Cache\begin{itemize}
+      \item 1 MB compartido
+      \item 8 vías asociativas
+      \item Protección SEU con verificaci\'on de paridad en la memoria TAG y ECC en la memoria de datos RAM
+    \item Soporte de blqueo de cach\'e
+    \end{itemize}
+\end{itemize} \\ \midrule
+
+On-Chip Memory &
+256 KB de memoria scratch interna \\ \midrule
+
+Interfaces de memoria para el HPS externas SDRAM y memoria Flash &
+\begin{itemize}
+  \item Controlador de memoria dura con soporte para memoria DDR4 \begin{itemize}
+      \item 40 bits (32 bits + 8 bits ECC) con selecci\'on de paquetes soportando hasta 72 bits (64 bits + 8 bits ECC)
+      \item Soporte para memoria de hasta 32200 Mbps 
+      \item Soporte ECC incluyendo calculos, correcci\'on de errores, correcci\'on de escritura diferida y contador de errores
+      \item Planificaci\'on por prioridad configurable por sofware de rafagas de memoria SDRAM individuales
+      \item Soporte de par\'ametros de tiempo completamente programables para todos los par\'ametros de tiempo especificos JEDEC
+      \item Interfaz planificadora multipuerto (MPFE) hacia controlador de memoria integrado, que soporta AXI Quality of Service (QoS) para la interconexi\'on con la FPGA \end{itemize}
+\item Controlador de almacenamiento para NAND flash\begin{itemize}
+        \item asdfsdfasdf  
+    \end{itemize}
+\end{itemize} \\
+
+Controladores de almacenamiento &
+\begin{itemize}
+  \item NAND Flash (ONFI 1.0, ECC por hardware)
+  \item SD/MMC/eMMC 4.5, hasta 50 MHz, con DMA
+  \item Soporte CE-ATA y comandos digitales
+\end{itemize} \\
+
+DMA &
+\begin{itemize}
+  \item 8 canales
+  \item Hasta 32 interfaces handshake
+\end{itemize} \\
+
+Interfaces de comunicación &
+\begin{itemize}
+  \item 3x Ethernet 10/100/1000 (MAC con DMA)
+  \item Soporte RGMII, RMII, GMII, MII, SGMII
+  \item Compatible con IEEE 1588, VLAN, AVB
+  \item 2x USB OTG (host/dispositivo, hasta 480 Mbps)
+  \item 5x I2C, 2x UART 16550, 4x SPI (2M/2S)
+\end{itemize} \\
+
+Temporizadores e I/O &
+\begin{itemize}
+  \item 4 temporizadores generales + 4 watchdog
+  \item 48 pines I/O directos
+  \item Hasta 2 bancos IO96 asignables a DDR HPS
+\end{itemize} \\
+
+Puentes con FPGA &
+\begin{itemize}
+  \item HPS-to-FPGA AXI (32/64/128 bits)
+  \item Lightweight bridge (AXI 32 bits)
+  \item FPGA-to-SoC bridge (hasta 512 bits ACE-Lite)
+  \item HPS-to-SDM / SDM-to-HPS bridge
+\end{itemize} \\
+\hline
+
+\caption{Resumen de caracter\'isticas}
+\end{longtable}
+
+\section{Proyectos Personalizados para el Kit de Desarrollo}
+
+\subsection{Configuraciones SmartVID en el Archivo QSF de Quartus Prime}
+
+    El Agilex 7 ensamblado en este kit de desarrollo habilita la funci\'on SmartVID de forma predeterminada. Para evitar un error generado por Quartus Prime debido a configuraciones incompletas de SmartVID, se debe colocar las restricciones que se indican a continuaci\'on en el archivo QSF del proyecto de Quartus Prime. Dichas restricciones est\'an dise\~nadas para el circuito principal Intel Enpirion ED8401.
+
+\subsubsection{DK-SI-AGI027FA y DK-SI-AGI027FC (No Intel Enpirion)}
+
+    Abrir el archivo QSF del proyecto en Quartus Prime, copiar y pegar los siguientes scripts de restricci\'on en el archivo. Se debe asegurar de que no existan otras configuraciones similares con valores diferentes.
+
+    \begin{lstlisting}
+set_global_assignment -name USE_PWRMGT_SCL SDM_IO0
+set_global_assignment -name USE_PWRMGT_SDA SDM_IO12
+set_global_assignment -name USE_CONF_DONE SDM_IO16
+set_global_assignment -name VID_OPERATION_MODE "PMBUS MASTER"
+set_global_assignment -name PWRMGT_BUS_SPEED_MODE "100 KHZ"
+set_global_assignment -name PWRMGT_SLAVE_DEVICE_TYPE LTC3888
+set_global_assignment -name NUMBER_OF_SLAVE_DEVICE 1
+set_global_assignment -name PWRMGT_SLAVE_DEVICE0_ADDRESS 62
+set_global_assignment -name PWRMGT_VOLTAGE_OUTPUT_FORMAT "LINEAR FORMAT"
+set_global_assignment -name PWRMGT_LINEAR_FORMAT_N "-12"
+set_global_assignment -name PWRMGT_TRANSLATED_VOLTAGE_VALUE_UNIT VOLTS
+    \end{lstlisting}
+
+\subsubsection{DK-SI-AGI027FB y DK-SI-AGI027FES (Intel Enpirion)}
+
+    Abrir el archivo QSF del proyecto en Quartus Prime, copiar y pegar los siguietes scripts de restricci\'on en el archivo. Se debe asegurar de que no existan otras configuraciones similares con valores diferentes.
+
+    \begin{lstlisting}
+set_global_assignment -name USE_PWRMGT_SCL SDM_IO0
+set_global_assignment -name USE_PWRMGT_SDA SDM_IO12
+set_global_assignment -name USE_CONF_DONE SDM_IO16
+set_global_assignment -name VID_OPERATION_MODE "PMBUS MASTER"
+set_global_assignment -name PWRMGT_BUS_SPEED_MODE "100 KHZ"
+set_global_assignment -name PWRMGT_SLAVE_DEVICE_TYPE ED8401
+set_global_assignment -name NUMBER_OF_SLAVE_DEVICE 1
+set_global_assignment -name PWRMGT_SLAVE_DEVICE0_ADDRESS 62
+set_global_assignment -name PWRMGT_VOLTAGE_OUTPUT_FORMAT "LINEAR FORMAT"
+set_global_assignment -name PWRMGT_LINEAR_FORMAT_N "-13"
+set_global_assignment -name PWRMGT_TRANSLATED_VOLTAGE_VALUE_UNIT VOLTS
+    \end{lstlisting}
+
+\subsection{Golden Top}
+
+    Se puede utilizar el proyecto Golden Top como punto de partida para dise\~nos propios. Este proyecto ya viene cargado de restricciones, ubicaciones de pines, est\'andares de E/S definidos, direcciones y terminaciones generales. Las configuraciones de terminaci\'on de pines para DDR4 no est\'an incluidas.

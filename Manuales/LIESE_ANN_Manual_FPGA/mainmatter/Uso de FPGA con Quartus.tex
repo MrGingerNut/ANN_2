@@ -1,0 +1,142 @@
+\chapter{Uso de la tarjeta con Quartus Prime Pro Edition}
+
+\section{Pasos para cargar proyectos desde \quartus a la tarjeta}
+
+    Para cargar un programa a la tarjeta de desarrollo desde \quartus debemos realizar el siguiente procedimiento con el fin de que se realice correctamente la comunicación mediante protocolo serial desde la MAX 10 al Agilex 7.
+
+    \begin{enumerate}
+        \item Conectar el cable USB2.0 tipo B de la tarjeta a la estaci\'on de trabajo.
+        \item Revisar que la configuraci\'on de la tarjeta sea la configuraci\'on predeterminada.
+        \item Revisa el estatus de los m\'odulos externos: cable MXPM/QSFP/QSFPDD/FMC/DIMM
+        \item Encender la tarjeta.
+        \item En la estaci\'on de trabajo abrir Quartus Prime Pro Edition
+        \item Abrir el proyecto que se va a cargar a la tarjeta de desarrollo.
+        \item Establecer las configuraciones necesarias para el dispositivo.
+        \item Configurar el programador para que trabaje con el hardware correspondiente a la tarjeta de desarrollo.
+        \item Establecer la configuraci\'on del programador e incluir los archivos necesarios.
+        \item Ejecutar el proyecto en la tarjeta de desarrollo.
+    \end{enumerate}
+
+\subsection{Ejemplo de programa para hacer parpadear un LED}
+
+    Se muestra el siguiente ejemplo que realiza la conmutaci\'on de uno de los LED's de usuario, se muestran los pasos a seguir con el fin de que la comunicaci\'on al chip Agilex 7 se establezca correctamente. 
+    
+    El proyecto con el cual se realizar\'a este ejemplo se encuentra en el archivo \curl{home/liese2/Proyects/blinky.qpf}, este ser\'a el archivo que nos ayudar\'a a cargar el programa funcional a la tarjeta. Al abrirlo se mostrar\'a la vista inicial del proyecto y en el \texttt{\textcolor{DarkOrchid1}{Project Navigator}} se muestran los archivos que contiene (\cref{fig:screen1}).
+
+    % \begin{figure}[H]
+    %     \centering
+    %     \includegraphics[width=0.5\linewidth, clip, trim= 0 0 3cm 0]{Images//Parte3/recent.png}
+    %     \caption{Proyectos recientes utilizados en \quartus.}
+    %     \label{fig:recent}
+    % \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\linewidth]{Images//Parte3/screen1.png}
+        \caption{Vista inicial al abrir el proyecot}
+        \label{fig:screen1}
+    \end{figure}
+
+    El siguiente paso ser\'a realizar ciertas configuraciones: para ello debemos ir a \texttt{\textcolor{DarkOrchid1}{{Assignments $\rightarrow$ Device $\rightarrow$ Device and Pin Options}}} (\cref{fig:configgen}) para realizar dos configuraciones.
+    
+    La primera de ellas es en \texttt{\textcolor{DarkOrchid1}{Configuration $\rightarrow$ Configuration Pin Options}}, dentro de este menú se deben marcar las opciones \texttt{\textcolor{DarkOrchid1}{USE PWRMGT\_SCL output}}, \texttt{\textcolor{DarkOrchid1}{USE PWRMGT\_SDA output}} y \texttt{\textcolor{DarkOrchid1}{USE CONF\_DONE output}}. Además de seleccionar \texttt{\textcolor{DarkOrchid1}{SDM\_IO0}}, \texttt{\textcolor{DarkOrchid1}{SDM\_IO12}} y \texttt{\textcolor{DarkOrchid1}{SDM\_IO16}} en las respectivas opciones (\cref{fig:configpin}). 
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[c]{0.45\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{Images//Parte3/configgen.png}
+            \caption{Ventana para la configuraci\'on de la tarjeta y los pines de salida.}
+            \label{fig:configgen}
+        \end{subfigure}\hspace{.5cm}
+        \begin{subfigure}[c]{.45\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{Images//Parte3/config1.png}
+            \caption{Configuraci\'on para los pines de salida.}
+            \label{fig:configpin}
+        \end{subfigure}
+        \caption{Configuraciones de salida para la tarjeta de desarrollo.}
+    \end{figure}
+
+
+    La siguiente configuraci\'on necesaria es en el apartado de \texttt{\textcolor{DarkOrchid1}{Power Management \& VID}}, en donde se deben establecer los valores de \texttt{\textcolor{DarkOrchid1}{Bus speed mode $\rightarrow$ 100 KHz}}, \texttt{\textcolor{DarkOrchid1}{Slave device type $\rightarrow$ LTC3888}} y \texttt{\textcolor{DarkOrchid1}{PMBus device 0 slave address $\rightarrow$ 62}} (\cref{fig:config2}).
+
+    \textit{Nota: Una vez realizada esta configuraci\'on no es necesario realizarla de nuevo.}
+
+    Al compilar el proyecto tarda unos cinco minutos aproximadamente en completarse y cuando termina lanza una ventana que nos indica que se compil\'o correctamente (\cref{fig:compilado}).
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[c]{0.45\linewidth}
+            \centering            \includegraphics[width=\linewidth]{Images//Parte3/config2.png}
+            \caption{Configuraci\'on para el manejo de energ\'ia.}
+            \label{fig:config2}
+        \end{subfigure}\hspace{.5cm}
+        \begin{subfigure}[c]{.45\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{Images//Parte3/compilado.png}
+            \caption{Ventana que se lanza cuando se compila el proyecto.}
+            \label{fig:compilado}
+        \end{subfigure}
+        \caption{Configuraci\'on de energ\'ia y compilado.}
+    \end{figure}
+
+
+        Despu\'es de esto nos dirigimos a \texttt{\textcolor{DarkOrchid1}{Tools $\rightarrow$ Programmer}} (\cref{fig:programmer}) y dentro de \texttt{\textcolor{DarkOrchid1}{Hardware Setup}} tenemos que seleccionar el Blaster de la tarjeta, el cual aparece como \texttt{\textcolor{DarkOrchid1}{Agilex I-Series SOC Dev Kit [1-6.2]}} (\cref{fig:blaster}), luego de seleccionarlo simplemente cerramos la ventana haciendo click en \texttt{\textcolor{DarkOrchid1}{Close}} y regresamos al \texttt{\textcolor{DarkOrchid1}{Programmer}}. 
+
+        Tras seleccionar el blaster, en la columna izquierda se habilita la opci\'on \texttt{\textcolor{DarkOrchid1}{Auto Detect}}, en la cual hay que dar clik. Puede que aparezca una advertencia de Quartus Prime (\cref{fig:programmerwarning}), si es as\'i simplemente hay que aceptarla y regresar al programador. Tras realizar la detecci\'on autom\'atica de hardware, en el programador pueden aparecer 2 o 3 chips y el hardware seleccionado de la tarjeta (\cref{fig:programmerdetect}).
+        
+        es lo siguiente:\begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{Images//Parte3/programmer.png}
+            \caption{Vista inicial del programador.}
+            \label{fig:programmer}
+        \end{figure}
+
+        \begin{figure}[H]
+        \centering
+        \begin{subfigure}[c]{0.45\linewidth}
+            \centering            \includegraphics[width=\linewidth]{Images//Parte3/blaster.png}
+            \caption{Selecci\'on del blaster.}
+            \label{fig:blaster}
+        \end{subfigure}\hspace{.5cm}
+        \begin{subfigure}[c]{.45\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{Images//Parte3/programmerwarning.png}
+            \caption{Advertencia que se lanza al ejecutar \texttt{\textcolor{DarkOrchid1}{Auto Detect}}.}
+            \label{fig:programmerwarning}
+        es lo siguiente:\end{subfigure}
+        \caption{Selecci\'on de blaster y error que se puede lanzar al realizar la detecci\'on de hardware.}
+    \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\linewidth]{Images//Parte3/programmerdetect.png}
+            \caption{Cambios en el programador al aplicar \texttt{\textcolor{DarkOrchid1}{Auto Detect}}.}
+            \label{fig:programmerdetect}
+        \end{figure}
+        
+        
+        Se debe seleccionar el chip con el nombre \texttt{\textcolor{DarkOrchid1}{AGFB027R24C}} y en la columna izquiera dar click en \texttt{\textcolor{DarkOrchid1}{Change File}}, aqu\'i tenems que incluir el archivo \texttt{\textcolor{blue}{blinky.sof}} que se encuentra en el directorio \curl{/home/liese2/Projects/blinky/output_files/} (\cref{fig:programmerfile}) y marcar el checkbox en la columna \texttt{\textcolor{DarkOrchid1}{Program/Configure}} del mismo archivo (\cref{fig:programmerloaded}) y finalmente podemos dar click en \texttt{\textcolor{DarkOrchid1}{Start}} para iniciar el programa en la tarjeta de desarrollo (\cref{fig:programmerstart}).
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\linewidth]{Images//Parte3/programmerfile.png}
+            \caption{Archivo de salida que se tiene que cargar.}
+            \label{fig:programmerfile}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{Images//Parte3/programmerloaded.png}
+            \caption{Programador con el archivo cargado y la opci\'on de configuraci\'on seleccionada.}
+            \label{fig:programmerloaded}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{Images//Parte3/programmerstart.png}
+            \caption{Ejecuci\'on del programa exitosa.}
+            \label{fig:programmerstart}
+        \end{figure}
+
+        Cuando se ejecuta el programa en la tarjeta se observa c\'omo el LED \texttt{\textcolor{red}{D0}} comienza a parpadear, lo cual indica que el procedimiento se realiz\'o correctamente. 

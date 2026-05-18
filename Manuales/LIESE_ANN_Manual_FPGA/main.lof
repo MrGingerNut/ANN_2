@@ -1,0 +1,79 @@
+\hfil \begin {center} \vspace *{-1.3cm} \rule {\textwidth }{1pt} \end {center} \hfil \par 
+\babel@toc {spanish}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Vista superior de la tarjeta Agilex 7 FPGA I-Series Transceiver-SoC Development Kit.\relax }}{1}{figure.caption.4}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Diagrama de bloques de la tarjeta Agilex 7 FPGA I-Series Transceiver-SoC Development Kit.\relax }}{2}{figure.caption.5}%
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Elementos que integran a la tarjeta de desarrollo.\relax }}{3}{figure.caption.6}%
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Tarjetas hijas externas.\relax }}{5}{figure.caption.7}%
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Conexi\'on de alimentaci\'on y USB JTAG a la tarjeta y encendido de la tarjeta.\relax }}{9}{figure.caption.9}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces BTS GUI.\relax }}{11}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Comando de ejecuci\'on para lanzar el BTS.\relax }}{12}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Casos que se presentan al ejecutar \texttt {\leavevmode {\color {blue}bts}} desde terminal.\relax }}{12}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Ventana inicial del BTS.\relax }}{13}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Informaci\'on del borde inferior del BTS.\relax }}{14}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Opciones de configuraci\'on para la tarjeta.\relax }}{15}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Cargador del programa y error al completarse.\relax }}{16}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Programa cargado al ejecutar \textit {Configure with GPIO Design}.\relax }}{16}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces LED's de usuario que se encienden al cargar el programa.\relax }}{17}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces Modificaci\'on del estado de los LED's de usuario desde el BTS.\relax }}{17}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces Respuesta en los LED's de usuario en la tarjeta a los cambios realizados en el BTS.\relax }}{18}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.12}{\ignorespaces Pestaña de información de la tarjeta.\relax }}{18}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.13}{\ignorespaces Pestaña GPIO.\relax }}{19}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.14}{\ignorespaces La pesta\~na QSFPDD NRZ.\relax }}{20}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.15}{\ignorespaces QSFPDD NRZ - PLL and Pattern Status.\relax }}{21}{figure.caption.24}%
+\contentsline {figure}{\numberline {2.16}{\ignorespaces QSFPDD NRZ - PMA setting.\relax }}{22}{figure.caption.25}%
+\contentsline {figure}{\numberline {2.17}{\ignorespaces QSFPDD NRZ - Data Rate.\relax }}{23}{figure.caption.26}%
+\contentsline {figure}{\numberline {2.18}{\ignorespaces La pesta\~na QSFPDD PAM4.\relax }}{24}{figure.caption.27}%
+\contentsline {figure}{\numberline {2.19}{\ignorespaces La peta\~na FMCA NRZ.\relax }}{24}{figure.caption.28}%
+\contentsline {figure}{\numberline {2.20}{\ignorespaces La pesta\~na FMCB NRZ.\relax }}{25}{figure.caption.29}%
+\contentsline {figure}{\numberline {2.21}{\ignorespaces La pesta\~na QSFPDD800 PAM4.\relax }}{25}{figure.caption.30}%
+\contentsline {figure}{\numberline {2.22}{\ignorespaces QSFPDD800 PAM4 - PMA Setting.\relax }}{26}{figure.caption.31}%
+\contentsline {figure}{\numberline {2.23}{\ignorespaces La pesta\~na MXPM NRZ.\relax }}{27}{figure.caption.32}%
+\contentsline {figure}{\numberline {2.24}{\ignorespaces La pesta\~na MXPM PAM4.\relax }}{27}{figure.caption.33}%
+\contentsline {figure}{\numberline {2.25}{\ignorespaces La pesta\~na SDI.\relax }}{28}{figure.caption.34}%
+\contentsline {figure}{\numberline {2.26}{\ignorespaces La pesta\~na RDIMMS.\relax }}{28}{figure.caption.35}%
+\contentsline {figure}{\numberline {2.27}{\ignorespaces La pesta\~na RdIMMD. El tama\~no de prueba se puede establecer a 32 GB con dos RDIMMs.\relax }}{30}{figure.caption.36}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Vista inicial al abrir el proyecot\relax }}{32}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Configuraciones de salida para la tarjeta de desarrollo.\relax }}{32}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Configuraci\'on de energ\'ia y compilado.\relax }}{33}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Vista inicial del programador.\relax }}{34}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Selecci\'on de blaster y error que se puede lanzar al realizar la detecci\'on de hardware.\relax }}{34}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Cambios en el programador al aplicar \texttt {\leavevmode {\color {DarkOrchid1}Auto Detect}}.\relax }}{35}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Archivo de salida que se tiene que cargar.\relax }}{35}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Programador con el archivo cargado y la opci\'on de configuraci\'on seleccionada.\relax }}{36}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Ejecuci\'on del programa exitosa.\relax }}{36}{figure.caption.45}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Conexi\'on entre el FPGA AI Suite compileer y el FPGA AI Suite IP.\relax }}{38}{figure.caption.46}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Alias y variables definidos en \texttt {~/.bashrc}\relax }}{41}{figure.caption.48}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Ejecuci\'on del comando \texttt {aisuite\_init} para inicializaci\'on del entorno de trabajo y variables de entorno.\relax }}{41}{figure.caption.49}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Verificaci\'on para la inicializaci\'on de las variables del directorio de trabajo.\relax }}{42}{figure.caption.50}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Configuraci\'on de los DIP Switches en la tarjeta de desarrollo.\relax }}{43}{figure.caption.51}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Conexi\'on de la memoria DDR4 x8 RDIMM, tarjeta HPS IO48 OOBE y tarjeta SD.\relax }}{44}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Conexi\'on con el conector serial USB 2.0 tipo B a la computadora.\relax }}{45}{figure.caption.53}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Salida correspondiente despu\'es de ejecutar las l\'ineas del c\'odigo \ref {cod4}.\relax }}{46}{figure.caption.54}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Conexi\'on de Ethernet y mini USB de la tarjeta HPS IO48 OOBE a la computadora.\relax }}{47}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Salida en terminal al ejecutar el comando anterior con el cable mini USB desconectado y luego conectado.\relax }}{48}{figure.caption.56}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Vista de las configuraciones de la herramienta \textit {Minicom}.\relax }}{49}{figure.caption.57}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Men\'u de configuraci\'on de \textit {Minicom} para el puerto serial.\relax }}{49}{figure.caption.58}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Ventana de login para acceder al sistema de la tarjeta de desarrollo.\relax }}{50}{figure.caption.59}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Acceso a la ra\'iz de archivos en Minicom.\relax }}{51}{figure.caption.60}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Nombre de red de la tarjeta y direcci\'on IP.\relax }}{51}{figure.caption.61}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Comprobaci\'on de conexi\'on entre la tarjeta de desarrollo y la estaci\'on de trabajo.\relax }}{52}{figure.caption.62}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Elementos que contiene el directorio.\relax }}{53}{figure.caption.63}%
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Elementos que contiene el directorio del modelo.\relax }}{54}{figure.caption.64}%
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Descarga de una copia de OpenVINO Model Zoo.\relax }}{54}{figure.caption.65}%
+\contentsline {figure}{\numberline {4.20}{\ignorespaces Salida en terminal al descargar el modelo entrenado.\relax }}{55}{figure.caption.66}%
+\contentsline {figure}{\numberline {4.21}{\ignorespaces Salida al crear el archivo AOT para la variante M2M.\relax }}{57}{figure.caption.67}%
+\contentsline {figure}{\numberline {4.22}{\ignorespaces Salida al crear el archivo AOT para la variante S2M.\relax }}{58}{figure.caption.68}%
+\contentsline {figure}{\numberline {4.23}{\ignorespaces Directorios que contienen los modelos compilados y los archivos de demostraci\'on.\relax }}{59}{figure.caption.70}%
+\contentsline {figure}{\numberline {4.24}{\ignorespaces Salida al usar las primeras dos instrucciones del comando \leavevmode {\color {blue}\texttt {{scp}}}.\relax }}{60}{figure.caption.72}%
+\contentsline {figure}{\numberline {4.25}{\ignorespaces Salida al ejecutar los \'ultimos dos comandos \leavevmode {\color {blue}\texttt {{scp}}}.\relax }}{61}{figure.caption.73}%
+\contentsline {figure}{\numberline {4.26}{\ignorespaces Conexi\'on SSH con la tarjeta de desarrollo.\relax }}{62}{figure.caption.74}%
+\contentsline {figure}{\numberline {4.27}{\ignorespaces Salida generada al ejecutar la aplicaci\'on de demostraci\'on del modo M2M.\relax }}{63}{figure.caption.75}%
+\contentsline {figure}{\numberline {4.28}{\ignorespaces Flujo de datos que se da al ejecutar la aplicaci\'on de demostraci\'on.\relax }}{64}{figure.caption.76}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Diagrama de bloques del HPS.\relax }}{71}{figure.caption.78}%

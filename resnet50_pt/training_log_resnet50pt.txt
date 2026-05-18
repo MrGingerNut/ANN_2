@@ -1,0 +1,15 @@
+Entrenamiento iniciado: 2026-02-23 13:59:10.087544
+Device: cuda | Epochs: 10 | Batch size: 8
+----------------------------------------------------------------------
+Epoch [1/10] | Train Loss: 0.0902 | Val Loss: 2.4137 | Accuracy: 55.27%
+Epoch [2/10] | Train Loss: 0.0092 | Val Loss: 2.9709 | Accuracy: 47.31%
+Epoch [3/10] | Train Loss: 0.0057 | Val Loss: 4.7489 | Accuracy: 33.76%
+Epoch [4/10] | Train Loss: 0.0042 | Val Loss: 4.0306 | Accuracy: 34.86%
+Epoch [5/10] | Train Loss: 0.0020 | Val Loss: 3.2770 | Accuracy: 49.40%
+Epoch [6/10] | Train Loss: 0.0043 | Val Loss: 4.5360 | Accuracy: 38.00%
+Epoch [7/10] | Train Loss: 0.0044 | Val Loss: 3.6554 | Accuracy: 44.61%
+Epoch [8/10] | Train Loss: 0.0025 | Val Loss: 4.2804 | Accuracy: 41.19%
+Epoch [9/10] | Train Loss: 0.0025 | Val Loss: 4.1434 | Accuracy: 39.19%
+Epoch [10/10] | Train Loss: 0.0024 | Val Loss: 5.8030 | Accuracy: 28.25%
+----------------------------------------------------------------------
+Entrenamiento finalizado: 2026-02-23 14:31:41.556947

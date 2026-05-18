@@ -1,0 +1,67 @@
+
+
+#Comando para inference app
+
+#Primero set variables
+cd /home/root/app
+export COREDLA_ROOT=~/app
+export LD_LIBRARY_PATH=.
+
+#Con resnet50 ultima
+./streaming_inference_app \
+-model=/home/root/resnet2-18-tf/modelo7_tf_no_folding.bin \
+-arch=/home/root/resnet-18-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA
+
+#Con resnet18 inicial
+./streaming_inference_app \
+-model=/home/root/resnet-18-tf/modelo_resnet18_no_folding.bin \
+-arch=/home/root/resnet-18-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA
+
+#Con resnet18 224 que hice metodo 1
+./streaming_inference_app \
+-model=/home/root/resnet-18-pt/bin_mth1/RN18_Performance_no_folding.bin \
+-arch=/home/root/resnet-18-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA
+
+#Con resnet18 224 que hice metodo 2
+./streaming_inference_app \
+-model=/home/root/resnet-18-pt/bin_mth2/RN18_Performance_no_folding.bin \
+-arch=/home/root/resnet-18-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA
+
+#Con resnet18 224 que hice metodo 3
+./streaming_inference_app \
+-model=/home/root/resnet-18-pt/bin_mth3/RN18_Performance_no_folding.bin \
+-arch=/home/root/resnet-18-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA
+
+#Con resnet50 tf 224 que hice
+./streaming_inference_app \
+-model=/home/root/resnet-50-tf2/RN50_Performance_no_folding.bin \
+-arch=/home/root/resnet-18-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA
+
+#Con resnet50 pt 224 que hice
+./streaming_inference_app \
+-model=/home/root/resnet-50-pt/modelo_resnet50_masmejor_Performance_no_folding.bin \
+-arch=/home/root/resnet-18-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA
+
+#Comando para image streaming app
+
+#Entrar a carpeta app
+cd app
+
+./image_streaming_app \
+-images_folder=/home/root/resnet-18-tf/ANN_Sample_Images \
+-send=10 \
+-width=224 \
+-height=224 \
+-c_vector=64 \
+-blue_variance=0.5 \
+-green_variance=0.5 \
+-red_variance=0.5 
+
+./image_streaming_app -images_folder=/home/root/resnet-18-tf/ANN_Sample_Images -send=10 -width=224 -height=224 

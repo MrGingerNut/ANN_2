@@ -1,0 +1,67 @@
+# Ignorar el entorno virtual (son miles de archivos que no sirven en la nube)
+venv/
+env/
+pt_env/
+.env/
+
+
+# Ignorar archivos compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.Python
+
+# Ignorar Datasets gigantes y modelos (haz backup de esto en Drive/Disco Duro, no en Git)
+*.csv
+*.xlsx
+*.zip
+*.h5
+*.pt
+*.pth
+*.png
+*.bin
+*.onnx
+*.weights
+checkpoints/
+saved_models/
+runs/
+
+#datasets
+*.png
+*.jpg
+*.bmp
+data/
+datasets/
+images/
+
+# Ignorar configuraciones del editor
+.vscode/
+.idea/
+*.onnx.data
+*.onnx
+
+# openvino
+*.xml
+*.openvino_model/
+ir_model/
+FP16/
+FP32/
+INT8/
+
+#logs
+logs/
+*.log
+wandb/
+mlruns/
+tensorboard/
+
+#system
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo

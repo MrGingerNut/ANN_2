@@ -1,0 +1,15 @@
+
+#Compilar para S2M 
+
+#Asegurar que estan variables entorno activadas con aisuite_init
+
+#Meterse a la carpeta en donde esta el .xml y desde ahi ejecutar el siguiente comando:
+
+dla_compiler \
+--march $COREDLA_ROOT/example_architectures/AGX7_Performance.arch \
+--network-file ./modelo_resnet18.xml \
+--foutput-format=open_vino_hetero \
+--o /home/liese2/ANN_project/resnet18_pt/compiled_rn18_mth3/RN18_Performance_no_folding.bin \
+--batch-size=1 \
+--fanalyze-performance \
+--ffolding-option=0

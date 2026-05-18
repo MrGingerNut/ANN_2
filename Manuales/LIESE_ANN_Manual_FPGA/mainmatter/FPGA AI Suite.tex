@@ -1,0 +1,897 @@
+\chapter{FPGA AI Suite}
+
+\section{Inicio}
+
+    El software \textit{FPGA AI Suite} es un conjunto de herramientas desarrolladas por Intel para acelerar la implementaci\'on de modelos de inteligencia artificial y machine learning en FPGAs con la finalidad de optimizar y ejecutar redes neuronales.
+
+    Para usar el \ais se recomienda estar familiarizado con la distribuci\'on de Intel de las herramientas de OpenVINO.
+
+\section{Componentes del \ais}
+    
+    El \ais consiste de varios componentes para ayudar a habilitar modelos de inteligencia artificial en FPGAs de Altera. Consiste de los siguientes componentes:
+    \begin{itemize}
+        \item \textbf{IP}  
+        
+        El FPGA AI Suite IP es un bloque de propiedad intelectual precompilado con interfaces AXI que se pueden instanciar directamente en un dise\n o RTL en un sistema FPGA gen\'erico.
+        \item \textbf{Compiler (comando \texttt{dla\_compiler})}    
+        
+        El \ais compiler es una herramienta multiprop\'osito que se puede usar para las siguientes tareas con el \ais:
+        \begin{itemize}
+            \item \textbf{Generaci\'on de arquitecturas} 
+            
+            Uso del compilador para generar una parametrizaci\'on del IP que es optimizada para un modelo o grupo de modelos de machine learning (ML), tratando de ajustar el bloque IP del \ais dentro de un l\'imite determinado de recursos.
+            \item \textbf{Estimaci\'on del rendimiento del IP}
+            
+            Se usa el compilador para obtener una estimaci\'on del rendimiento del bloque AI IP para una parametrizaci\'on dada.
+            \item \textbf{Estimaci\'on del consumo de recursos del FPGA IP} 
+            
+            Se usa el compilador para obtener una estimaci\'on de los recursos (ALMs, bloques M20k, y DSPs) del FPGA requeridos para una parametrizaci\'on IP dada.
+            \item \textbf{Creaci\'on de los gr\'aficos compilados AOT (ahead-of-time)} 
+            
+            Se crea una versi\'on compilada de un modelo ML que incluye las instrucciones necesarias para controlar el IP en el FPGA. El binario compilado incluye tanto las instrucciones para controlar el IP durante la inferencia y los pesos del modelo. Este modelo compilado es apropiado para el uso del dise\n o de ejemplo.
+        \end{itemize}
+        \item \textbf{Herramienta de generaci\'on de IP} 
+        
+        La herramienta de generaci\'on del \ais personaliza el \ais IP basado en un archivo de arquitectura de entrada. El IP generado se coloca en una librer\'ia IP que se puede importar a un dise\n o FPGA dise\n ado con Platform Designer, usar directamente en un dise\n o RTL puro, o ambos.
+        % \item \textbf{Dise\n os de ejemplo}
+
+        % Los siguientes dise\n os de ejemplo muestran c\'omo se puede utilizar el \ais IP:
+        % \begin{itemize}
+        %     \item \textbf{Dise\n o de ejemplo para para dispositivos Agilex 7 SoC}
+
+        %     Este ejemplo desmuestra c\'omo usar el ARM SoC como anfitri\'on para el \ais, as\'i mismo, muestra c\'omo realizar inferencias en un flujo de datos transmitido.
+        % \end{itemize}
+
+        \end{itemize}
+        
+        El siguiente diagrama muestra la conexi\'on entre los dos componentes principales del \ais, el compilador y el IP.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.7\linewidth]{Images//Parte4/diag.png}
+            \caption{Conexi\'on entre el \ais compileer y el \ais IP.}
+            % \label{fig:placeholder}
+        \end{figure}
+        
+
+   
+
+\section{Tutorial de inicio r\'apido}
+
+    En esta secci\'on se describen los pasos para ejecutar aplicaci\'on de demostraci\'on y acelerar la inferencia usando el diseño de ejemplo.
+    \begin{itemize}
+        \item Se genera un flujo de datos y se carga una imagen preconfigurada en una tarjeta SD a la tarjeta de desarrollo.
+        \item Ejecuci\'on de la herramienta \texttt{\textcolor{DarkOrchid1}{dla\_benchmark}} de la rutina de ejemplo en la tarjeta de desarrollo, la cual usa el modelo memory-to-memory (M2M).
+        \item Ejecuci\'on de la aplicaci\'on de transmisi\'on de im\'agenes que transmite los datos del procesador del HPS a la FPGA, de manera que imita cómo los datos son transmitidos desde cualquier otra fuente de ingreso (como Ethernet, HDMI o MIPI). Esta aplicaci\'on de transmisi\'on de im\'agenes usa el modelo streaming-to-memory (S2M).
+    \end{itemize}
+
+    Para usar el software FPGA AI Suite se deben seguir los siguientes pasos:
+    \begin{enumerate}
+        \item Conectar el cable USB 2.0 tipo B de la tarjeta a la estaci\'on de trabajo.
+        \item Conectar la tarjeta hija HPS IO48 OOBE al puerto \texttt{\textcolor{red}{QSPI}}.
+        \item Conectar el cable mini USB de la tarjeta hija a la estaci\'on de trabajo, y el cable Ethernet de la red local a la tarjeta hija.
+        \item Revisar que la configuraci\'on de la tarjeta sea correcta. 
+        \item Revisa el estatus de los m\'odulos externos: cable MXPM/QSFP/QSFPDD/FMC/DIMM
+        \item Encender la tarjeta.
+        \item En la estaci\'on de trabajo, en una nueva terminal ejecuta el comando \texttt{\textcolor{blue}{aisuit\_init}}.
+        \item Preparar el modelo de OpenVINO y compilar los gr\'aficos que se van a cargar a la tarjeta.
+        \item Preparar el conjunto de im\'agenes.
+        \item Programar la FPGA y realizar las inferencias.
+    \end{enumerate}
+
+    \subsection{Configuraci\'on de inicio}
+
+    Para iniciar con el ejemplo es necesario inicializar ciertas variables de entorno para OpenVino y FPGA AI Suite, las cuales por facilidad se agregaron al archivo de texto \curl{~/Desktop/Variables_AI_Suite.txt}, el cual contiene las instrucciones para establecer las variables de entorno necesarias y las variables para apuntar al directorio de trabajo, que est\'a ubicado en \curl{~/coredla_work}.
+
+    \begin{lstlisting}[language=bash, label=cod3]
+# Configuracion de variables de entorno para usar el FPGA AI Suite
+
+# Variables de entorno de OpenVino
+source ~/build-openvino-dev/openvino_env/bin/activate
+unset python_version
+source /opt/intel/openvino_2023/setupvars.sh
+
+# Variables de entorno de FPGA AI Suite
+source /opt/intel/fpga_ai_suite_2024.3/dla/setupvars.sh
+
+# Directorio de trabajo e inicializacion de variables
+cd ~/coredla_work
+source ./coredla_work.sh
+cd ~
+\end{lstlisting}
+
+     Es importante saber que para trabajar con el \ais se tienen los directorios que se listan en la tabla \ctref{tabladir1} y la funci\'on de cada uno de ellos.
+    \begin{table}[H]
+        \centering
+        \begin{tabularx}{\linewidth}{l|X} \toprule
+             \multicolumn{1}{c}{\textbf{Directorio}} & \multicolumn{1}{c}{\textbf{Descripci\'on}} \\ \midrule  
+             \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/}&Directorio base\\\midrule 
+             \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/bin}&Herramientas ejecutables (comando \comm{dla\_compiler)}\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/lib}&Librerias (compiler API, OpenVINO plugins, etc.)\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/inc}&Archivos API de encabezado p\'ublicos\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/util}&Módulos de entorno de ejecuci\'on adicionales\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/thirdparty}&Paquetes de terceros usados por el entorno de ejecuci\'on\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/area_model}&Archivos de datos\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/demo}&Im\'agenes de ejemplo y bitstreams\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/example_architectures}&Archivos de arquitectura, cada uno define una parametrizaci\'on espec\'ifica del IP \\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/example_ip_cores}&N\'ucleos IP generados correspondientes a las arquitecturas de ejemplo\\\midrule \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/fpga}&Archivos de c\'odigo fuente usados por el generador IP \\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/licenses}&Informaci\'on de la licencia para el \ais y las librerias incluidas\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/platform}&Directorio fuente BSP \\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/runtime}&Directorio con demos de OpenVINO y entornos de ejecuci\'on de bajo nivel para la interfaz del FPGA\\\midrule 
+            \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/dla_plugin}&Directorio para la compilaci\'on heterog\'enea de OpenVINO e integraci\'on de inferencias con el FPGA\\ 
+              \\ \bottomrule
+        \end{tabularx}
+        \caption{Directorios en los que se encuentran los modelos compilados y los archivos de demostraci\'on.}
+        \label{tabladir1}
+    \end{table}
+
+    Se asign\'o un alias para realizar un llamado desde terminal con el comando \texttt{\textcolor{blue}{aisuite\_init}}, que ejecuta las instrucciones anteriores y se define en el archivo \curl{~/.bashrc}.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/bashrc.png}
+        \caption{Alias y variables definidos en \texttt{~/.bashrc}}
+        \label{fig:bashrc}
+    \end{figure}
+
+   \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/aliasaisuite.png}
+        \caption{Ejecuci\'on del comando \texttt{aisuite\_init} para inicializaci\'on del entorno de trabajo y variables de entorno.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    El script \texttt{\textcolor{blue}{coredla\_work.sh}} establece las variables de entorno \texttt{\textcolor{DarkOrchid1}{COREDLA\_WORK}} y \texttt{\textcolor{DarkOrchid1}{COREDLA\_ROOT}}, las cuales se usar\'an posteriormente y se puede verificar que se hayan inicializado correctamente desde terminal. 
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/echovar.png}
+        \caption{Verificaci\'on para la inicializaci\'on de las variables del directorio de trabajo.}
+        \label{fig:echovar}
+    \end{figure}
+
+    \subsection{Cargar la imagen para tarjeta SD (\texttt{.wic}) a una tarjeta SD}
+
+    
+    Antes de ejecutar la demostraci\'on se debe crear una tarjeta SD booteable para la tarjeta de desarrollo. Se puede utilizar tanto la imagen precompilada u otra imagen diferente que se haya creado. 
+    
+    \textit{Nota: La imagen precompilada ya ha sido cargada a la tarjeta SD. Seguir a la secci\'on \hyperref[fpgaconfig]{Preparando la tarjeta de desarrollo para el diseño de ejemplo de FPGA AI Suite.} si no se va a cargar una nueva imagen a la tarjeta SD.}
+
+    La imagen precompilada (\cbut{.wic}) se encuentra en el directorio \curl{/opt/intel/fpga_ai_suite_2024.3/dla/demo/ed4/agx7_soc_s2m/sd-card/coredla-image-agilex7_dk_si_agi027fa.wic}
+
+    Para cargar la imagen a la tarjeta SD se deben seguir ciertos pasos:
+    \begin{enumerate}
+        \item Determinar cu\'al es el dispositivo asociado a la tarjeta SD en la estaci\'on de trabajo al ejecutar el siguiente comando antes y despu\'es de conectar la tarjeta SD a la estaci\'on de trabajo.
+
+        \begin{lstlisting}{language=bash}
+cat /proc/partitions\end{lstlisting}
+
+        Las locaclizaciones t\'ipicas para la tarjeta SD son \curl{/dev/sdb} o \curl{/dev/sdc}. La siguiente instrucci\'on usa \curl{/dev/sdx} como localizaci\'on de ejemplo de la tarjeta SD.
+
+        \item Usar el comando \texttt{\textcolor{blue}{dd}} para cargar la imagen a la tarjeta SD de la siguiente manera:
+
+        \begin{lstlisting}{language=bash}
+wic_image=/opt/intel/fpga_ai_suite_2024.3/dla/demo/ed4/agx7_soc_s2m/sd-card/coredla-image-agilex7_dk_si_agi027fa.wic
+sudo umount /dev/sdx*
+sudo dd if=$wic_image of=/dev/sdx bs=1M
+sudo sync
+sudo udisksctl power-off -b /dev/sdx        \end{lstlisting}
+
+        Despu\'es de que la imagen se haya cargado, inserte la tarjeta SD en la tarjeta IO48 00BE para conectarla a la tarjeta de desarrollo.
+    \end{enumerate}
+
+    \subsection{Preparando la tarjeta de desarrollo para el diseño de ejemplo de FPGA AI Suite}\label{fpgaconfig}
+    
+    \subsubsection{Confirmar que la tarjeta de desarrollo tenga la configuraci\'on y conexiones adecuadas}
+
+    Se debe revisar la configuraci\'on como sigue:
+    \begin{enumerate}
+        \item Confirmar que la configuraci\'on de los DIP Switches de la tarjeta de desarrollo sea correcta. Para este ejemplo todos los DIP Switches deben tener la configuraci\'on por default, exceptuando a S9. La configuraci\'on se muestra a continuaci\'on.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{Images//Parte4/dipconfig.png}
+            \caption{Configuraci\'on de los DIP Switches en la tarjeta de desarrollo.}
+            \label{fig:dipconfig}
+        \end{figure}
+
+        \item La tarjeta HPS IO48 OOBE debe estar instalada en el conector \cred{QSPI J4} de la tarjeta de desarrollo y la tarjeta SD con la imagen Yocto programada debe estar instalada en la ranura correspondiente de la misma tarjeta hija. 
+        \item Asegúrese que la memoria DDR4 x8 RDIMM est\'a instalada en la ranura correspondiente.
+
+        \end{enumerate}
+
+        Cuando la tarjeta de desarrollo est\'e conectada y configurada correctamente deber\'ia verse de la siguiente manera:
+        
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{Images//Parte4/conexiones.png}
+            \caption{Conexi\'on de la memoria DDR4 x8 RDIMM, tarjeta HPS IO48 OOBE y tarjeta SD.}
+            \label{fig:enter-label}
+        \end{figure}
+
+        Las conexiones de la tarjeta de desarrollo sirven para lo siguiente:
+        \begin{itemize}
+            \item El conector USB 2.0 se usa para programar la FPGA.
+            \item El conector Ethernet se usa para la transmisi\'on r\'apida de datos al HPS\footnote{Para\' la conexi}.
+            \item El conector micro USB se usa para monitorear la salida, y proveer las instrucciones de entrada al HPS durante la operaci\'on.
+        \end{itemize}
+
+    
+    \subsubsection{Programar la tarjeta de desarrollo con el archivo de configuraci\'on indirecta por JTAG (\texttt{.jic})}
+
+    
+    Para configurar la tarjeta de desarrollo con el archivo de configuraci\'on indirecta por JTAG (\cbut{.jic}) se deben realizar los siguientes pasos:
+    
+    \begin{enumerate}
+        \item Conecta la tarjeta de desarrollo a la estaci\'on de trabajo mediante el conector USB 2.0, como se muestra en la siguiente figura:
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{Images//Parte4/jicconnect.png}
+        \caption{Conexi\'on con el conector serial USB 2.0 tipo B a la computadora.}
+        \label{fig:jicconnect}
+    \end{figure}
+
+    \item Programa el QSPI con el archivo \cbut{.jic} ejecutando los siguientes comandos en una terminal de la estaci\'on de trabajo.
+
+    \begin{lstlisting}
+cd $COREDLA_ROOT/demo/ed4/agx7_soc_s2m/sd-card/
+quartus_pgm -m jtag -o "pvi;u-boot-spl-dtb.hex.jic@<device_number>"    \end{lstlisting}
+
+    en donde \textcolor{red}{\texttt{<device\_number>}} es 1 o 2, dependiendo si el HPS est\'a encendido. Usa 1 si el HPS no est\'a encendido, y 2 si ya lo est\'a. 
+
+    Tras unos cuantos minutos se mostrar\'a la siguiente salida:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images/Parte4/jicout.png}
+        \caption{Salida correspondiente despu\'es de ejecutar las l\'ineas del c\'odigo \ref{cod4}.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    \end{enumerate}
+
+    \subsubsection{Conectar la tarjeta de desarrollo a la estaci\'on de trabajo}
+
+    Conecta la tarjeta de desarrollo a la computadora mediante conexi\'on Ethernet y USB UART como se muestra a continuaci\'on:
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{Images/Parte4/sdconect.png}
+        \caption{Conexi\'on de Ethernet y mini USB de la tarjeta HPS IO48 OOBE a la computadora.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    \subsection{Configuraci\'on de la conexi\'on UART de la tarjeta de desarrollo}
+
+    Una vez que nos aseguramos de que la tarjeta tiene todas las conexiones necesarias y la configuración correcta, procedemos a configurar la conexión UART de la tarjeta de desarrollo.
+
+    La FPGA Agilex 7 I-Series tiene un convertidor USB a serial en la tarjeta IO48 que le permite a la estaci\'on de trabajo detectarla como un puerto virtual serial. 
+
+    Los par\'ametros de comunicaci\'on son los siguientes:
+
+    \begin{itemize}
+        \item Baud rate: 115200
+        \item Parity: None
+        \item Flow control: None
+        \item Stop bits: 1
+    \end{itemize}
+
+    Estos par\'ametros se configuran en la herramienta \textit{Minicom}, de la forma que sigue:
+
+    \begin{enumerate}
+        \item Determinar el nombre del dispositivo asociado con el puerto virtual serial en la estaci\'on de trabajo, que normalmente se llama \curl{/dev/ttyUSB0}.
+        
+        \begin{enumerate}
+            \item Antes de conectar el cable mini USB a la tarjeta de desarrollo hay que determinar qu\'e dispositivo USB serial est\'a instalado con el siguiente comando:
+
+            \begin{lstlisting}{language=bash}
+ls /dev/ttyUSB*            \end{lstlisting}
+
+            \item Conectar el cable mini USB de la tarjeta de desarrollo a la estaci\'on de trabajo.
+
+            \item Confirmar nuevamente la nueva conexi\'on del nuevo dispositivo con el comando \texttt{ls}.
+
+            \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/ttyusb.png}
+        \caption{Salida en terminal al ejecutar el comando anterior con el cable mini USB desconectado y luego conectado.}
+        \label{fig:enter-label}
+    \end{figure}
+        \end{enumerate}
+
+    \item Si la aplicaci\'on Minicom no est\'a instalada en la estaci\'on de trabajo hay que instalarla. En Ubuntu esto se realiza ejecutando el siguiente comando en una terminal:
+
+    \begin{lstlisting}{language=bash}
+sudo apt-get install minicom    \end{lstlisting}
+   
+    \item Configura Minicom de la siguiente manera:
+
+    \begin{enumerate}
+        \item inicia Minicom con el siguiente comando:
+
+    \begin{lstlisting}[language=bash]
+sudo minicom -s       \end{lstlisting}
+
+	\textit{Nota: el comando anterior es para modificar la configuraci\'on. Si no se necesita realizar ninguna configuraci\'on se puede ejecutar directamente sin el argumento} \comm{-s}.
+
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/minicom.png}
+        \caption{Vista de las configuraciones de la herramienta \textit{Minicom}.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+        \item En \texttt{Serial Port Setup} configurar de la siguiente forma:
+
+    \begin{itemize}
+        \item Serial Device: \curl{/dev/ttyUSB0} (cambiar si el nombre es diferente del obtenido anteriormente).
+        \item Bps/Par/Bits:\textbf{ 115200 8N1}
+        \item Hardware Flow Control: \textbf{No}
+        \item Software Flow Control: \textbf{No}
+    \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/minicom2.png}
+        \caption{Men\'u de configuraci\'on de \textit{Minicom} para el puerto serial.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+    Presionar \cbut{Esc} para regresar a la configuraci\'on principal.
+    
+    \item Selecciona \cbut{Save Setup as dfl} para guardar la configuraci\'on y salir seleccionando \cbut{Exit}.
+
+    \end{enumerate}
+    \end{enumerate}
+    
+\subsection{Determinando la direcci\'on IP de la tarjeta de desarrollo}
+
+    Para determinar la direcci\'on IP de la tarjeta de desarrollo:
+
+    \begin{enumerate}
+    
+    \item Despu\'es de configurar Minicom debemos encender la tarjeta de desarrollo, tras lo cual en terminal se configurar\'a la conexi\'on entre la estaci\'on de trabajo y la tarjeta de desarrollo. Si todo se realiz\'o correctamente la terminal se detendr\'a en una ventana de login.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/minicomlogin.png}
+        \caption{Ventana de login para acceder al sistema de la tarjeta de desarrollo.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    \item Acceder a la ra\'iz de los archivos ingresando como usuario \cbut{root} y en contraseña ingresar \cbut{agilex7}. 
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/minicomroot.png}
+        \caption{Acceso a la ra\'iz de archivos en Minicom.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    \item Dentro de \texttt{root} utilizamos el comando \comm{hostname} para obtener el nombre de red de la tarjeta de desarrollo. Tambi\'en podemos obtener su direcci\'on IP con el comando \comm{ifconfig}.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/minicom3.png}
+        \caption{Nombre de red de la tarjeta y direcci\'on IP.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    \textit{Nota: Se va a necesitar este nombre de red} (\comm{agilex7dksiagi027fa}) \textit{m\'as tarde para establecer una conecci\'on SSH a la tarjeta de desarrollo.}
+
+    \item Comprobar que tenemos conexi\'on de la tarjeta de desarrollo a la estaci\'on de trabajo mediante el comando \comm{ping}. Cuando se use este comando debemos agregar \comm{.local} al nombre de red de la tarjeta de desarrollo.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/minicom4.png}
+        \caption{Comprobaci\'on de conexi\'on entre la tarjeta de desarrollo y la estaci\'on de trabajo.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    \end{enumerate}
+
+    Se puede utilizar el nombre de red de la tarjeta cuando se necesita transferir archivos al sistema en ejecuci\'on agregando \comm{.local} al nombre de red de la tarjeta.
+
+
+    \subsection{Agregando los gr\'aficos compilados (archivos AOT) a la tarjeta SD}
+
+    Ya establecida la conexi\'on debemos agregar los gr\'aficos compilados (archivos AOT) a la tarjeta SD, estos archivos contienen instrucciones para que la IP de FPGA AI Suite se ejecute con el objetivo de realizar la inferencia. El modelo M2M y S2M requieren diferentes archivos AOT.
+
+    Para agregar los gr\'aficos compilados a la tarjeta SD de la tarjeta de desarrollo realiza los siguientes pasos.
+
+    \begin{enumerate}
+        \item Crear el directorio \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK} si no se ha creado anteriormente.
+        \item Preparar el optimizador de OPenVINO Model Zoo y el optimizador de modelo.
+        \item Preparar el modelo.
+        \item Confirmar que el directorio \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/models/public/resnet-50-tf/FP32/} existe. Si no existe este directorio confirma que los tres primeros pasos se realizaron correctamente.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{Images//Parte4/directory.png}
+            \caption{Elementos que contiene el directorio.}
+            % \label{fig:placeholder}
+        \end{figure}
+
+        \item Compilar los gr\'aficos.
+        \item Copiar los gr\'aficos compilados a la tarjeta SD.
+    \end{enumerate}
+
+  \subsubsection{Preparando OpenVINO Model Zoo}
+
+  Antes de ejecutar cualquier aplicación de demostración los modelos entrenados deben ser convertidos al formato de representación intermedia de OpenVINO (IR), \curl{.xml/.bin} con el optimizador de modelos de OpenVINO.
+
+    Estas instrucciones asumen que existe una copia de OpenVINO Model Zoo 2022.3.1 en el directorio \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/open_model_zoo/}. 
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/directory2.png}
+        \caption{Elementos que contiene el directorio del modelo.}
+        % \label{fig:placeholder}
+    \end{figure}
+
+    Para descargar una copia de Model Zoo, se ejecutan los siguientes comandos:
+
+    \begin{lstlisting}
+cd $COREDLA_WORK/demo
+git clone https://github.com/openvinotoolkit/open_model_zoo.git
+cd open_model_zoo
+git checkout 2022.3.1
+    \end{lstlisting}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/modelzoo.png}
+        \caption{Descarga de una copia de OpenVINO Model Zoo.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+\subsubsection{Preparando el modelo}
+
+    El modelo debe ser convertido de un framework (como TensorFlow, Caffe, Pytorch) a archivos \curl{.bin} y \curl{.xml} antes de que el compilador de la FPGA AI Suite (\cbut{dla\_compiler}) pueda incorporar el modelo.
+
+    Se deben seguir los siguientes comandos para descargar el modelo de la ResNet de TensorFlow y ejecutar el optimizador del modelo.
+
+    \begin{lstlisting}[language=bash]
+source ~/build-openvino-dev/openvino_env/bin/activate
+omz_downloader --name resnet-50-tf \
+    --output_dir $COREDLA_WORK/demo/models/
+omz_converter --name resnet-50-tf \
+    --download_dir $COREDLA:WORK/demo/models/ \
+    --output_dir $COREDLA_WORK/demo/models/\end{lstlisting}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/modelzoo2.png}
+        \caption{Salida en terminal al descargar el modelo entrenado.}
+        % \label{fig:enter-label}
+    \end{figure}
+    
+    El comando \comm{omz\_downloader} descarga el modelo entrenado de la carpeta \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/models}. Mientras que el comando \comm{omz\_converter} ejecuta el optimizador de modelo que convierte el modelo entrenado a una representaci\'on intermedia de archivos \curl{.bin} y \curl{.xml} en el directorio \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/models/public/resnet-50-tf/FP32/}.
+
+    El directorio \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/open_model_zoo/models/public/resnet-50-tf} contiene dos archivos pr\'acticos que no aparecen en el directorio \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/demo/models}. Dichos archivos son:
+
+    \begin{itemize}
+        \item El archivo \curl{README.md} el cual describe informaci\'on a fondo sobre el modelo.
+        \item El archivo \curl{model.yml} el cual muestra la informaci\'on detallada de la l\/inea de comandos dada al optimizador de modelo \curl{(mo.py)} cuando este convierte el modelo a archivos \curl{.bin} y \curl{.xml}.
+    \end{itemize}
+
+\subsubsection{Compilando los gr\'aficos}
+
+    La red descrita en los archivos \curl{.xml} y \curl{.bin} (creados con el optimizador de modelos) es compilada para un archivo de arquitectura espec\'ifico del FPGA AI Suite usando el FPGA AI Suite Compiler. Este compilador compila la red y se exporta a un archivo \curl{.bin} con el formato requerido por el Motor de Inferencia de OpenVINO. Este archivo \curl{.bin} contiene los par\'ametros de la red compilada para todos los dispositivos que lo requieran (FPGA, CPU, o ambos) junto con los pesos y sesgos. 
+
+    El FPGA AI Suite Compiler tambi\'en puede compilar los gr\'aficos y dar mediciones de \'area estimada o rendimiento para un archivo de arquitectura dado o generar un archivo de arquitectura optimizado.
+    
+    La im\'agen precompilada de la tarjeta SD (\curl{.wic}) que viene incluida con la tarjeta de desarrollo usa el archivo de configuraci\'on de arquitectura IP \curl{AGX7\_Performance.arch}. Este archivo sirve para crear los archivos AOT para ambas variantes como se muestra a continuaci\'on. 
+    
+    Para crear el archivo AOT para la variante M2M (que usa la utilidad \cbut{dla\_benchmark}) de la siguiente manera.
+
+    \begin{lstlisting}[language=bash]
+cd $COREDLA_WORK/demo/models/public/resnet-50-tf/FP32
+dla_compiler \
+--march $COREDLA_ROOT/example_architectures/AGX7_Performance.arch \
+--network-file ./resnet-50-tf.xml \
+--foutput-format=open_vino_hetero \
+--o $COREDLA_WORK/demo/RN50_Performance_b1.bin \
+--batch-size=1 \
+--fanalyze-performance    \end{lstlisting}
+
+    Este comando especifica los siguientes archivos de entrada:
+    \begin{itemize}
+        \item El archivo \curl{.arch} especifica la configuraci\'on de arquitectura del IP (incluyendo par\'ametros que afectar\'an c\'omo se comportar\'a y qu\'e tan grande ser\'a).
+        \item El archivo \curl{.xml} (junto con el \curl{.bin}) describen a la red.
+        \item El archivo \curl{.bin} almacena ciertos par\'ametros junto con los pesos del modelo.
+    \end{itemize}
+
+    El compilador del \ais usa estos archivos para analizar el rendimiento estimado.
+
+    El archivo de salida \curl{RN50_Performance_b1.bin} es la red compilada y contiene las instrucciones y pesos necesarios para controlar el \ais IP en el dispositivo FPGA. Este archivo de salida es espec\'ifico al archivo \curl{.arch} y el archivo \curl{.xml}.
+
+    El gr\'afico de compilador muestra qu\'e capas se ejecutan en el FPGA y cu\'ales se ejecutan ene el CPU. Usando en paquete Graphviz, el archivo con formato dot se puede convertir en un archivo SVG llamado \curl{ResNet-50.svg} que muestra cada capa. Se puede convertir el archivo dot en un archivo SVG usando el siguiente comando:
+    \begin{lstlisting}
+ dot -Tsvg hetero_subgraphs_resnet-50-tf.dot -o ResNet-50.svg \end{lstlisting}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/dlam2m.png}
+        \caption{Salida al crear el archivo AOT para la variante M2M.}
+        \label{fig:enter-label}
+    \end{figure}
+
+    Para crear el archivo AOT para la variante S2M (que usa la aplicaci\'on de transmisi\'on de inferencia) se deben ejecutar los siguientes comandos.
+
+    \begin{lstlisting}[language=bash]
+cd $COREDLA_WORK/demo/models/public/resnet-50-tf/FP32
+dla_compiler \
+--march $COREDLA_ROOT/example_architectures/AGX7_Performance.arch \
+--network-file ./resnet-50-tf.xml \
+--foutput-format=open_vino_hetero \
+--o $COREDLA_WORK/demo/RN50_Performance_no_folding.bin \
+--batch-size=1 \
+--fanalyze-performance \
+--ffolding-option=0    \end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Images//Parte4/dlas2m.png}
+    \caption{Salida al crear el archivo AOT para la variante S2M.}
+    \label{fig:enter-label}
+\end{figure}
+
+    Despu\'es de ejecutar cualquiera de estas secuencias encontraremos los modelos compilados y los archivos de demostraci\'on en los siguientes directorios.
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{l|l} \toprule
+             \multirow{2}{*}{\textbf{Modelos Compilados}}& \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/RN50_Performance_b1.bin}  \\ 
+              & \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/RN50_Performance_no_folding.bin}\\ \midrule
+              \textbf{Imagenes de muestra} & \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/sample_images/} \\ \midrule
+              \textbf{Archivo de arquitectura} & \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/example_architectures/AGX7_Performance.arch}\\ \bottomrule
+        \end{tabular}
+        \caption{Directorios en los que se encuentran los modelos compilados y los archivos de demostraci\'on.}
+        \label{tab:my_label}
+    \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/grafcompiled.png}
+        \caption{Directorios que contienen los modelos compilados y los archivos de demostraci\'on.}
+        \label{fig:enter-label}
+    \end{figure}
+
+\subsubsection{Preparando un set de im\'agenes}
+
+    Esta secci\'on describe c\'omo preparar un set de im\'agenes para clasificaci\'on de gr\'aficos que requiere entradas de  224x224 y que ha sido entrenada con las clasificaciones de ImageNet. El \ais incluye ejemplos de im\'agenes de validaci\'on en el directorio \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_ROOT/demo/sample_images/}.
+
+    Los contenidos son los siguientes:
+
+    \begin{table}[H]
+        \centering
+        \begin{tabularx}{\linewidth}{l|X} \toprule
+             \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/sample_images/}&Directorio de im\'agenes de ejemplo. Se usa una convenci\'on de nombrado de archivos para dar un orden a las im\'agenes.  \\\midrule
+             \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/sample_images/ground_truth.txt}&Archivo ground truth, contiene las clases correctas. \\\midrule
+             \texttt{\textcolor{Turquoise4}{\$}}\curl{COREDLA_WORK/demo/sample_images/TF_ground_truth.txt}&Archivo ground truth apropiado para los gr\'aficos del framework TensorFlow. \\ \bottomrule
+        \end{tabularx}
+        \caption{Contenidos del directorio de ejemplo.}
+        % \label{tab:placeholder}
+    \end{table}
+
+    Los gr\'aficos de clasificaci\'on de im\'agenes entrenados en el framework TensorFlow necesitan archivos ground truth que representan una diferencia en c\'omo TensorFlow numera las categorías de salida. 
+
+    Debido a la peque\n a cantidad de im\'agenes en el set de ejemplo, el comando \comm{dla\_benchmark} establece \comm{-niter=8} en esta secci\'on para el set. Esta configuraci\'on limita el n\'umero de inferencias ejecutadas por el \ais IP.
+
+    Para mejorar el rendimiento de las pruebas, el demo \comm{dla\_benchmark} genera valores de imagen aleatorios si requiere m\'as im\'agenes de entrada que las que est\'an disponibles en el set de ejemplo.
+
+\subsubsection{Copiando los gr\'aficos compilados a la tarjeta SD}
+
+    Para copiar los archivos de demostraci\'on requeridos a la carpeta \curl{/home/root/resnet-50-tf} en la tarjeta SD debemos seguir los siguientes pasos. 
+
+    \begin{enumerate}
+        \item En la terminal serial (Minicom), se crea los directorios para recibir la informaci\'on del modelo y las im\'agenes de muestra.
+        \begin{lstlisting}
+mkdir ~/resnet-50-tf        \end{lstlisting}
+        \item Dentro de la terminal de la estaci\'on de trabajo, se usa el comando de copia segura (\comm{scp}) para transcribir la informaci\'on a la terminal:
+        \begin{lstlisting}
+demodir=$COREDLA_WORK/demo
+scp $demodir/*.bin root@agilex7dksiagi027fa.local:~/resnet-50-tf/.
+scp -r $demodir/sample_images/ root@agilex7dksiagi027fa.local:~/resnet-50-tf/.
+scp /opt/intel/fpga_ai_suite_2024.3/dla/example_architectures/AGX7_Performance.arch root@agilex7dksiagi027fa.local:~/resnet-50-tf/.
+scp /opt/intel/fpga_ai_suite_2024.3/dla/build_os.txt  root@agilex7dksiagi027fa.local:~/resnet-50-tf/../app/\end{lstlisting}
+        \item En la terminal ejecutar el comando \comm{sync} para asegurar que los datos sean ingresados al disco.
+    \end{enumerate}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/copiandosd.png}
+        \caption{Salida al usar las primeras dos instrucciones del comando \comm{scp}.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\linewidth]{Images//Parte4/copiandosd2.png}
+        \caption{Salida al ejecutar los \'ultimos dos comandos \comm{scp}.}
+        % \label{fig:enter-label}
+    \end{figure}
+
+\subsubsection{Verificando los drivers de la FPGA}
+
+    Los drivers de la tarjeta se deber\'ian de cargar cuando el HPS arranca, pero podemos verificar que los drivers de la tarjeta se inicializaron revisando que los archivos \curl{uio} est\'an listados en el directorio \curl{/sys/class/uio} al ejecutar el siguiente comando:
+    \begin{lstlisting}
+ls /sys/class/uio    \end{lstlisting}
+
+    La salida deber\'a ser similar al siguiente ejemplo:
+    \begin{lstlisting}
+uio0 uio1 uio2    \end{lstlisting}
+
+    Si los dirvers no est\'an listados, actualiza los m\'odulos al ejecutar el siguiente comando y despu\'es revisa de nuevo si los drivers est\'an cargados.
+    \begin{lstlisting}
+uio-devices restart    \end{lstlisting}
+
+    \subsection{Ejecutando las aplicaciones de demostraci\'on}
+
+\subsubsection{Ejecutando la aplicaci\'on de demostraci\'on del modo M2M}
+
+        El modelo de flujo de datos M2M utiliza la aplicaci\'on de desmostraci\'on \cbut{dla\_benchmark}. El transmisor de datos S2M apoya ambos modelos de flujo de datos, el modelo M2M y el modelo S2M.
+        Para ejecutar la inferencia en la tarjeta de desarrollo se deben seguir los siguientes pasos:
+        \begin{enumerate}
+            \item Abrir una conexi\'on SSH a la tarjeta de desarrollo de la siguiente manera:
+            \begin{enumerate}
+                \item Abrir una nueva terminal
+                \item Ejecutar el siguiente comando (en caso de que pida contraseña ingresar \comm{agilex7}): 
+                \begin{lstlisting}
+ssh root@agilex7dksiagi027fa.local\end{lstlisting}
+            \end{enumerate}
+            
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.6\linewidth]{Images//Parte4/ssh.png}
+                \caption{Conexi\'on SSH con la tarjeta de desarrollo.}
+                % \label{fig:placeholder}
+            \end{figure}
+            \item En la terminal con la conexi\'on SSH, ejecutar los siguientes comandos:
+            \begin{lstlisting}[language=bash]
+export compiled_model=~/resnet-50-tf/RN50_Performance_b1.bin
+export imgdir=~/resnet-50-tf/sample_images
+export archfile=~/resnet-50-tf/AGX7_Performance.arch
+cd ~/app
+export COREDLA_ROOT=/home/root/app
+./dla_benchmark \
+    -b=1 \
+    -cm $compiled_model \
+    -d=HETERO:FPGA,CPU \
+    -i $imgdir \
+    -niter=5 \
+    -plugins_xml_file ./plugins.xml \
+    -arch_file $archfile \
+    -api=async \
+    -groundtruth_loc $imgdir/TF_ground_truth.txt \
+    -perf_est \
+    -nireq=4 \
+    -bgr            \end{lstlisting}
+        \end{enumerate}
+
+        El comando \comm{dla\_benchmark} genera la siguiente salida:
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{Images//Parte4/m2mout.png}
+            \caption{Salida generada al ejecutar la aplicaci\'on de demostraci\'on del modo M2M.}
+            % \label{fig:enter-label}
+        \end{figure}
+
+\subsubsection{Ejecutando la aplicaci\'on de demostraci\'on del modo S2M}
+
+        Para ejecutar la aplicaci\'on de modo de demostraci\'on S2M se necesitan dos conexiones en la terminal de la tarjeta de desarrollo.
+
+        Para ejecutarlo, se siguen los siguientes pasos
+        \begin{enumerate}
+        
+            \item Abrir dos conexiones SSH con la tarjeta de desarrollo (dos terminales)
+            \item Ejecutar el siguiente comando en ambas terminales:
+            \begin{lstlisting}[language=bash]
+ssh root@agilex7dksiagi027fa.local            \end{lstlisting}
+            \item En una de las terminales ejecutar los siguientes comandos:
+            \begin{lstlisting}[language=bash]
+cd /home/root/app
+export COREDLA_ROOT=~/app
+export LD_LIBRARY_PATH=.    
+./run_inference_stream.sh            \end{lstlisting}
+            \item En la otra terminal, ejecutar los siguientes comandos:
+            \begin{lstlisting}[language=bash]
+cd /home/root/app
+./run_image_stream.sh            \end{lstlisting}
+        \end{enumerate}
+
+        En la segunda terminal (donde se ejecut\'o el script \curl{run_image_stream.sh}) se mostrar\'a una salida similar a la siguiente:
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{Images//Parte4/s2m.png}
+            \caption{Flujo de datos que se da al ejecutar la aplicaci\'on de demostraci\'on.}
+            % \label{fig:placeholder}
+        \end{figure}
+        
+    Los datos resultantes se guardar\'an en el archivo \curl{results.txt}, se puede ver el contenido de dicho archivo ejecutando el siguiente comando en terminal: 
+    \begin{lstlisting}
+cat results.txt    \end{lstlisting}
+
+\subsubsection{Resolviendo errores de las aplicaciones de demostraci\'on}
+
+    Si se produce alg\'un error parecido al siguiente mientras se est\'a ejecutando la aplicaci\'on M2M o S2M, se debe revisar que todas las DIMMs de la tarjeta est\'an instaladas de forma segura:
+    \begin{lstlisting}
+altera-msgdma ff200000.msgdma: dma_sync_wait: timeout! [ 251.812846] DMA Failed\end{lstlisting}
+
+\subsection{Realizando inferencias sin una FPGA}
+
+    El modelo de emulaci\'on de software es un modelo de software en C++, representa en software al \ais IP que se usa para emular de manera precisa \footnote{diferencias m\'inimas entre el software de emulaci\'on y el hardware que t\'ipicamente resultar\'an en una diferencia de menos de dos unidades de menor precisi\'on} el comportamiento del hardware. 
+
+    Para usar el software de modelo de emulaci\'on:
+    \begin{enumerate}
+        \item Construye el entorno de ejecuci\'on con los siguientes comandos:
+        \begin{lstlisting}
+cd $COREDLA_WORK/runtime
+rm -rf build_Release
+./build_runtime.sh -target_emulation        \end{lstlisting}
+
+        \item Ejecuta la inferencia con las opciones \comm{-niter=1} y \comm{-nireq=1} (debido a que el modelo de software es lento) con los siguientes comandos:
+        \begin{lstlisting}
+ imagedir=$COREDLA_WORK/demo/sample_images
+ curarch=$COREDLA_ROOT/example_architectures/AGX7_Performance.arch
+ gnd=$imagedir/TF_ground_truth.txt
+ cd $COREDLA_WORK/runtime/build_Release/dla_benchmark
+ ./dla_benchmark \
+   -b 1  `# Run only a single image` \
+   -niter 1  `# Run only a single image` \
+   -nireq 1  `# Running emulator: so -nireq=1` \
+   -m $modeldir/resnet-50-tf/FP32/resnet-50-tf.xml \
+    `# Same as when running on hardware - specify the graph` \
+   -d HETERO:FPGA,CPU \
+    `# Same as when running on hardware - \
+    use FPGA if possible, fallback to CPU` \
+   -i $imagedir  \
+   `# Same as when running on hardware - specify image directory` \
+   -arch_file $curarch \
+   `# Same as when running on hardware - specify .arch file` \
+   -dump_output \
+   `# Dump output result.txt file` \
+   -plugins emulation \
+   `# Use the software emulator` \
+   -groundtruth_loc $gnd  
+   `# Location of the ground truth file for $imagedir`\end{lstlisting}
+    \end{enumerate}
+
+\section{Demostraci\'on de transmisi\'on Streaming-to-Memory (S2M)}
+
+    Un caso t\'ipico de uso del FPGA AI Suite IP\footnote{El FPGA AI Suite IP es un bloque de hardware (IP Core) que Intel provee para implementar aceleraci\'on de inferencia de redes neuronales directamente dentro de FPGAs. Este bloque recibe las im\'agenes o datos en el formato requerido, los procesa seg\'un el modelo cargado y entrega la salida al sistema.} es la ejecuci\'on de inferencias usando datos de entrada en tiempo real. Por ejemplo, los datos en tiempo real pueden venir de una fuente de video como HDMI IP y transmitirla al FPGA AI Suite IP para realizar clasificaci\'on de im\'agenes para cada frame.
+
+    Por simplicidad, la demostraci\'on S2M solamente simula una fuente de video en tiempo real. La demostraci\'on de transmisi\'on consta de las siguientes aplicaciones que se ejecutan en el dispositivo SoC objetivo:
+
+    \begin{itemize}
+        \item \curl{streaming_inference_app}: Esta aplicaci\'on carga y ejecuta una red y captura los resultados.
+        \item \curl{image_streaming_app}: Esta aplicaci\'on carga los archivos bitmap desde un directorio de la tarjeta SD y los manda de forma continua al EMIF (Intefaz de Memoria Externa), simulando una fuente de video continua.
+    \end{itemize}
+
+    Las im\'agenes se mandan a trav\'es de un adaptador que reordena y convierte el formato (layout transform IP), que mapea las im\'agenes entrantes y las almacena en un formato espec\'ifico (frame buffer encoding) que es requerido por el FPGA AI Suite IP.
+
+    Hay un m\'odulo llamado controlador de transmisi\'on, que se ejecuta en un microcontrolador Nios V, que controla la organizaci\'on de las im\'agenes de entrada al FPGA AI Suite IP.
+
+    La aplicaci\'on \curl{streaming_inference_app} crea solicitudes de inferencia de OpenVINO. Cada solicitud de inferencia es memoria localizada en el EMIF para los buffers de entrada y salida. Esta informaci\'on se manda al controlador de transmisi\'on cuando las solicitudes de inferencia son enviadas para ejecuci\'on as\'incrona. 
+
+    En el modo de ejecuci\'on, el controlador de transmisi\'on espera por los buffers de entrada que llegan desde la aplicaci\'on \curl{image_streaming_app}. Cuando el buffer llega, el controlador de transmisi\'on programa el FPGA AI Suite IP con los detalles del buffer de entrada recibido, el cual dispara el FPGA AI Suite IP para que ejecute una inferencia.
+
+    Cuando una inferencia se completa, un registro contador se incrementa dentro del FPGA AI Suite IP CSRs (Registros de Control y Estado). Este contador es monitoreado por la solicitud de inferencia que se est\'a ejecutando en la aplicaci\'on \curl{streaming_inference_app}, y se marca como completada cuadno el incremento se detecta. Entonces es cuando se llama al buffer de salida desde el EMIF y la porci\'on de la inferencia del FPGA AI Suite IP se completa.
+
+    Dependiendo del modelo usado puede que haya procesamiento de la salida extra por parte del plugin OpenVINO HETERO y el plugin OpenVINO Arm CPU. Despu\'es de que se ha procesado la red completa, se hace un llamado a la aplicaci\'on para indicar que la inferencia se ha completado.
+
+    La aplicaci\'on realiza algunos procesamientos posteriores en el buffer para generar los resultados y reenviar la misma solicitud de inferencia de vuelta a OpenVINO, el cual deja que el controlador de transmisi\'on use el mismo bloque de memoria entrada/salida de nuevo.
+
+\subsection{Configuraci\'on de las aplicaciones de demostraci\'on de transmisi\'on}
+
+    Las dos aplicaciones de demostraci\'on de transmisi\'on, \curl{streaming_inference_app} y \curl{image_streaming_app}, est\'an construidas como parte del entorno de ejecuci\'on y se encuentran en la imagen de la tarjeta SD para los dispositivos objetivos en el directorio \curl{/home/root/app/}.
+
+\subsection{Ejecuci\'on de la demostraci\'on de transmisi\'on}
+
+    Para realizar la ejecuci\'on, se necesitan dos terminales conectadas al dispositivo objetivo, una por cada aplicaci\'on de transmisi\'on. Una puede ser una terminal serial y la otra puede ser una conexi\'on SSH desde la estaci\'on de trabajo, o bien, ambas pueden ser conexiones SSH.
+
+\subsubsection{La aplicaci\'on \texttt{streaming\_inference\_app}}
+
+    La aplicaci\'on \curl{streaming_inference_app} es una aplicaci\'on basada en OpenVINO. Carga una red ResNet50 precompilada, luego crea solicitudes de inferencia que son ejecutadas de forma as\'incrona por el FPGA AI Suite IP.
+
+    Los tensores resultantes son capturados desde el EMIF usando el controlador mSGDMA. El procesamiento posterior requerido en el software involucra convertir los tensores de salida a punto flotante, asignar el valor de la clasificaci\'on de imagen apropiada, ordenar los resultados y seleccionar los 5 mejores resultados de clasificaci\'on.
+
+    Por cada inferencia, los resultados son mostrados en terminal, y los resultados de cada inferencia hasta la n\'umero 1000 son capturados en un archivo \curl{results.txt} en el directorio de la aplicaci\'on.
+
+    La aplicaci\'on depende de las siguientes librerias compartidas. El sistema cargado agrega estas librerias al directorio \curl{/home/root/app} en la imagen de la tarjeta SD, junto con el binario de la aplicaci\'on y el archivo plugin \curl{.xml} que define los plugins disponibles para OpenVINO.
+    \begin{itemize}
+        \item \curl{libhps_platform_mmd.so}
+        \item \curl{libngraph.so}
+        \item \curl{libinference_engine.so}
+        \item \curl{libinference_engine_transformations.so}
+        \item \curl{libcoreDLAHeteroPlugin.so}
+        \item \curl{libcoreDlaRuntimePlugin.so}
+    \end{itemize}
+
+    Adem\'as, es necesario un archivo binario compilado de la red (el cual describe la parametrizaci\'on del FPGA AI Suite IP) para ejecutar las inferencias. Estos archivos fueron copiados al directorio \curl{/home/root/resnet-50-tf}.
+
+    Antes de ejecutar la aplicaci\'on se debe establecer la variable de entorno \comm{LD\_LIBRARY\_PATH} para definir la localizaci\'on de las librerias compartidas.
+
+    \begin{lstlisting}
+cd /home/root/app
+export COREDLA_ROOT=/home/root/app
+export LD_LIBRARY_PATH=.    \end{lstlisting}
+
+    Se puede usar el argumento \comm{--help} de \curl{streaming_inference_app} para mostrar el uso del comando:
+
+    \begin{lstlisting}
+./streaming_inference_app --help    \end{lstlisting}
+
+    Lo cual nos muestra las opciones que se pueden agregar a la l\'inea de comando:
+
+    \begin{lstlisting}
+ Usage:
+        streaming_inference_app -model=<model> -arch=<arch> -device=<device>
+ Where:
+        <model>    is the compiled model binary file, eg /home/root/resnet-50-tf/
+ RN50_Performance_no_folding.bin
+        <arch>     is the architecture file, eg /home/root/resnet-50-tf/
+ A10_Performance.arch
+        <device>   is the OpenVINO device ID, eg HETERO:FPGA or HETERO:FPGA,CPU    \end{lstlisting}
+
+    Despu\'es se puede iniciar la aplicaci\'on de la siguiente manera:
+
+    \begin{lstlisting}
+./streaming_inference_app \
+-model=/home/root/resnet-50-tf/RN50_Performance_no_folding.bin \
+-arch=/home/root/resnet-50-tf/AGX7_Performance.arch \
+-device=HETERO:FPGA    \end{lstlisting}
+
+    Notese que dentro del mismo directorio se incluye un script llamado \curl{run_inference_stream.sh}, el cual ejecuta el comando anterior. 
+    Adem\'as, el adaptador de formato no soporta folding en el buffer de entrada. Para la transmisi\'on, se deben usar modelos que han sido compilados con el comando \comm{dla\_compiler} con la opci\'on \comm{--folding\_option=0} especificada en la línea de comando.
+
+\subsubsection{La aplicaci\'on \texttt{image\_streaming\_app}}
+
+    La aplicaci\'on \curl{image_streaming_app} carga im\'agenes desde la tarjeta SD, programa el adaptador de formato y luego transfiere los buffers mediante la interfaz de transmisi\'on mSGDMA al dispositivo. Los buffers son enviados a intervalos regulares a una frecuencia establecida por una de las opciones de la l\'inea de comandos. Los buffers son enviados de manera continua hasta que el programa se detenga con \comm{Ctl+C}.
+
+    La aplicaci\'on \curl{image_streaming_app} solo trabaja con archivos \curl{.bmp} de 224x224 pixeles. Los archivos \curl{.bmp} pueden tener el formato de 24 o de 32 bits por pixel. Si son de 24 bits los buffers son modificados para hacerlos de 32 bits por pixel. Este formato es el esperado por la entrada del adaptador de formato.
+
+    Se puede usar el argumento \comm{--help} de \curl{image_streaming_app} para mostrar el uso del comando:
+
+    \begin{lstlisting}
+./image_streaming_app --help    \end{lstlisting}
+
+    Lo cual nos muestra las opciones que se pueden agregar a la l\'inea de comando:
+
+    \begin{lstlisting}
+Usage:
+    image_streaming_app [Options]
+    
+Options:
+-images_folder=folder           Location of bitmap files. Defaults to working folder.
+-image=path                     Location of a single bitmap file for single inference.
+-send=n                         Number of images to stream. Default is 1 if -image is 
+set, otherwise infinite.
+-rate=n                         Rate to stream images, in Hz. n is an integer. Default 
+is 30.
+-width=n                        Image width in pixels, default = 224
+-height=n                       Image height in pixels, default = 224
+-c_vector=n                     C vector size, default = 32
+-blue_variance=n                Blue variance, default = 1.0
+-green_variance=n               Green variance, default = 1.0
+-red_variance=n                 Red variance, default = 1.0 
+-blue_shift=n                   Blue shift, default = -103.94
+-green_shift=n                  Green shift, default -116.78
+-red_shift=n                    Red shift, default = -123.68\end{lstlisting}
+
+    De igual manera que la aplicaci\'on de transmisi\'on de inferencia, en el mismo directorio se incluye un script llamado \curl{run_image_stream.sh} que llama al comando \curl{image_streaming_app} con una frecuencia de 50 $Hz$ y opciones por defecto del adaptador de formato.
+
+    Una vez que ambas aplicaciones se est\'an ejecutando, la aplicaci\'on \curl{streaming_inference_app} muestra los resultados de salida en la terminal y en el archivo \curl{results.text}.
+
+    Un ejemplo de la salida de la aplicaci\'on \curl{streaming_inference_app} ser\'ia parecido al siguiente:
+
+    El archivo \curl{results.txt} contendr\'ia resultados como los siguientes:
+    
+    
+
+    
+
+    

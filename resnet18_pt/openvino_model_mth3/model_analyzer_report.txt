@@ -1,0 +1,1010 @@
+This report displays information about the original OpenVINO graph and the transformed OpenVINO graph.
+Multiple layers in the original graph might be fused, others might be split, while some might be changed entirely.
+
+
+The structure of this report is:
+- List of redundant modules. Modules activated in the arch file, but not used
+- List of all unsupported layers in the original OpenVINO graph
+- List of reasons for unsupporting layers
+- Original graph per layer support information analysis
+- Interal name to original name mappings
+- Per layer information dump
+
+
+List of redundant modules. Modules activated in the arch file, but not used:
+INFO: Arch file enables the sigmoid activation module, however, sigmoid activations are not used in the model.
+To avoid allocating unnecessary resources, disable the sigmoid activation module in the arch file.
+
+INFO: Arch file enables the PReLU activation module, however, PReLU activations are not used in the model.
+To avoid allocating unnecessary resources, disable the PReLU activation module in the arch file.
+
+- Arch file enables the softmax module, however, softmax is not used in the model.
+  - To avoid allocating unnecessary resources, disable the softmax module in the arch file.
+
+
+List of all unsupported layers in the original OpenVINO graph:
+- All layers are supported
+
+
+List of reasons for unsupporting layers:
+- No direct reasons for CPU placement exist
+
+
+Original graph per layer support information analysis:
+- All layers are supported
+
+Internal name to original name mappings:
+Transformed Layer Name: x
+- Original Layer Name:
+  - x
+
+Transformed Layer Name: Result_588
+- Original Layer Name:
+  - Result_588
+
+Transformed Layer Name: aten::linear/Add
+- Original Layer Names:
+  - aten::flatten/Reshape
+  - aten::linear/Add
+  - aten::linear/MatMul
+
+Transformed Layer Name: Reshape_3040
+- Original Layer Names:
+  - Constant_2060
+  - aten::linear/Add
+  - aten::linear/MatMul
+
+Transformed Layer Name: self.fc.weight
+- Original Layer Name:
+  - self.fc.weight
+
+Transformed Layer Name: aten::adaptive_avg_pool2d/AdaptiveAvgPool
+- Original Layer Names:
+  - aten::adaptive_avg_pool2d/AdaptiveAvgPool
+  - aten::adaptive_avg_pool2d/Reshape
+
+Transformed Layer Name: aten::relu_/Relu_16
+- Original Layer Names:
+  - aten::adaptive_avg_pool2d/Tile
+  - aten::relu_/Relu_16
+
+Transformed Layer Name: aten::add_/Add_7
+- Original Layer Name:
+  - aten::add_/Add_7
+
+Transformed Layer Name: aten::relu_/Relu_14
+- Original Layer Name:
+  - aten::relu_/Relu_14
+
+Transformed Layer Name: aten::add_/Add_6
+- Original Layer Name:
+  - aten::add_/Add_6
+
+Transformed Layer Name: aten::conv2d/Add_17
+- Original Layer Names:
+  - Convolution_451
+  - aten::conv2d/Add_17
+
+Transformed Layer Name: Reshape_3030
+- Original Layer Name:
+  - aten::conv2d/Reshape_17
+
+Transformed Layer Name: self.layer4.0.downsample.0.weight_fused_bn
+- Original Layer Name:
+  - self.layer4.0.downsample.0.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_12
+- Original Layer Name:
+  - aten::relu_/Relu_12
+
+Transformed Layer Name: aten::add_/Add_5
+- Original Layer Name:
+  - aten::add_/Add_5
+
+Transformed Layer Name: aten::relu_/Relu_10
+- Original Layer Name:
+  - aten::relu_/Relu_10
+
+Transformed Layer Name: aten::add_/Add_4
+- Original Layer Name:
+  - aten::add_/Add_4
+
+Transformed Layer Name: aten::conv2d/Add_12
+- Original Layer Names:
+  - Convolution_324
+  - aten::conv2d/Add_12
+
+Transformed Layer Name: Reshape_3015
+- Original Layer Name:
+  - aten::conv2d/Reshape_12
+
+Transformed Layer Name: self.layer3.0.downsample.0.weight_fused_bn
+- Original Layer Name:
+  - self.layer3.0.downsample.0.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_8
+- Original Layer Name:
+  - aten::relu_/Relu_8
+
+Transformed Layer Name: aten::add_/Add_3
+- Original Layer Name:
+  - aten::add_/Add_3
+
+Transformed Layer Name: aten::relu_/Relu_6
+- Original Layer Name:
+  - aten::relu_/Relu_6
+
+Transformed Layer Name: aten::add_/Add_2
+- Original Layer Name:
+  - aten::add_/Add_2
+
+Transformed Layer Name: aten::conv2d/Add_7
+- Original Layer Names:
+  - Convolution_197
+  - aten::conv2d/Add_7
+
+Transformed Layer Name: Reshape_3000
+- Original Layer Name:
+  - aten::conv2d/Reshape_7
+
+Transformed Layer Name: self.layer2.0.downsample.0.weight_fused_bn
+- Original Layer Name:
+  - self.layer2.0.downsample.0.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_4
+- Original Layer Name:
+  - aten::relu_/Relu_4
+
+Transformed Layer Name: aten::add_/Add_1
+- Original Layer Name:
+  - aten::add_/Add_1
+
+Transformed Layer Name: aten::relu_/Relu_2
+- Original Layer Name:
+  - aten::relu_/Relu_2
+
+Transformed Layer Name: aten::add_/Add
+- Original Layer Name:
+  - aten::add_/Add
+
+Transformed Layer Name: aten::max_pool2d/MaxPool
+- Original Layer Name:
+  - aten::max_pool2d/MaxPool
+
+Transformed Layer Name: aten::relu_/Relu
+- Original Layer Name:
+  - aten::relu_/Relu
+
+Transformed Layer Name: aten::conv2d/Add
+- Original Layer Names:
+  - Convolution_21
+  - aten::conv2d/Add
+
+Transformed Layer Name: Reshape_2979
+- Original Layer Name:
+  - aten::conv2d/Reshape
+
+Transformed Layer Name: self.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_2
+- Original Layer Names:
+  - Convolution_70
+  - aten::conv2d/Add_2
+
+Transformed Layer Name: Reshape_2985
+- Original Layer Name:
+  - aten::conv2d/Reshape_2
+
+Transformed Layer Name: self.layer1.0.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer1.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_1
+- Original Layer Name:
+  - aten::relu_/Relu_1
+
+Transformed Layer Name: aten::conv2d/Add_1
+- Original Layer Names:
+  - Convolution_46
+  - aten::conv2d/Add_1
+
+Transformed Layer Name: Reshape_2982
+- Original Layer Name:
+  - aten::conv2d/Reshape_1
+
+Transformed Layer Name: self.layer1.0.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer1.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_4
+- Original Layer Names:
+  - Convolution_122
+  - aten::conv2d/Add_4
+
+Transformed Layer Name: Reshape_2991
+- Original Layer Name:
+  - aten::conv2d/Reshape_4
+
+Transformed Layer Name: self.layer1.1.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer1.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_3
+- Original Layer Name:
+  - aten::relu_/Relu_3
+
+Transformed Layer Name: aten::conv2d/Add_3
+- Original Layer Names:
+  - Convolution_98
+  - aten::conv2d/Add_3
+
+Transformed Layer Name: Reshape_2988
+- Original Layer Name:
+  - aten::conv2d/Reshape_3
+
+Transformed Layer Name: self.layer1.1.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer1.1.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_6
+- Original Layer Names:
+  - Convolution_174
+  - aten::conv2d/Add_6
+
+Transformed Layer Name: Reshape_2997
+- Original Layer Name:
+  - aten::conv2d/Reshape_6
+
+Transformed Layer Name: self.layer2.0.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer2.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_5
+- Original Layer Name:
+  - aten::relu_/Relu_5
+
+Transformed Layer Name: aten::conv2d/Add_5
+- Original Layer Names:
+  - Convolution_150
+  - aten::conv2d/Add_5
+
+Transformed Layer Name: Reshape_2994
+- Original Layer Name:
+  - aten::conv2d/Reshape_5
+
+Transformed Layer Name: self.layer2.0.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer2.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_9
+- Original Layer Names:
+  - Convolution_249
+  - aten::conv2d/Add_9
+
+Transformed Layer Name: Reshape_3006
+- Original Layer Name:
+  - aten::conv2d/Reshape_9
+
+Transformed Layer Name: self.layer2.1.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer2.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_7
+- Original Layer Name:
+  - aten::relu_/Relu_7
+
+Transformed Layer Name: aten::conv2d/Add_8
+- Original Layer Names:
+  - Convolution_225
+  - aten::conv2d/Add_8
+
+Transformed Layer Name: Reshape_3003
+- Original Layer Name:
+  - aten::conv2d/Reshape_8
+
+Transformed Layer Name: self.layer2.1.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer2.1.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_11
+- Original Layer Names:
+  - Convolution_301
+  - aten::conv2d/Add_11
+
+Transformed Layer Name: Reshape_3012
+- Original Layer Name:
+  - aten::conv2d/Reshape_11
+
+Transformed Layer Name: self.layer3.0.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer3.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_9
+- Original Layer Name:
+  - aten::relu_/Relu_9
+
+Transformed Layer Name: aten::conv2d/Add_10
+- Original Layer Names:
+  - Convolution_277
+  - aten::conv2d/Add_10
+
+Transformed Layer Name: Reshape_3009
+- Original Layer Name:
+  - aten::conv2d/Reshape_10
+
+Transformed Layer Name: self.layer3.0.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer3.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_14
+- Original Layer Names:
+  - Convolution_376
+  - aten::conv2d/Add_14
+
+Transformed Layer Name: Reshape_3021
+- Original Layer Name:
+  - aten::conv2d/Reshape_14
+
+Transformed Layer Name: self.layer3.1.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer3.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_11
+- Original Layer Name:
+  - aten::relu_/Relu_11
+
+Transformed Layer Name: aten::conv2d/Add_13
+- Original Layer Names:
+  - Convolution_352
+  - aten::conv2d/Add_13
+
+Transformed Layer Name: Reshape_3018
+- Original Layer Name:
+  - aten::conv2d/Reshape_13
+
+Transformed Layer Name: self.layer3.1.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer3.1.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_16
+- Original Layer Names:
+  - Convolution_428
+  - aten::conv2d/Add_16
+
+Transformed Layer Name: Reshape_3027
+- Original Layer Name:
+  - aten::conv2d/Reshape_16
+
+Transformed Layer Name: self.layer4.0.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer4.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_13
+- Original Layer Name:
+  - aten::relu_/Relu_13
+
+Transformed Layer Name: aten::conv2d/Add_15
+- Original Layer Names:
+  - Convolution_404
+  - aten::conv2d/Add_15
+
+Transformed Layer Name: Reshape_3024
+- Original Layer Name:
+  - aten::conv2d/Reshape_15
+
+Transformed Layer Name: self.layer4.0.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer4.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_19
+- Original Layer Names:
+  - Convolution_503
+  - aten::conv2d/Add_19
+
+Transformed Layer Name: Reshape_3036
+- Original Layer Name:
+  - aten::conv2d/Reshape_19
+
+Transformed Layer Name: self.layer4.1.conv2.weight_fused_bn
+- Original Layer Name:
+  - self.layer4.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_15
+- Original Layer Name:
+  - aten::relu_/Relu_15
+
+Transformed Layer Name: aten::conv2d/Add_18
+- Original Layer Names:
+  - Convolution_479
+  - aten::conv2d/Add_18
+
+Transformed Layer Name: Reshape_3033
+- Original Layer Name:
+  - aten::conv2d/Reshape_18
+
+Transformed Layer Name: self.layer4.1.conv1.weight_fused_bn
+- Original Layer Name:
+  - self.layer4.1.conv1.weight_fused_bn
+
+
+Per layer information dump:
+Transformed Layer Name: x
+- Type:      Parameter
+- FPGA Support: True
+- Original Layer Name:
+  - x
+
+Transformed Layer Name: Result_588
+- Type:      Result
+- FPGA Support: True
+- Original Layer Name:
+  - Result_588
+
+Transformed Layer Name: aten::linear/Add
+- Type:      FullyConnected
+- FPGA Support: True
+- Original Layer Names:
+  - aten::flatten/Reshape
+  - aten::linear/Add
+  - aten::linear/MatMul
+
+Transformed Layer Name: Reshape_3040
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Names:
+  - Constant_2060
+  - aten::linear/Add
+  - aten::linear/MatMul
+
+Transformed Layer Name: self.fc.weight
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.fc.weight
+
+Transformed Layer Name: aten::adaptive_avg_pool2d/AdaptiveAvgPool
+- Type:      AvgPool
+- FPGA Support: True
+- Original Layer Names:
+  - aten::adaptive_avg_pool2d/AdaptiveAvgPool
+  - aten::adaptive_avg_pool2d/Reshape
+
+Transformed Layer Name: aten::relu_/Relu_16
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Names:
+  - aten::adaptive_avg_pool2d/Tile
+  - aten::relu_/Relu_16
+
+Transformed Layer Name: aten::add_/Add_7
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add_7
+
+Transformed Layer Name: aten::relu_/Relu_14
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_14
+
+Transformed Layer Name: aten::add_/Add_6
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add_6
+
+Transformed Layer Name: aten::conv2d/Add_17
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_451
+  - aten::conv2d/Add_17
+
+Transformed Layer Name: Reshape_3030
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_17
+
+Transformed Layer Name: self.layer4.0.downsample.0.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer4.0.downsample.0.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_12
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_12
+
+Transformed Layer Name: aten::add_/Add_5
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add_5
+
+Transformed Layer Name: aten::relu_/Relu_10
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_10
+
+Transformed Layer Name: aten::add_/Add_4
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add_4
+
+Transformed Layer Name: aten::conv2d/Add_12
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_324
+  - aten::conv2d/Add_12
+
+Transformed Layer Name: Reshape_3015
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_12
+
+Transformed Layer Name: self.layer3.0.downsample.0.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer3.0.downsample.0.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_8
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_8
+
+Transformed Layer Name: aten::add_/Add_3
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add_3
+
+Transformed Layer Name: aten::relu_/Relu_6
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_6
+
+Transformed Layer Name: aten::add_/Add_2
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add_2
+
+Transformed Layer Name: aten::conv2d/Add_7
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_197
+  - aten::conv2d/Add_7
+
+Transformed Layer Name: Reshape_3000
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_7
+
+Transformed Layer Name: self.layer2.0.downsample.0.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer2.0.downsample.0.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_4
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_4
+
+Transformed Layer Name: aten::add_/Add_1
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add_1
+
+Transformed Layer Name: aten::relu_/Relu_2
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_2
+
+Transformed Layer Name: aten::add_/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - aten::add_/Add
+
+Transformed Layer Name: aten::max_pool2d/MaxPool
+- Type:      MaxPool
+- FPGA Support: True
+- Original Layer Name:
+  - aten::max_pool2d/MaxPool
+
+Transformed Layer Name: aten::relu_/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu
+
+Transformed Layer Name: aten::conv2d/Add
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_21
+  - aten::conv2d/Add
+
+Transformed Layer Name: Reshape_2979
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape
+
+Transformed Layer Name: self.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_2
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_70
+  - aten::conv2d/Add_2
+
+Transformed Layer Name: Reshape_2985
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_2
+
+Transformed Layer Name: self.layer1.0.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer1.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_1
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_1
+
+Transformed Layer Name: aten::conv2d/Add_1
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_46
+  - aten::conv2d/Add_1
+
+Transformed Layer Name: Reshape_2982
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_1
+
+Transformed Layer Name: self.layer1.0.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer1.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_4
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_122
+  - aten::conv2d/Add_4
+
+Transformed Layer Name: Reshape_2991
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_4
+
+Transformed Layer Name: self.layer1.1.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer1.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_3
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_3
+
+Transformed Layer Name: aten::conv2d/Add_3
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_98
+  - aten::conv2d/Add_3
+
+Transformed Layer Name: Reshape_2988
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_3
+
+Transformed Layer Name: self.layer1.1.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer1.1.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_6
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_174
+  - aten::conv2d/Add_6
+
+Transformed Layer Name: Reshape_2997
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_6
+
+Transformed Layer Name: self.layer2.0.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer2.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_5
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_5
+
+Transformed Layer Name: aten::conv2d/Add_5
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_150
+  - aten::conv2d/Add_5
+
+Transformed Layer Name: Reshape_2994
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_5
+
+Transformed Layer Name: self.layer2.0.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer2.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_9
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_249
+  - aten::conv2d/Add_9
+
+Transformed Layer Name: Reshape_3006
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_9
+
+Transformed Layer Name: self.layer2.1.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer2.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_7
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_7
+
+Transformed Layer Name: aten::conv2d/Add_8
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_225
+  - aten::conv2d/Add_8
+
+Transformed Layer Name: Reshape_3003
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_8
+
+Transformed Layer Name: self.layer2.1.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer2.1.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_11
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_301
+  - aten::conv2d/Add_11
+
+Transformed Layer Name: Reshape_3012
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_11
+
+Transformed Layer Name: self.layer3.0.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer3.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_9
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_9
+
+Transformed Layer Name: aten::conv2d/Add_10
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_277
+  - aten::conv2d/Add_10
+
+Transformed Layer Name: Reshape_3009
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_10
+
+Transformed Layer Name: self.layer3.0.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer3.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_14
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_376
+  - aten::conv2d/Add_14
+
+Transformed Layer Name: Reshape_3021
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_14
+
+Transformed Layer Name: self.layer3.1.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer3.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_11
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_11
+
+Transformed Layer Name: aten::conv2d/Add_13
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_352
+  - aten::conv2d/Add_13
+
+Transformed Layer Name: Reshape_3018
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_13
+
+Transformed Layer Name: self.layer3.1.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer3.1.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_16
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_428
+  - aten::conv2d/Add_16
+
+Transformed Layer Name: Reshape_3027
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_16
+
+Transformed Layer Name: self.layer4.0.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer4.0.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_13
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_13
+
+Transformed Layer Name: aten::conv2d/Add_15
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_404
+  - aten::conv2d/Add_15
+
+Transformed Layer Name: Reshape_3024
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_15
+
+Transformed Layer Name: self.layer4.0.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer4.0.conv1.weight_fused_bn
+
+Transformed Layer Name: aten::conv2d/Add_19
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_503
+  - aten::conv2d/Add_19
+
+Transformed Layer Name: Reshape_3036
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_19
+
+Transformed Layer Name: self.layer4.1.conv2.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer4.1.conv2.weight_fused_bn
+
+Transformed Layer Name: aten::relu_/Relu_15
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - aten::relu_/Relu_15
+
+Transformed Layer Name: aten::conv2d/Add_18
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - Convolution_479
+  - aten::conv2d/Add_18
+
+Transformed Layer Name: Reshape_3033
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - aten::conv2d/Reshape_18
+
+Transformed Layer Name: self.layer4.1.conv1.weight_fused_bn
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - self.layer4.1.conv1.weight_fused_bn
+

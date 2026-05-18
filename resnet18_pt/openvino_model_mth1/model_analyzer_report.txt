@@ -1,0 +1,1006 @@
+This report displays information about the original OpenVINO graph and the transformed OpenVINO graph.
+Multiple layers in the original graph might be fused, others might be split, while some might be changed entirely.
+
+
+The structure of this report is:
+- List of redundant modules. Modules activated in the arch file, but not used
+- List of all unsupported layers in the original OpenVINO graph
+- List of reasons for unsupporting layers
+- Original graph per layer support information analysis
+- Interal name to original name mappings
+- Per layer information dump
+
+
+List of redundant modules. Modules activated in the arch file, but not used:
+INFO: Arch file enables the sigmoid activation module, however, sigmoid activations are not used in the model.
+To avoid allocating unnecessary resources, disable the sigmoid activation module in the arch file.
+
+INFO: Arch file enables the PReLU activation module, however, PReLU activations are not used in the model.
+To avoid allocating unnecessary resources, disable the PReLU activation module in the arch file.
+
+- Arch file enables the softmax module, however, softmax is not used in the model.
+  - To avoid allocating unnecessary resources, disable the softmax module in the arch file.
+
+
+List of all unsupported layers in the original OpenVINO graph:
+- All layers are supported
+
+
+List of reasons for unsupporting layers:
+- No direct reasons for CPU placement exist
+
+
+Original graph per layer support information analysis:
+- All layers are supported
+
+Internal name to original name mappings:
+Transformed Layer Name: input.1
+- Original Layer Name:
+  - input.1
+
+Transformed Layer Name: 191/sink_port_0
+- Original Layer Name:
+  - 191/sink_port_0
+
+Transformed Layer Name: 191
+- Original Layer Names:
+  - /Flatten
+  - /fc/Gemm/WithoutBiases
+  - 191
+
+Transformed Layer Name: Reshape_2799
+- Original Layer Names:
+  - /fc/Gemm/WithoutBiases
+  - 191
+  - Constant_1766
+
+Transformed Layer Name: fc.weight
+- Original Layer Name:
+  - fc.weight
+
+Transformed Layer Name: /avgpool/GlobalAveragePool
+- Original Layer Name:
+  - /avgpool/GlobalAveragePool
+
+Transformed Layer Name: /layer4/layer4.1/relu_1/Relu
+- Original Layer Name:
+  - /layer4/layer4.1/relu_1/Relu
+
+Transformed Layer Name: /layer4/layer4.1/Add
+- Original Layer Name:
+  - /layer4/layer4.1/Add
+
+Transformed Layer Name: /layer4/layer4.0/relu_1/Relu
+- Original Layer Name:
+  - /layer4/layer4.0/relu_1/Relu
+
+Transformed Layer Name: /layer4/layer4.0/Add
+- Original Layer Name:
+  - /layer4/layer4.0/Add
+
+Transformed Layer Name: /layer4/layer4.0/downsample/downsample.0/Conv
+- Original Layer Names:
+  - /layer4/layer4.0/downsample/downsample.0/Conv
+  - /layer4/layer4.0/downsample/downsample.0/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2789
+- Original Layer Name:
+  - Reshape_349
+
+Transformed Layer Name: onnx::Conv_244
+- Original Layer Name:
+  - onnx::Conv_244
+
+Transformed Layer Name: /layer3/layer3.1/relu_1/Relu
+- Original Layer Name:
+  - /layer3/layer3.1/relu_1/Relu
+
+Transformed Layer Name: /layer3/layer3.1/Add
+- Original Layer Name:
+  - /layer3/layer3.1/Add
+
+Transformed Layer Name: /layer3/layer3.0/relu_1/Relu
+- Original Layer Name:
+  - /layer3/layer3.0/relu_1/Relu
+
+Transformed Layer Name: /layer3/layer3.0/Add
+- Original Layer Name:
+  - /layer3/layer3.0/Add
+
+Transformed Layer Name: /layer3/layer3.0/downsample/downsample.0/Conv
+- Original Layer Names:
+  - /layer3/layer3.0/downsample/downsample.0/Conv
+  - /layer3/layer3.0/downsample/downsample.0/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2774
+- Original Layer Name:
+  - Reshape_263
+
+Transformed Layer Name: onnx::Conv_229
+- Original Layer Name:
+  - onnx::Conv_229
+
+Transformed Layer Name: /layer2/layer2.1/relu_1/Relu
+- Original Layer Name:
+  - /layer2/layer2.1/relu_1/Relu
+
+Transformed Layer Name: /layer2/layer2.1/Add
+- Original Layer Name:
+  - /layer2/layer2.1/Add
+
+Transformed Layer Name: /layer2/layer2.0/relu_1/Relu
+- Original Layer Name:
+  - /layer2/layer2.0/relu_1/Relu
+
+Transformed Layer Name: /layer2/layer2.0/Add
+- Original Layer Name:
+  - /layer2/layer2.0/Add
+
+Transformed Layer Name: /layer2/layer2.0/downsample/downsample.0/Conv
+- Original Layer Names:
+  - /layer2/layer2.0/downsample/downsample.0/Conv
+  - /layer2/layer2.0/downsample/downsample.0/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2759
+- Original Layer Name:
+  - Reshape_177
+
+Transformed Layer Name: onnx::Conv_214
+- Original Layer Name:
+  - onnx::Conv_214
+
+Transformed Layer Name: /layer1/layer1.1/relu_1/Relu
+- Original Layer Name:
+  - /layer1/layer1.1/relu_1/Relu
+
+Transformed Layer Name: /layer1/layer1.1/Add
+- Original Layer Name:
+  - /layer1/layer1.1/Add
+
+Transformed Layer Name: /layer1/layer1.0/relu_1/Relu
+- Original Layer Name:
+  - /layer1/layer1.0/relu_1/Relu
+
+Transformed Layer Name: /layer1/layer1.0/Add
+- Original Layer Name:
+  - /layer1/layer1.0/Add
+
+Transformed Layer Name: /maxpool/MaxPool
+- Original Layer Name:
+  - /maxpool/MaxPool
+
+Transformed Layer Name: /relu/Relu
+- Original Layer Name:
+  - /relu/Relu
+
+Transformed Layer Name: /conv1/Conv
+- Original Layer Names:
+  - /conv1/Conv
+  - /conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2738
+- Original Layer Name:
+  - Reshape_56
+
+Transformed Layer Name: onnx::Conv_193
+- Original Layer Name:
+  - onnx::Conv_193
+
+Transformed Layer Name: /layer1/layer1.0/conv2/Conv
+- Original Layer Names:
+  - /layer1/layer1.0/conv2/Conv
+  - /layer1/layer1.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2744
+- Original Layer Name:
+  - Reshape_91
+
+Transformed Layer Name: onnx::Conv_199
+- Original Layer Name:
+  - onnx::Conv_199
+
+Transformed Layer Name: /layer1/layer1.0/relu/Relu
+- Original Layer Name:
+  - /layer1/layer1.0/relu/Relu
+
+Transformed Layer Name: /layer1/layer1.0/conv1/Conv
+- Original Layer Names:
+  - /layer1/layer1.0/conv1/Conv
+  - /layer1/layer1.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2741
+- Original Layer Name:
+  - Reshape_74
+
+Transformed Layer Name: onnx::Conv_196
+- Original Layer Name:
+  - onnx::Conv_196
+
+Transformed Layer Name: /layer1/layer1.1/conv2/Conv
+- Original Layer Names:
+  - /layer1/layer1.1/conv2/Conv
+  - /layer1/layer1.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2750
+- Original Layer Name:
+  - Reshape_126
+
+Transformed Layer Name: onnx::Conv_205
+- Original Layer Name:
+  - onnx::Conv_205
+
+Transformed Layer Name: /layer1/layer1.1/relu/Relu
+- Original Layer Name:
+  - /layer1/layer1.1/relu/Relu
+
+Transformed Layer Name: /layer1/layer1.1/conv1/Conv
+- Original Layer Names:
+  - /layer1/layer1.1/conv1/Conv
+  - /layer1/layer1.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2747
+- Original Layer Name:
+  - Reshape_109
+
+Transformed Layer Name: onnx::Conv_202
+- Original Layer Name:
+  - onnx::Conv_202
+
+Transformed Layer Name: /layer2/layer2.0/conv2/Conv
+- Original Layer Names:
+  - /layer2/layer2.0/conv2/Conv
+  - /layer2/layer2.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2756
+- Original Layer Name:
+  - Reshape_161
+
+Transformed Layer Name: onnx::Conv_211
+- Original Layer Name:
+  - onnx::Conv_211
+
+Transformed Layer Name: /layer2/layer2.0/relu/Relu
+- Original Layer Name:
+  - /layer2/layer2.0/relu/Relu
+
+Transformed Layer Name: /layer2/layer2.0/conv1/Conv
+- Original Layer Names:
+  - /layer2/layer2.0/conv1/Conv
+  - /layer2/layer2.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2753
+- Original Layer Name:
+  - Reshape_144
+
+Transformed Layer Name: onnx::Conv_208
+- Original Layer Name:
+  - onnx::Conv_208
+
+Transformed Layer Name: /layer2/layer2.1/conv2/Conv
+- Original Layer Names:
+  - /layer2/layer2.1/conv2/Conv
+  - /layer2/layer2.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2765
+- Original Layer Name:
+  - Reshape_212
+
+Transformed Layer Name: onnx::Conv_220
+- Original Layer Name:
+  - onnx::Conv_220
+
+Transformed Layer Name: /layer2/layer2.1/relu/Relu
+- Original Layer Name:
+  - /layer2/layer2.1/relu/Relu
+
+Transformed Layer Name: /layer2/layer2.1/conv1/Conv
+- Original Layer Names:
+  - /layer2/layer2.1/conv1/Conv
+  - /layer2/layer2.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2762
+- Original Layer Name:
+  - Reshape_195
+
+Transformed Layer Name: onnx::Conv_217
+- Original Layer Name:
+  - onnx::Conv_217
+
+Transformed Layer Name: /layer3/layer3.0/conv2/Conv
+- Original Layer Names:
+  - /layer3/layer3.0/conv2/Conv
+  - /layer3/layer3.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2771
+- Original Layer Name:
+  - Reshape_247
+
+Transformed Layer Name: onnx::Conv_226
+- Original Layer Name:
+  - onnx::Conv_226
+
+Transformed Layer Name: /layer3/layer3.0/relu/Relu
+- Original Layer Name:
+  - /layer3/layer3.0/relu/Relu
+
+Transformed Layer Name: /layer3/layer3.0/conv1/Conv
+- Original Layer Names:
+  - /layer3/layer3.0/conv1/Conv
+  - /layer3/layer3.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2768
+- Original Layer Name:
+  - Reshape_230
+
+Transformed Layer Name: onnx::Conv_223
+- Original Layer Name:
+  - onnx::Conv_223
+
+Transformed Layer Name: /layer3/layer3.1/conv2/Conv
+- Original Layer Names:
+  - /layer3/layer3.1/conv2/Conv
+  - /layer3/layer3.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2780
+- Original Layer Name:
+  - Reshape_298
+
+Transformed Layer Name: onnx::Conv_235
+- Original Layer Name:
+  - onnx::Conv_235
+
+Transformed Layer Name: /layer3/layer3.1/relu/Relu
+- Original Layer Name:
+  - /layer3/layer3.1/relu/Relu
+
+Transformed Layer Name: /layer3/layer3.1/conv1/Conv
+- Original Layer Names:
+  - /layer3/layer3.1/conv1/Conv
+  - /layer3/layer3.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2777
+- Original Layer Name:
+  - Reshape_281
+
+Transformed Layer Name: onnx::Conv_232
+- Original Layer Name:
+  - onnx::Conv_232
+
+Transformed Layer Name: /layer4/layer4.0/conv2/Conv
+- Original Layer Names:
+  - /layer4/layer4.0/conv2/Conv
+  - /layer4/layer4.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2786
+- Original Layer Name:
+  - Reshape_333
+
+Transformed Layer Name: onnx::Conv_241
+- Original Layer Name:
+  - onnx::Conv_241
+
+Transformed Layer Name: /layer4/layer4.0/relu/Relu
+- Original Layer Name:
+  - /layer4/layer4.0/relu/Relu
+
+Transformed Layer Name: /layer4/layer4.0/conv1/Conv
+- Original Layer Names:
+  - /layer4/layer4.0/conv1/Conv
+  - /layer4/layer4.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2783
+- Original Layer Name:
+  - Reshape_316
+
+Transformed Layer Name: onnx::Conv_238
+- Original Layer Name:
+  - onnx::Conv_238
+
+Transformed Layer Name: /layer4/layer4.1/conv2/Conv
+- Original Layer Names:
+  - /layer4/layer4.1/conv2/Conv
+  - /layer4/layer4.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2795
+- Original Layer Name:
+  - Reshape_384
+
+Transformed Layer Name: onnx::Conv_250
+- Original Layer Name:
+  - onnx::Conv_250
+
+Transformed Layer Name: /layer4/layer4.1/relu/Relu
+- Original Layer Name:
+  - /layer4/layer4.1/relu/Relu
+
+Transformed Layer Name: /layer4/layer4.1/conv1/Conv
+- Original Layer Names:
+  - /layer4/layer4.1/conv1/Conv
+  - /layer4/layer4.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2792
+- Original Layer Name:
+  - Reshape_367
+
+Transformed Layer Name: onnx::Conv_247
+- Original Layer Name:
+  - onnx::Conv_247
+
+
+Per layer information dump:
+Transformed Layer Name: input.1
+- Type:      Parameter
+- FPGA Support: True
+- Original Layer Name:
+  - input.1
+
+Transformed Layer Name: 191/sink_port_0
+- Type:      Result
+- FPGA Support: True
+- Original Layer Name:
+  - 191/sink_port_0
+
+Transformed Layer Name: 191
+- Type:      FullyConnected
+- FPGA Support: True
+- Original Layer Names:
+  - /Flatten
+  - /fc/Gemm/WithoutBiases
+  - 191
+
+Transformed Layer Name: Reshape_2799
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Names:
+  - /fc/Gemm/WithoutBiases
+  - 191
+  - Constant_1766
+
+Transformed Layer Name: fc.weight
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - fc.weight
+
+Transformed Layer Name: /avgpool/GlobalAveragePool
+- Type:      AvgPool
+- FPGA Support: True
+- Original Layer Name:
+  - /avgpool/GlobalAveragePool
+
+Transformed Layer Name: /layer4/layer4.1/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer4/layer4.1/relu_1/Relu
+
+Transformed Layer Name: /layer4/layer4.1/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer4/layer4.1/Add
+
+Transformed Layer Name: /layer4/layer4.0/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer4/layer4.0/relu_1/Relu
+
+Transformed Layer Name: /layer4/layer4.0/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer4/layer4.0/Add
+
+Transformed Layer Name: /layer4/layer4.0/downsample/downsample.0/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer4/layer4.0/downsample/downsample.0/Conv
+  - /layer4/layer4.0/downsample/downsample.0/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2789
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_349
+
+Transformed Layer Name: onnx::Conv_244
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_244
+
+Transformed Layer Name: /layer3/layer3.1/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer3/layer3.1/relu_1/Relu
+
+Transformed Layer Name: /layer3/layer3.1/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer3/layer3.1/Add
+
+Transformed Layer Name: /layer3/layer3.0/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer3/layer3.0/relu_1/Relu
+
+Transformed Layer Name: /layer3/layer3.0/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer3/layer3.0/Add
+
+Transformed Layer Name: /layer3/layer3.0/downsample/downsample.0/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer3/layer3.0/downsample/downsample.0/Conv
+  - /layer3/layer3.0/downsample/downsample.0/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2774
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_263
+
+Transformed Layer Name: onnx::Conv_229
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_229
+
+Transformed Layer Name: /layer2/layer2.1/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer2/layer2.1/relu_1/Relu
+
+Transformed Layer Name: /layer2/layer2.1/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer2/layer2.1/Add
+
+Transformed Layer Name: /layer2/layer2.0/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer2/layer2.0/relu_1/Relu
+
+Transformed Layer Name: /layer2/layer2.0/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer2/layer2.0/Add
+
+Transformed Layer Name: /layer2/layer2.0/downsample/downsample.0/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer2/layer2.0/downsample/downsample.0/Conv
+  - /layer2/layer2.0/downsample/downsample.0/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2759
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_177
+
+Transformed Layer Name: onnx::Conv_214
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_214
+
+Transformed Layer Name: /layer1/layer1.1/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer1/layer1.1/relu_1/Relu
+
+Transformed Layer Name: /layer1/layer1.1/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer1/layer1.1/Add
+
+Transformed Layer Name: /layer1/layer1.0/relu_1/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer1/layer1.0/relu_1/Relu
+
+Transformed Layer Name: /layer1/layer1.0/Add
+- Type:      Eltwise
+- FPGA Support: True
+- Original Layer Name:
+  - /layer1/layer1.0/Add
+
+Transformed Layer Name: /maxpool/MaxPool
+- Type:      MaxPool
+- FPGA Support: True
+- Original Layer Name:
+  - /maxpool/MaxPool
+
+Transformed Layer Name: /relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /relu/Relu
+
+Transformed Layer Name: /conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /conv1/Conv
+  - /conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2738
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_56
+
+Transformed Layer Name: onnx::Conv_193
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_193
+
+Transformed Layer Name: /layer1/layer1.0/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer1/layer1.0/conv2/Conv
+  - /layer1/layer1.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2744
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_91
+
+Transformed Layer Name: onnx::Conv_199
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_199
+
+Transformed Layer Name: /layer1/layer1.0/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer1/layer1.0/relu/Relu
+
+Transformed Layer Name: /layer1/layer1.0/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer1/layer1.0/conv1/Conv
+  - /layer1/layer1.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2741
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_74
+
+Transformed Layer Name: onnx::Conv_196
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_196
+
+Transformed Layer Name: /layer1/layer1.1/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer1/layer1.1/conv2/Conv
+  - /layer1/layer1.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2750
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_126
+
+Transformed Layer Name: onnx::Conv_205
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_205
+
+Transformed Layer Name: /layer1/layer1.1/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer1/layer1.1/relu/Relu
+
+Transformed Layer Name: /layer1/layer1.1/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer1/layer1.1/conv1/Conv
+  - /layer1/layer1.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2747
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_109
+
+Transformed Layer Name: onnx::Conv_202
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_202
+
+Transformed Layer Name: /layer2/layer2.0/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer2/layer2.0/conv2/Conv
+  - /layer2/layer2.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2756
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_161
+
+Transformed Layer Name: onnx::Conv_211
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_211
+
+Transformed Layer Name: /layer2/layer2.0/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer2/layer2.0/relu/Relu
+
+Transformed Layer Name: /layer2/layer2.0/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer2/layer2.0/conv1/Conv
+  - /layer2/layer2.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2753
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_144
+
+Transformed Layer Name: onnx::Conv_208
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_208
+
+Transformed Layer Name: /layer2/layer2.1/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer2/layer2.1/conv2/Conv
+  - /layer2/layer2.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2765
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_212
+
+Transformed Layer Name: onnx::Conv_220
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_220
+
+Transformed Layer Name: /layer2/layer2.1/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer2/layer2.1/relu/Relu
+
+Transformed Layer Name: /layer2/layer2.1/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer2/layer2.1/conv1/Conv
+  - /layer2/layer2.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2762
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_195
+
+Transformed Layer Name: onnx::Conv_217
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_217
+
+Transformed Layer Name: /layer3/layer3.0/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer3/layer3.0/conv2/Conv
+  - /layer3/layer3.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2771
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_247
+
+Transformed Layer Name: onnx::Conv_226
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_226
+
+Transformed Layer Name: /layer3/layer3.0/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer3/layer3.0/relu/Relu
+
+Transformed Layer Name: /layer3/layer3.0/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer3/layer3.0/conv1/Conv
+  - /layer3/layer3.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2768
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_230
+
+Transformed Layer Name: onnx::Conv_223
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_223
+
+Transformed Layer Name: /layer3/layer3.1/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer3/layer3.1/conv2/Conv
+  - /layer3/layer3.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2780
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_298
+
+Transformed Layer Name: onnx::Conv_235
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_235
+
+Transformed Layer Name: /layer3/layer3.1/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer3/layer3.1/relu/Relu
+
+Transformed Layer Name: /layer3/layer3.1/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer3/layer3.1/conv1/Conv
+  - /layer3/layer3.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2777
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_281
+
+Transformed Layer Name: onnx::Conv_232
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_232
+
+Transformed Layer Name: /layer4/layer4.0/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer4/layer4.0/conv2/Conv
+  - /layer4/layer4.0/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2786
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_333
+
+Transformed Layer Name: onnx::Conv_241
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_241
+
+Transformed Layer Name: /layer4/layer4.0/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer4/layer4.0/relu/Relu
+
+Transformed Layer Name: /layer4/layer4.0/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer4/layer4.0/conv1/Conv
+  - /layer4/layer4.0/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2783
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_316
+
+Transformed Layer Name: onnx::Conv_238
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_238
+
+Transformed Layer Name: /layer4/layer4.1/conv2/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer4/layer4.1/conv2/Conv
+  - /layer4/layer4.1/conv2/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2795
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_384
+
+Transformed Layer Name: onnx::Conv_250
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_250
+
+Transformed Layer Name: /layer4/layer4.1/relu/Relu
+- Type:      Relu
+- FPGA Support: True
+- Original Layer Name:
+  - /layer4/layer4.1/relu/Relu
+
+Transformed Layer Name: /layer4/layer4.1/conv1/Conv
+- Type:      ConvolutionIE
+- FPGA Support: True
+- Original Layer Names:
+  - /layer4/layer4.1/conv1/Conv
+  - /layer4/layer4.1/conv1/Conv/WithoutBiases
+
+Transformed Layer Name: Reshape_2792
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - Reshape_367
+
+Transformed Layer Name: onnx::Conv_247
+- Type:      Constant
+- FPGA Support: True
+- Original Layer Name:
+  - onnx::Conv_247
+

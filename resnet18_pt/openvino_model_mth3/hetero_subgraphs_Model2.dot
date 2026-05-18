@@ -1,0 +1,343 @@
+digraph 
+{
+    Add_815 [shape=box color=black label="aten::linear/Add\nAdd_815\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Result_816 [shape=box color=crimson penwidth=1.5 label="Result_588\nResult_816\nopset1::Result\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_815 -> Result_816
+    MatMul_813 [shape=box color=black label="aten::linear/MatMul\nMatMul_813\nopset1::MatMul\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    MatMul_813 -> Add_815
+    CLONE_0[ shape="box"  style="dashed"  color="black"  label="Constant_2060\nConstant_814\nopset1::Constant
+{f32}[1,26]
+value: [ -0.0014658, 0.0231628, 0.0401001, 0.00194073, 0.0389099, 0.0164185, -0.00917816, ... ]" ]
+    CLONE_0 -> Add_815
+    Reshape_811 [shape=box color=black label="aten::flatten/Reshape\nReshape_811\nopset1::Reshape\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Reshape_811 -> MatMul_813
+    CLONE_1[ shape="box"  style="dashed"  color="black"  label="self.fc.weight\nConstant_812\nopset1::Constant
+{f32}[26,512]
+value: [ -0.0403137, -0.00181866, -0.0124817, 0.0355835, 0.00437164, -0.0327454, -0.0249786, ... ]" ]
+    CLONE_1 -> MatMul_813
+    Reshape_809 [shape=box color=black label="aten::adaptive_avg_pool2d/Reshape\nReshape_809\nopset1::Reshape\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Reshape_809 -> Reshape_811
+    CLONE_2[ shape="box"  style="dashed"  color="black"  label="aten::flatten/Concat\nConstant_810\nopset1::Constant
+{i64}[2]
+value: [ -1, 512 ]" ]
+    CLONE_2 -> Reshape_811
+    ReduceMean_807 [shape=box color=black label="aten::adaptive_avg_pool2d/AdaptiveAvgPool\nReduceMean_807\nopset1::ReduceMean\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    ReduceMean_807 -> Reshape_809
+    CLONE_3[ shape="box"  style="dashed"  color="black"  label="aten::adaptive_avg_pool2d/Concat\nConstant_808\nopset1::Constant
+{i32}[4]
+value: [ 1, 512, 1, 1 ]" ]
+    CLONE_3 -> Reshape_809
+    Tile_805 [shape=box color=black label="aten::adaptive_avg_pool2d/Tile\nTile_805\nopset1::Tile\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Tile_805 -> ReduceMean_807
+    CLONE_4[ shape="box"  style="dashed"  color="black"  label="Constant_2048\nConstant_806\nopset1::Constant
+{i64}[2]
+value: [ 2, 3 ]" ]
+    CLONE_4 -> ReduceMean_807
+    Relu_803 [shape=box color=black label="aten::relu_/Relu_16\nRelu_803\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_803 -> Tile_805
+    CLONE_5[ shape="box"  style="dashed"  color="black"  label="aten::adaptive_avg_pool2d/Constant\nConstant_804\nopset1::Constant
+{i32}[4]
+value: [ 1, 1, 1, 1 ]" ]
+    CLONE_5 -> Tile_805
+    Add_802 [shape=box color=black label="aten::add_/Add_7\nAdd_802\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_802 -> Relu_803
+    Add_801 [shape=box color=black label="aten::conv2d/Add_19\nAdd_801\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_801 -> Add_802
+    Relu_792 [shape=box color=black label="aten::relu_/Relu_14\nRelu_792\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_792 -> Add_802
+    Add_791 [shape=box color=black label="aten::add_/Add_6\nAdd_791\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_791 -> Relu_792
+    Add_786 [shape=box color=black label="aten::conv2d/Add_16\nAdd_786\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_786 -> Add_791
+    Add_790 [shape=box color=black label="aten::conv2d/Add_17\nAdd_790\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_790 -> Add_791
+    Convolution_788 [shape=box color=black label="Convolution_451\nConvolution_788\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_788 -> Add_790
+    CLONE_6[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_17\nConstant_789\nopset1::Constant
+{f32}[1,512,1,1]
+value: [ -0.0299835, 0.0574341, -0.258301, -0.366211, -0.29248, -0.0304871, 0.155884, ... ]" ]
+    CLONE_6 -> Add_790
+    Relu_777 [shape=box color=black label="aten::relu_/Relu_12\nRelu_777\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_777 -> Convolution_788
+    CLONE_7[ shape="box"  style="dashed"  color="black"  label="self.layer4.0.downsample.0.weight_fused_bn\nConstant_787\nopset1::Constant
+{f32}[512,256,1,1]
+value: [ 0.000187278, -0.000328302, 0.0201569, -0.0037384, 0.0101929, -0.0148926, 0.00110149, ... ]" ]
+    CLONE_7 -> Convolution_788
+    Add_776 [shape=box color=black label="aten::add_/Add_5\nAdd_776\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_776 -> Relu_777
+    Add_775 [shape=box color=black label="aten::conv2d/Add_14\nAdd_775\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_775 -> Add_776
+    Relu_766 [shape=box color=black label="aten::relu_/Relu_10\nRelu_766\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_766 -> Add_776
+    Add_765 [shape=box color=black label="aten::add_/Add_4\nAdd_765\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_765 -> Relu_766
+    Add_760 [shape=box color=black label="aten::conv2d/Add_11\nAdd_760\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_760 -> Add_765
+    Add_764 [shape=box color=black label="aten::conv2d/Add_12\nAdd_764\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_764 -> Add_765
+    Convolution_762 [shape=box color=black label="Convolution_324\nConvolution_762\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_762 -> Add_764
+    CLONE_8[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_12\nConstant_763\nopset1::Constant
+{f32}[1,256,1,1]
+value: [ 0.0344543, 0.16272, 0.0289459, 0.118591, 0.0455627, 0.0354004, 0.00451279, ... ]" ]
+    CLONE_8 -> Add_764
+    Relu_751 [shape=box color=black label="aten::relu_/Relu_8\nRelu_751\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_751 -> Convolution_762
+    CLONE_9[ shape="box"  style="dashed"  color="black"  label="self.layer3.0.downsample.0.weight_fused_bn\nConstant_761\nopset1::Constant
+{f32}[256,128,1,1]
+value: [ 0.00361252, -0.00811005, -0.00901031, 0.00473022, -0.0211639, -0.0193024, -0.00792694, ... ]" ]
+    CLONE_9 -> Convolution_762
+    Add_750 [shape=box color=black label="aten::add_/Add_3\nAdd_750\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_750 -> Relu_751
+    Add_749 [shape=box color=black label="aten::conv2d/Add_9\nAdd_749\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_749 -> Add_750
+    Relu_740 [shape=box color=black label="aten::relu_/Relu_6\nRelu_740\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_740 -> Add_750
+    Add_739 [shape=box color=black label="aten::add_/Add_2\nAdd_739\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_739 -> Relu_740
+    Add_734 [shape=box color=black label="aten::conv2d/Add_6\nAdd_734\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_734 -> Add_739
+    Add_738 [shape=box color=black label="aten::conv2d/Add_7\nAdd_738\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_738 -> Add_739
+    Convolution_736 [shape=box color=black label="Convolution_197\nConvolution_736\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_736 -> Add_738
+    CLONE_10[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_7\nConstant_737\nopset1::Constant
+{f32}[1,128,1,1]
+value: [ 0.213379, -0.0128174, 0.134644, -0.252197, -0.000731945, 0.0795898, -0.261475, ... ]" ]
+    CLONE_10 -> Add_738
+    Relu_725 [shape=box color=black label="aten::relu_/Relu_4\nRelu_725\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_725 -> Convolution_736
+    CLONE_11[ shape="box"  style="dashed"  color="black"  label="self.layer2.0.downsample.0.weight_fused_bn\nConstant_735\nopset1::Constant
+{f32}[128,64,1,1]
+value: [ 0.00934601, -0.239868, 0.00673676, 0.00754547, -0.0210724, 0.0255737, 0.11261, ... ]" ]
+    CLONE_11 -> Convolution_736
+    Add_724 [shape=box color=black label="aten::add_/Add_1\nAdd_724\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_724 -> Relu_725
+    Add_723 [shape=box color=black label="aten::conv2d/Add_4\nAdd_723\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_723 -> Add_724
+    Relu_714 [shape=box color=black label="aten::relu_/Relu_2\nRelu_714\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_714 -> Add_724
+    Add_713 [shape=box color=black label="aten::add_/Add\nAdd_713\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_713 -> Relu_714
+    Add_712 [shape=box color=black label="aten::conv2d/Add_2\nAdd_712\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_712 -> Add_713
+    MaxPool_703 [shape=box color=black label="aten::max_pool2d/MaxPool\nMaxPool_703\nopset8::MaxPool\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    MaxPool_703 -> Add_713
+    Relu_702 [shape=box color=black label="aten::relu_/Relu\nRelu_702\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_702 -> MaxPool_703
+    Add_701 [shape=box color=black label="aten::conv2d/Add\nAdd_701\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_701 -> Relu_702
+    Convolution_699 [shape=box color=black label="Convolution_21\nConvolution_699\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_699 -> Add_701
+    CLONE_12[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape\nConstant_700\nopset1::Constant
+{f32}[1,64,1,1]
+value: [ 0.210327, 0.259521, -1.07288e-06, -0.509277, -0, 0.159668, 0.470215, ... ]" ]
+    CLONE_12 -> Add_701
+    CLONE_13[ shape="box"  style="dashed"  color="blue"  label="x\nParameter_697\nopset1::Parameter
+{f32}[1,3,224,224]\nsubgraph=0\ndevice=FPGA"  fillcolor=aliceblue style=filled ]
+    CLONE_13 -> Convolution_699
+    CLONE_14[ shape="box"  style="dashed"  color="black"  label="self.conv1.weight_fused_bn\nConstant_698\nopset1::Constant
+{f32}[64,3,7,7]
+value: [ -0.0046463, -0.00271797, -0.000645161, 0.0358276, 0.0271454, 0.00820923, -0.00613403, ... ]" ]
+    CLONE_14 -> Convolution_699
+    Convolution_710 [shape=box color=black label="Convolution_70\nConvolution_710\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_710 -> Add_712
+    CLONE_15[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_2\nConstant_711\nopset1::Constant
+{f32}[1,64,1,1]
+value: [ 0.130859, 0.00592422, -1.2959, -0.352051, 0.0328979, -0.154907, 0.0263672, ... ]" ]
+    CLONE_15 -> Add_712
+    Relu_708 [shape=box color=black label="aten::relu_/Relu_1\nRelu_708\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_708 -> Convolution_710
+    CLONE_16[ shape="box"  style="dashed"  color="black"  label="self.layer1.0.conv2.weight_fused_bn\nConstant_709\nopset1::Constant
+{f32}[64,64,3,3]
+value: [ 0.0143967, -0.0511475, -0.00126171, -0.0430298, -0.165771, -0.0516663, -0.0295258, ... ]" ]
+    CLONE_16 -> Convolution_710
+    Add_707 [shape=box color=black label="aten::conv2d/Add_1\nAdd_707\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_707 -> Relu_708
+    Convolution_705 [shape=box color=black label="Convolution_46\nConvolution_705\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_705 -> Add_707
+    CLONE_17[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_1\nConstant_706\nopset1::Constant
+{f32}[1,64,1,1]
+value: [ 0.499756, 0.385498, 0.158447, 0.347656, 0.641602, 0.454346, 0.274414, ... ]" ]
+    CLONE_17 -> Add_707
+    MaxPool_703 -> Convolution_705
+    CLONE_18[ shape="box"  style="dashed"  color="black"  label="self.layer1.0.conv1.weight_fused_bn\nConstant_704\nopset1::Constant
+{f32}[64,64,3,3]
+value: [ 0.0274506, -0.0457458, -0.0101013, -0.0373535, -0.38623, -0.102783, 0.0301666, ... ]" ]
+    CLONE_18 -> Convolution_705
+    Convolution_721 [shape=box color=black label="Convolution_122\nConvolution_721\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_721 -> Add_723
+    CLONE_19[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_4\nConstant_722\nopset1::Constant
+{f32}[1,64,1,1]
+value: [ -0.137207, 0.234253, -1.04688, 0.0624695, -0.0316772, -0.0345764, -0.248047, ... ]" ]
+    CLONE_19 -> Add_723
+    Relu_719 [shape=box color=black label="aten::relu_/Relu_3\nRelu_719\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_719 -> Convolution_721
+    CLONE_20[ shape="box"  style="dashed"  color="black"  label="self.layer1.1.conv2.weight_fused_bn\nConstant_720\nopset1::Constant
+{f32}[64,64,3,3]
+value: [ -0.0184631, -0.00418472, 0.00645828, -0.00804901, 0.0374756, 0.0218658, -0.00989532, ... ]" ]
+    CLONE_20 -> Convolution_721
+    Add_718 [shape=box color=black label="aten::conv2d/Add_3\nAdd_718\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_718 -> Relu_719
+    Convolution_716 [shape=box color=black label="Convolution_98\nConvolution_716\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_716 -> Add_718
+    CLONE_21[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_3\nConstant_717\nopset1::Constant
+{f32}[1,64,1,1]
+value: [ 0.171997, -1.04297, 0.554199, 0.314941, 0.407227, 0.820312, 0.184937, ... ]" ]
+    CLONE_21 -> Add_718
+    Relu_714 -> Convolution_716
+    CLONE_22[ shape="box"  style="dashed"  color="black"  label="self.layer1.1.conv1.weight_fused_bn\nConstant_715\nopset1::Constant
+{f32}[64,64,3,3]
+value: [ 0.00941467, -0.00346184, -0.00338364, -0.00971985, -0.00678253, -0.0181885, 0.0241547, ... ]" ]
+    CLONE_22 -> Convolution_716
+    Convolution_732 [shape=box color=black label="Convolution_174\nConvolution_732\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_732 -> Add_734
+    CLONE_23[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_6\nConstant_733\nopset1::Constant
+{f32}[1,128,1,1]
+value: [ 0.328369, 0.289795, 0.58252, 0.0196381, 0.328857, 0.0731201, 1.01172, ... ]" ]
+    CLONE_23 -> Add_734
+    Relu_730 [shape=box color=black label="aten::relu_/Relu_5\nRelu_730\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_730 -> Convolution_732
+    CLONE_24[ shape="box"  style="dashed"  color="black"  label="self.layer2.0.conv2.weight_fused_bn\nConstant_731\nopset1::Constant
+{f32}[128,128,3,3]
+value: [ -0.00378609, -0.00645447, 0.00177002, -0.00566101, 0.0170135, 0.0292511, -0.015686, ... ]" ]
+    CLONE_24 -> Convolution_732
+    Add_729 [shape=box color=black label="aten::conv2d/Add_5\nAdd_729\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_729 -> Relu_730
+    Convolution_727 [shape=box color=black label="Convolution_150\nConvolution_727\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_727 -> Add_729
+    CLONE_25[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_5\nConstant_728\nopset1::Constant
+{f32}[1,128,1,1]
+value: [ -0.110352, -0.217773, -0.0043335, 0.0651855, 0.14856, 0.255127, 0.0235443, ... ]" ]
+    CLONE_25 -> Add_729
+    Relu_725 -> Convolution_727
+    CLONE_26[ shape="box"  style="dashed"  color="black"  label="self.layer2.0.conv1.weight_fused_bn\nConstant_726\nopset1::Constant
+{f32}[128,64,3,3]
+value: [ -0.0352173, -0.0536499, -0.0664062, 0.034668, -0.00636292, -0.0481567, 0.0602112, ... ]" ]
+    CLONE_26 -> Convolution_727
+    Convolution_747 [shape=box color=black label="Convolution_249\nConvolution_747\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_747 -> Add_749
+    CLONE_27[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_9\nConstant_748\nopset1::Constant
+{f32}[1,128,1,1]
+value: [ -0.120972, -0.108459, -0.476318, -0.0998535, 0.208374, -0.140503, 0.0206757, ... ]" ]
+    CLONE_27 -> Add_749
+    Relu_745 [shape=box color=black label="aten::relu_/Relu_7\nRelu_745\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_745 -> Convolution_747
+    CLONE_28[ shape="box"  style="dashed"  color="black"  label="self.layer2.1.conv2.weight_fused_bn\nConstant_746\nopset1::Constant
+{f32}[128,128,3,3]
+value: [ -0.0136642, 0.00374985, -0.00313187, -0.00703049, -0.0187683, -0.0260162, 0.00826263, ... ]" ]
+    CLONE_28 -> Convolution_747
+    Add_744 [shape=box color=black label="aten::conv2d/Add_8\nAdd_744\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_744 -> Relu_745
+    Convolution_742 [shape=box color=black label="Convolution_225\nConvolution_742\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_742 -> Add_744
+    CLONE_29[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_8\nConstant_743\nopset1::Constant
+{f32}[1,128,1,1]
+value: [ 0.0862427, 0.0706787, -0.479492, 0.231567, 0.301758, 0.239136, 0.174805, ... ]" ]
+    CLONE_29 -> Add_744
+    Relu_740 -> Convolution_742
+    CLONE_30[ shape="box"  style="dashed"  color="black"  label="self.layer2.1.conv1.weight_fused_bn\nConstant_741\nopset1::Constant
+{f32}[128,128,3,3]
+value: [ -0.00241852, -0.00561523, -0.00420761, 0.0127869, 0.000329494, 0.00305367, 0.0062027, ... ]" ]
+    CLONE_30 -> Convolution_742
+    Convolution_758 [shape=box color=black label="Convolution_301\nConvolution_758\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_758 -> Add_760
+    CLONE_31[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_11\nConstant_759\nopset1::Constant
+{f32}[1,256,1,1]
+value: [ 0.196533, 0.45459, -0.0244751, -0.0259857, 0.388184, 0.145508, 0.207764, ... ]" ]
+    CLONE_31 -> Add_760
+    Relu_756 [shape=box color=black label="aten::relu_/Relu_9\nRelu_756\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_756 -> Convolution_758
+    CLONE_32[ shape="box"  style="dashed"  color="black"  label="self.layer3.0.conv2.weight_fused_bn\nConstant_757\nopset1::Constant
+{f32}[256,256,3,3]
+value: [ -0.00982666, -0.0322876, -0.01474, -0.0193787, -0.0636597, -0.0405579, -0.0324707, ... ]" ]
+    CLONE_32 -> Convolution_758
+    Add_755 [shape=box color=black label="aten::conv2d/Add_10\nAdd_755\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_755 -> Relu_756
+    Convolution_753 [shape=box color=black label="Convolution_277\nConvolution_753\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_753 -> Add_755
+    CLONE_33[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_10\nConstant_754\nopset1::Constant
+{f32}[1,256,1,1]
+value: [ -0.0204163, 0.0960083, 0.0881958, 0.0564575, 0.276367, -0.120972, -0.0803833, ... ]" ]
+    CLONE_33 -> Add_755
+    Relu_751 -> Convolution_753
+    CLONE_34[ shape="box"  style="dashed"  color="black"  label="self.layer3.0.conv1.weight_fused_bn\nConstant_752\nopset1::Constant
+{f32}[256,128,3,3]
+value: [ -0.00795746, -0.0080719, -0.00688553, 0.000573158, 0.0107193, 0.0101547, -0.00715256, ... ]" ]
+    CLONE_34 -> Convolution_753
+    Convolution_773 [shape=box color=black label="Convolution_376\nConvolution_773\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_773 -> Add_775
+    CLONE_35[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_14\nConstant_774\nopset1::Constant
+{f32}[1,256,1,1]
+value: [ 0.132446, -0.173462, 0.0725098, -0.128296, -0.0424805, 0.0575562, -0.0548096, ... ]" ]
+    CLONE_35 -> Add_775
+    Relu_771 [shape=box color=black label="aten::relu_/Relu_11\nRelu_771\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_771 -> Convolution_773
+    CLONE_36[ shape="box"  style="dashed"  color="black"  label="self.layer3.1.conv2.weight_fused_bn\nConstant_772\nopset1::Constant
+{f32}[256,256,3,3]
+value: [ -0.0664062, -0.0440369, -0.0340576, -0.028183, -0.013916, -0.00943756, -0.0027504, ... ]" ]
+    CLONE_36 -> Convolution_773
+    Add_770 [shape=box color=black label="aten::conv2d/Add_13\nAdd_770\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_770 -> Relu_771
+    Convolution_768 [shape=box color=black label="Convolution_352\nConvolution_768\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_768 -> Add_770
+    CLONE_37[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_13\nConstant_769\nopset1::Constant
+{f32}[1,256,1,1]
+value: [ -0.0571594, 0.0322876, -0.357422, -0.0242004, 0.259766, 0.303955, -0.0761719, ... ]" ]
+    CLONE_37 -> Add_770
+    Relu_766 -> Convolution_768
+    CLONE_38[ shape="box"  style="dashed"  color="black"  label="self.layer3.1.conv1.weight_fused_bn\nConstant_767\nopset1::Constant
+{f32}[256,256,3,3]
+value: [ 0.0289917, 0.0273438, 0.0201416, 0.0309906, 0.0327454, 0.0317688, 0.015419, ... ]" ]
+    CLONE_38 -> Convolution_768
+    Convolution_784 [shape=box color=black label="Convolution_428\nConvolution_784\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_784 -> Add_786
+    CLONE_39[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_16\nConstant_785\nopset1::Constant
+{f32}[1,512,1,1]
+value: [ 0.397217, 0.427246, 0.0908813, -0.0606995, 0.126831, 0.111328, 0.246704, ... ]" ]
+    CLONE_39 -> Add_786
+    Relu_782 [shape=box color=black label="aten::relu_/Relu_13\nRelu_782\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_782 -> Convolution_784
+    CLONE_40[ shape="box"  style="dashed"  color="black"  label="self.layer4.0.conv2.weight_fused_bn\nConstant_783\nopset1::Constant
+{f32}[512,512,3,3]
+value: [ -0.0096283, -0.0387573, -0.0494995, -0.0383911, -0.0916748, -0.0979004, 0.0814819, ... ]" ]
+    CLONE_40 -> Convolution_784
+    Add_781 [shape=box color=black label="aten::conv2d/Add_15\nAdd_781\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_781 -> Relu_782
+    Convolution_779 [shape=box color=black label="Convolution_404\nConvolution_779\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_779 -> Add_781
+    CLONE_41[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_15\nConstant_780\nopset1::Constant
+{f32}[1,512,1,1]
+value: [ -0.074646, -0.00554657, -0.168579, 0.130737, 0.12207, 0.13855, 0.180298, ... ]" ]
+    CLONE_41 -> Add_781
+    Relu_777 -> Convolution_779
+    CLONE_42[ shape="box"  style="dashed"  color="black"  label="self.layer4.0.conv1.weight_fused_bn\nConstant_778\nopset1::Constant
+{f32}[512,256,3,3]
+value: [ -0.00810242, -0.0125122, -0.0158234, 0.0142975, 0.0172882, 0.0196075, 0.0281372, ... ]" ]
+    CLONE_42 -> Convolution_779
+    Convolution_799 [shape=box color=black label="Convolution_503\nConvolution_799\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_799 -> Add_801
+    CLONE_43[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_19\nConstant_800\nopset1::Constant
+{f32}[1,512,1,1]
+value: [ 0.28125, 0.841309, -0.102966, 0.550781, 0.056366, -0.484863, -0.301514, ... ]" ]
+    CLONE_43 -> Add_801
+    Relu_797 [shape=box color=black label="aten::relu_/Relu_15\nRelu_797\nopset1::Relu\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Relu_797 -> Convolution_799
+    CLONE_44[ shape="box"  style="dashed"  color="black"  label="self.layer4.1.conv2.weight_fused_bn\nConstant_798\nopset1::Constant
+{f32}[512,512,3,3]
+value: [ 0.0932007, 0.143921, 0.0610962, 0.0727539, 0.109375, 0.00295067, 0.108643, ... ]" ]
+    CLONE_44 -> Convolution_799
+    Add_796 [shape=box color=black label="aten::conv2d/Add_18\nAdd_796\nopset1::Add\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Add_796 -> Relu_797
+    Convolution_794 [shape=box color=black label="Convolution_479\nConvolution_794\nopset1::Convolution\nsubgraph=0\ndevice=FPGA" fillcolor=aliceblue style=filled]
+    Convolution_794 -> Add_796
+    CLONE_45[ shape="box"  style="dashed"  color="black"  label="aten::conv2d/Reshape_18\nConstant_795\nopset1::Constant
+{f32}[1,512,1,1]
+value: [ 0.176392, 0.204956, 0.184448, 0.219727, 0.258789, 0.119873, 0.175537, ... ]" ]
+    CLONE_45 -> Add_796
+    Relu_792 -> Convolution_794
+    CLONE_46[ shape="box"  style="dashed"  color="black"  label="self.layer4.1.conv1.weight_fused_bn\nConstant_793\nopset1::Constant
+{f32}[512,512,3,3]
+value: [ -0.00583649, -0.0042038, 0.00306892, -0.00141907, -0.00634766, 0.00522232, 0.00636673, ... ]" ]
+    CLONE_46 -> Convolution_794
+}

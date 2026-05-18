@@ -1,0 +1,647 @@
+strict digraph "Model2_0" {
+   orientation=portrait
+   compound=true
+   label="Model2_0"
+   ranksep=1
+   node [style=rounded,shape=box]
+   "Instruction: foldingTransform\ntransform_node\n[1, 32, 224, 224, 1] : 0"[label="Instruction: foldingTransform\ntransform_node\n[1, 32, 224, 224, 1]"]
+   "Instruction: foldingTransform\ntransform_node\n[1, 32, 224, 224, 1] : 0" -> "Instruction: slice [:,:,107:224,0:114,:] l-1 s2\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 114, 1] : 1" [label=" (0,0) [1, 32, 224, 224, 1]"]
+   "Instruction: foldingTransform\ntransform_node\n[1, 32, 224, 224, 1] : 0" -> "Instruction: slice [:,:,0:114,107:224,:] l-1 s1\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 117, 1] : 2" [label=" (1,0) [1, 32, 224, 224, 1]"]
+   "Instruction: foldingTransform\ntransform_node\n[1, 32, 224, 224, 1] : 0" -> "Instruction: slice [:,:,0:114,0:114,:] l-1 s0\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 114, 1] : 3" [label=" (2,0) [1, 32, 224, 224, 1]"]
+   "Instruction: foldingTransform\ntransform_node\n[1, 32, 224, 224, 1] : 0" -> "Instruction: slice [:,:,107:224,107:224,:] l-1 s3\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 117, 1] : 4" [label=" (3,0) [1, 32, 224, 224, 1]"]
+   "Instruction: slice [:,:,107:224,107:224,:] l-1 s3\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 117, 1] : 4" -> "Instruction: conv 7x7 s2x2 p0,0_2,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 5" [label=" (0,0) [1, 32, 117, 117, 1]"]
+   subgraph "cluster_Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 117, 1] : 6" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 117, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: slice [:,:,107:224,107:224,:] l-1 s3\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 117, 1] : 4"[label="Instruction: slice [:,:,107:224,107:224,:] l-1 s3\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 117, 1]",color=purple,penwidth=3.0]
+}
+   "Instruction: maxpool 3x3 s2x2 vp0,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 7" -> "Instruction: concat W\naten::max_pool2d/MaxPool_h1\n[1, 64, 28, 56, 1] : 8" [label=" (0,1) [1, 64, 28, 28, 1]"]
+   subgraph "cluster_Instruction: fusion :: 3\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 9" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 3\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: maxpool 3x3 s2x2 vp0,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 7"[label="Instruction: maxpool 3x3 s2x2 vp0,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 10"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 10" -> "Instruction: maxpool 3x3 s2x2 vp0,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 7"[edgetooltip="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 10 -> Instruction: maxpool 3x3 s2x2 vp0,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 7" label=" (0,0) [1, 64, 57, 57, 1]"]
+      "Instruction: conv 7x7 s2x2 p0,0_2,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 5"[label="Instruction: conv 7x7 s2x2 p0,0_2,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 7x7 s2x2 p0,0_2,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 5" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 10"[edgetooltip="Instruction: conv 7x7 s2x2 p0,0_2,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 5 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 10" label=" (0,0) [1, 64, 57, 57, 1]"]
+}
+   "Instruction: concat W\naten::max_pool2d/MaxPool_h1\n[1, 64, 28, 56, 1] : 8" -> "Instruction: concat H\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1] : 11" [label=" (0,1) [1, 64, 28, 56, 1]"]
+   subgraph "cluster_Instruction: fusion\naten::max_pool2d/MaxPool_h1\n[1, 64, 28, 56, 1] : 12" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\naten::max_pool2d/MaxPool_h1\n[1, 64, 28, 56, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: concat W\naten::max_pool2d/MaxPool_h1\n[1, 64, 28, 56, 1] : 8"[label="Instruction: concat W\naten::max_pool2d/MaxPool_h1\n[1, 64, 28, 56, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: concat H\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1] : 11" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_1\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 13" [label=" (0,0) [1, 64, 56, 56, 1]"]
+   "Instruction: concat H\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1] : 11" -> "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 14" [label=" (1,0) [1, 64, 56, 56, 1]"]
+   subgraph "cluster_Instruction: fusion\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1] : 15" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: concat H\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1] : 11"[label="Instruction: concat H\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 14" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 16" [label=" (0,0) [1, 128, 56, 56, 1]"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 128, 56, 56, 1] : 17" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 128, 56, 56, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 14"[label="Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1] : 18" -> "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 19" [label=" (0,0) [1, 64, 56, 56, 1]
+ SB size: 12544"]
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1] : 18" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_3\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 20" [label=" (1,0) [1, 64, 56, 56, 1]
+ SB size: 12544"]
+   subgraph "cluster_Instruction: fusion :: 6\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1] : 21" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 6\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1]
+SB 0x00003100"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1] : 18"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 16"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 16" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1] : 18"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 16 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_2_as_clamp\n[1, 64, 56, 56, 1] : 18" label=" (0,0) [1, 64, 56, 56, 1]"]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_3_as_clamp\n[1, 64, 56, 56, 1] : 22" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_4\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 23" [label=" (0,0) [1, 64, 56, 56, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion :: 7\naten::relu_/Relu_3_as_clamp\n[1, 64, 56, 56, 1] : 24" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 7\naten::relu_/Relu_3_as_clamp\n[1, 64, 56, 56, 1]
+SB 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_3_as_clamp\n[1, 64, 56, 56, 1] : 22"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_3_as_clamp\n[1, 64, 56, 56, 1]"]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_3\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 20"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_3\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_3\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 20" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_3_as_clamp\n[1, 64, 56, 56, 1] : 22"[edgetooltip="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_3\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 20 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_3_as_clamp\n[1, 64, 56, 56, 1] : 22" label=" (0,0) [1, 64, 56, 56, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_4\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 23" -> "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 19" [label=" (0,1) [1, 64, 56, 56, 1]
+ SB size: 12544"]
+   subgraph "cluster_Instruction: fusion :: 8\nconvaten::conv2d/Add_4\n[1, 64, 56, 56, 1] : 25" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 8\nconvaten::conv2d/Add_4\n[1, 64, 56, 56, 1]
+SB 0x00004980"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_4\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 23"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_4\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 19" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_1_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 26" [label=" (0,0) [1, 128, 56, 56, 1]
+ SB size: 12544"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 128, 56, 56, 1] : 27" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 128, 56, 56, 1]
+SB 0x00003100"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 19"[label="Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1] : 28" -> "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_5\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 29" [label=" (0,0) [1, 64, 56, 56, 1]
+ SB size: 6272"]
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1] : 28" -> "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_7\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 30" [label=" (1,0) [1, 64, 56, 56, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion :: 9\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1] : 31" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 9\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1]
+SB 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1] : 28"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_1_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 26"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_1_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_1_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 26" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1] : 28"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_1_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 26 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_4_as_clamp\n[1, 64, 56, 56, 1] : 28" label=" (0,0) [1, 64, 56, 56, 1]"]
+}
+   "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_7\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 30" -> "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 32" [label=" (0,1) [1, 128, 28, 28, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion :: 12\nconvaten::conv2d/Add_7\n[1, 128, 28, 28, 1] : 33" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 12\nconvaten::conv2d/Add_7\n[1, 128, 28, 28, 1]
+SB 0x00003100"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_7\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 30"[label="Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_7\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 32" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_2_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 34" [label=" (0,0) [1, 256, 28, 28, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 256, 28, 28, 1] : 35" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 256, 28, 28, 1]
+SB 0x000024c0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 32"[label="Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1] : 36" -> "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 37" [label=" (0,0) [1, 128, 28, 28, 1]
+ SB size: 6272"]
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1] : 36" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_8\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 38" [label=" (1,0) [1, 128, 28, 28, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion :: 13\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1] : 39" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 13\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1]
+SB 0x00006780"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1] : 36"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_2_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 34"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_2_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_2_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 34" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1] : 36"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_2_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 34 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_6_as_clamp\n[1, 128, 28, 28, 1] : 36" label=" (0,0) [1, 128, 28, 28, 1]"]
+}
+   "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 37" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_3_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 40" [label=" (0,0) [1, 256, 28, 28, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 256, 28, 28, 1] : 41" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 256, 28, 28, 1]
+SB 0x00006780"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 37"[label="Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1] : 42" -> "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_12\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 43" [label=" (0,0) [1, 128, 28, 28, 1]
+ SB size: 3136"]
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1] : 42" -> "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_10\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 44" [label=" (1,0) [1, 128, 28, 28, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion :: 16\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1] : 45" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 16\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1]
+SB 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1] : 42"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_3_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 40"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_3_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_3_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 40" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1] : 42"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_3_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 40 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_8_as_clamp\n[1, 128, 28, 28, 1] : 42" label=" (0,0) [1, 128, 28, 28, 1]"]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_9_as_clamp\n[1, 256, 14, 14, 1] : 46" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_11\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 47" [label=" (0,0) [1, 256, 14, 14, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion :: 17\naten::relu_/Relu_9_as_clamp\n[1, 256, 14, 14, 1] : 48" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 17\naten::relu_/Relu_9_as_clamp\n[1, 256, 14, 14, 1]
+SB 0x00000c40"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_9_as_clamp\n[1, 256, 14, 14, 1] : 46"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_9_as_clamp\n[1, 256, 14, 14, 1]"]
+      "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_10\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 44"[label="Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_10\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_10\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 44" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_9_as_clamp\n[1, 256, 14, 14, 1] : 46"[edgetooltip="Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_10\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 44 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_9_as_clamp\n[1, 256, 14, 14, 1] : 46" label=" (0,0) [1, 256, 14, 14, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_11\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 47" -> "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 49" [label=" (0,0) [1, 256, 14, 14, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion :: 18\nconvaten::conv2d/Add_11\n[1, 256, 14, 14, 1] : 50" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 18\nconvaten::conv2d/Add_11\n[1, 256, 14, 14, 1]
+SB 0x00001260"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_11\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 47"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_11\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 49" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_4_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 51" [label=" (0,0) [1, 512, 14, 14, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 512, 14, 14, 1] : 52" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 512, 14, 14, 1]
+SB 0x00001260"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 49"[label="Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1] : 53" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_13\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 54" [label=" (0,0) [1, 256, 14, 14, 1]
+ SB size: 3136"]
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1] : 53" -> "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 55" [label=" (1,0) [1, 256, 14, 14, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion :: 20\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1] : 56" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 20\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1]
+SB 0x00001ea0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1] : 53"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_4_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 51"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_4_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_4_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 51" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1] : 53"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_4_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 51 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_10_as_clamp\n[1, 256, 14, 14, 1] : 53" label=" (0,0) [1, 256, 14, 14, 1]"]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_11_as_clamp\n[1, 256, 14, 14, 1] : 57" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_14\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 58" [label=" (0,0) [1, 256, 14, 14, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion :: 21\naten::relu_/Relu_11_as_clamp\n[1, 256, 14, 14, 1] : 59" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 21\naten::relu_/Relu_11_as_clamp\n[1, 256, 14, 14, 1]
+SB 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_11_as_clamp\n[1, 256, 14, 14, 1] : 57"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_11_as_clamp\n[1, 256, 14, 14, 1]"]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_13\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 54"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_13\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_13\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 54" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_11_as_clamp\n[1, 256, 14, 14, 1] : 57"[edgetooltip="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_13\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 54 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_11_as_clamp\n[1, 256, 14, 14, 1] : 57" label=" (0,0) [1, 256, 14, 14, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_14\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 58" -> "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 55" [label=" (0,1) [1, 256, 14, 14, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion :: 22\nconvaten::conv2d/Add_14\n[1, 256, 14, 14, 1] : 60" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 22\nconvaten::conv2d/Add_14\n[1, 256, 14, 14, 1]
+SB 0x000024c0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_14\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 58"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_14\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 55" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_5_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 61" [label=" (0,0) [1, 512, 14, 14, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 512, 14, 14, 1] : 62" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 512, 14, 14, 1]
+SB 0x00001ea0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 55"[label="Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1] : 63" -> "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_17\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 64" [label=" (0,0) [1, 256, 14, 14, 1]
+ SB size: 1568"]
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1] : 63" -> "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_15\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 65" [label=" (1,0) [1, 256, 14, 14, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion :: 23\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1] : 66" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 23\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1]
+SB 0x00002ae0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1] : 63"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_5_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 61"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_5_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_5_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 61" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1] : 63"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_5_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 61 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_12_as_clamp\n[1, 256, 14, 14, 1] : 63" label=" (0,0) [1, 256, 14, 14, 1]"]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_13_as_clamp\n[1, 512, 7, 7, 1] : 67" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_16\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 68" [label=" (0,0) [1, 512, 7, 7, 1]
+ SB size: 784"]
+   subgraph "cluster_Instruction: fusion :: 24\naten::relu_/Relu_13_as_clamp\n[1, 512, 7, 7, 1] : 69" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 24\naten::relu_/Relu_13_as_clamp\n[1, 512, 7, 7, 1]
+SB 0x00003100"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_13_as_clamp\n[1, 512, 7, 7, 1] : 67"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_13_as_clamp\n[1, 512, 7, 7, 1]"]
+      "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_15\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 65"[label="Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_15\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_15\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 65" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_13_as_clamp\n[1, 512, 7, 7, 1] : 67"[edgetooltip="Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_15\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 65 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_13_as_clamp\n[1, 512, 7, 7, 1] : 67" label=" (0,0) [1, 512, 7, 7, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_16\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 68" -> "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 70" [label=" (0,0) [1, 512, 7, 7, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion :: 25\nconvaten::conv2d/Add_16\n[1, 512, 7, 7, 1] : 71" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 25\nconvaten::conv2d/Add_16\n[1, 512, 7, 7, 1]
+SB 0x00003410"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_16\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 68"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_16\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 70" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_6_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 72" [label=" (0,0) [1, 1024, 7, 7, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 1024, 7, 7, 1] : 73" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 1024, 7, 7, 1]
+SB 0x00003410"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 70"[label="Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1] : 74" -> "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 75" [label=" (0,0) [1, 512, 7, 7, 1]
+ SB size: 1568"]
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1] : 74" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_18\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 76" [label=" (1,0) [1, 512, 7, 7, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion :: 27\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1] : 77" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 27\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1]
+SB 0x00003a30"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1] : 74"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_6_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 72"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_6_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_6_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 72" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1] : 74"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_6_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 72 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_14_as_clamp\n[1, 512, 7, 7, 1] : 74" label=" (0,0) [1, 512, 7, 7, 1]"]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_15_as_clamp\n[1, 512, 7, 7, 1] : 78" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_19\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 79" [label=" (0,0) [1, 512, 7, 7, 1]
+ SB size: 784"]
+   subgraph "cluster_Instruction: fusion :: 28\naten::relu_/Relu_15_as_clamp\n[1, 512, 7, 7, 1] : 80" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 28\naten::relu_/Relu_15_as_clamp\n[1, 512, 7, 7, 1]
+SB 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_15_as_clamp\n[1, 512, 7, 7, 1] : 78"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_15_as_clamp\n[1, 512, 7, 7, 1]"]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_18\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 76"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_18\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_18\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 76" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_15_as_clamp\n[1, 512, 7, 7, 1] : 78"[edgetooltip="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_18\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 76 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_15_as_clamp\n[1, 512, 7, 7, 1] : 78" label=" (0,0) [1, 512, 7, 7, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_19\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 79" -> "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 75" [label=" (0,1) [1, 512, 7, 7, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion :: 29\nconvaten::conv2d/Add_19\n[1, 512, 7, 7, 1] : 81" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 29\nconvaten::conv2d/Add_19\n[1, 512, 7, 7, 1]
+SB 0x00003d40"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_19\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 79"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_19\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 75" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_7_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 82" [label=" (0,0) [1, 1024, 7, 7, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion\ninput_concat\n[1, 1024, 7, 7, 1] : 83" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ninput_concat\n[1, 1024, 7, 7, 1]
+SB 0x00003a30"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 75"[label="Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_16_as_clamp\n[1, 512, 7, 7, 1] : 84" -> "Instruction: conv 7x7 p0,0_0,0 vp0,0_0,0\nconv%aten::adaptive_avg_pool2d/AdaptiveAvgPool_avgpool_conv\n Precision Mode: Arch\n Is identity: False\n[1, 512, 1, 1, 1] : 85" [label=" (0,0) [1, 512, 7, 7, 1]
+ SB size: 784"]
+   subgraph "cluster_Instruction: fusion :: 30\naten::relu_/Relu_16_as_clamp\n[1, 512, 7, 7, 1] : 86" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 30\naten::relu_/Relu_16_as_clamp\n[1, 512, 7, 7, 1]
+SB 0x00007ce0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_16_as_clamp\n[1, 512, 7, 7, 1] : 84"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_16_as_clamp\n[1, 512, 7, 7, 1]"]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_7_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 82"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_7_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_7_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 82" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_16_as_clamp\n[1, 512, 7, 7, 1] : 84"[edgetooltip="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\neltwise_conv_%aten::add_/Add_7_reordered\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 82 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_16_as_clamp\n[1, 512, 7, 7, 1] : 84" label=" (0,0) [1, 512, 7, 7, 1]"]
+}
+   "Instruction: conv 7x7 p0,0_0,0 vp0,0_0,0\nconv%aten::adaptive_avg_pool2d/AdaptiveAvgPool_avgpool_conv\n Precision Mode: Arch\n Is identity: False\n[1, 512, 1, 1, 1] : 85" -> "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\nfcaten::linear/Add_as_conv_padded_clone\n Precision Mode: Arch\n Is identity: False\n[1, 64, 1, 1, 1] : 87" [label=" (0,0) [1, 512, 1, 1, 1]
+ SB size: 16"]
+   subgraph "cluster_Instruction: fusion :: 31\nconv%aten::adaptive_avg_pool2d/AdaptiveAvgPool_avgpool_conv\n[1, 512, 1, 1, 1] : 88" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 31\nconv%aten::adaptive_avg_pool2d/AdaptiveAvgPool_avgpool_conv\n[1, 512, 1, 1, 1]
+SB 0x00007ff0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 7x7 p0,0_0,0 vp0,0_0,0\nconv%aten::adaptive_avg_pool2d/AdaptiveAvgPool_avgpool_conv\n Precision Mode: Arch\n Is identity: False\n[1, 512, 1, 1, 1] : 85"[label="Instruction: conv 7x7 p0,0_0,0 vp0,0_0,0\nconv%aten::adaptive_avg_pool2d/AdaptiveAvgPool_avgpool_conv\n Precision Mode: Arch\n Is identity: False\n[1, 512, 1, 1, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\nfcaten::linear/Add_as_conv_padded_clone\n Precision Mode: Arch\n Is identity: False\n[1, 64, 1, 1, 1] : 87" -> "Instruction: slice [:,0:26,:,:,:] l-1 s0\nfcaten::linear/Add_as_conv_unpadding_slice,0\n[1, 26, 1, 1, 1] : 89" [label=" (0,0) [1, 64, 1, 1, 1]"]
+   subgraph "cluster_Instruction: fusion :: 32\nfcaten::linear/Add_as_conv_padded_clone\n[1, 64, 1, 1, 1] : 90" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 32\nfcaten::linear/Add_as_conv_padded_clone\n[1, 64, 1, 1, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\nfcaten::linear/Add_as_conv_padded_clone\n Precision Mode: Arch\n Is identity: False\n[1, 64, 1, 1, 1] : 87"[label="Instruction: conv 1x1 p0,0_0,0 vp0,0_0,0\nfcaten::linear/Add_as_conv_padded_clone\n Precision Mode: Arch\n Is identity: False\n[1, 64, 1, 1, 1]",color=green,penwidth=3.0]
+}
+   subgraph "cluster_Instruction: fusion\nfcaten::linear/Add_as_conv_unpadding_slice,0\n[1, 26, 1, 1, 1] : 91" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\nfcaten::linear/Add_as_conv_unpadding_slice,0\n[1, 26, 1, 1, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: slice [:,0:26,:,:,:] l-1 s0\nfcaten::linear/Add_as_conv_unpadding_slice,0\n[1, 26, 1, 1, 1] : 89"[label="Instruction: slice [:,0:26,:,:,:] l-1 s0\nfcaten::linear/Add_as_conv_unpadding_slice,0\n[1, 26, 1, 1, 1]",color=purple,penwidth=3.0]
+}
+   "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_17\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 64" -> "Instruction: concat C\ninput_concat\n[1, 1024, 7, 7, 1] : 70" [label=" (0,1) [1, 512, 7, 7, 1]
+ SB size: 1568"]
+   subgraph "cluster_Instruction: fusion :: 26\nconvaten::conv2d/Add_17\n[1, 512, 7, 7, 1] : 92" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 26\nconvaten::conv2d/Add_17\n[1, 512, 7, 7, 1]
+SB 0x00003720"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_17\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1] : 64"[label="Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_17\n Precision Mode: Arch\n Is identity: False\n[1, 512, 7, 7, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_12\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 43" -> "Instruction: concat C\ninput_concat\n[1, 512, 14, 14, 1] : 49" [label=" (0,1) [1, 256, 14, 14, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion :: 19\nconvaten::conv2d/Add_12\n[1, 256, 14, 14, 1] : 93" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 19\nconvaten::conv2d/Add_12\n[1, 256, 14, 14, 1]
+SB 0x00001880"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_12\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1] : 43"[label="Instruction: conv 1x1 s2x2 p0,0_0,0 vp0,0_0,0\nconvaten::conv2d/Add_12\n Precision Mode: Arch\n Is identity: False\n[1, 256, 14, 14, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_7_as_clamp\n[1, 128, 28, 28, 1] : 94" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_9\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 95" [label=" (0,0) [1, 128, 28, 28, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion :: 14\naten::relu_/Relu_7_as_clamp\n[1, 128, 28, 28, 1] : 96" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 14\naten::relu_/Relu_7_as_clamp\n[1, 128, 28, 28, 1]
+SB 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_7_as_clamp\n[1, 128, 28, 28, 1] : 94"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_7_as_clamp\n[1, 128, 28, 28, 1]"]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_8\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 38"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_8\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_8\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 38" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_7_as_clamp\n[1, 128, 28, 28, 1] : 94"[edgetooltip="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_8\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 38 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_7_as_clamp\n[1, 128, 28, 28, 1] : 94" label=" (0,0) [1, 128, 28, 28, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_9\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 95" -> "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 37" [label=" (0,1) [1, 128, 28, 28, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion :: 15\nconvaten::conv2d/Add_9\n[1, 128, 28, 28, 1] : 97" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 15\nconvaten::conv2d/Add_9\n[1, 128, 28, 28, 1]
+SB 0x000073c0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_9\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 95"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_9\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_5_as_clamp\n[1, 128, 28, 28, 1] : 98" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_6\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 99" [label=" (0,0) [1, 128, 28, 28, 1]
+ SB size: 3136"]
+   subgraph "cluster_Instruction: fusion :: 10\naten::relu_/Relu_5_as_clamp\n[1, 128, 28, 28, 1] : 100" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 10\naten::relu_/Relu_5_as_clamp\n[1, 128, 28, 28, 1]
+SB 0x00001880"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_5_as_clamp\n[1, 128, 28, 28, 1] : 98"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_5_as_clamp\n[1, 128, 28, 28, 1]"]
+      "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_5\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 29"[label="Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_5\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_5\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 29" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_5_as_clamp\n[1, 128, 28, 28, 1] : 98"[edgetooltip="Instruction: conv 3x3 s2x2 p1,1_0,0 vp0,0_0,0\nconvaten::conv2d/Add_5\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 29 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_5_as_clamp\n[1, 128, 28, 28, 1] : 98" label=" (0,0) [1, 128, 28, 28, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_6\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 99" -> "Instruction: concat C\ninput_concat\n[1, 256, 28, 28, 1] : 32" [label=" (0,0) [1, 128, 28, 28, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion :: 11\nconvaten::conv2d/Add_6\n[1, 128, 28, 28, 1] : 101" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 11\nconvaten::conv2d/Add_6\n[1, 128, 28, 28, 1]
+SB 0x000024c0"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_6\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1] : 99"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_6\n Precision Mode: Arch\n Is identity: False\n[1, 128, 28, 28, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_1_as_clamp\n[1, 64, 56, 56, 1] : 102" -> "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_2\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 103" [label=" (0,0) [1, 64, 56, 56, 1]
+ SB size: 6272"]
+   subgraph "cluster_Instruction: fusion :: 4\naten::relu_/Relu_1_as_clamp\n[1, 64, 56, 56, 1] : 104" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 4\naten::relu_/Relu_1_as_clamp\n[1, 64, 56, 56, 1]
+SB 0x00001880"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=blue
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_1_as_clamp\n[1, 64, 56, 56, 1] : 102"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_1_as_clamp\n[1, 64, 56, 56, 1]"]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_1\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 13"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_1\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_1\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 13" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_1_as_clamp\n[1, 64, 56, 56, 1] : 102"[edgetooltip="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_1\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 13 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_1_as_clamp\n[1, 64, 56, 56, 1] : 102" label=" (0,0) [1, 64, 56, 56, 1]"]
+}
+   "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_2\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 103" -> "Instruction: concat C\ninput_concat\n[1, 128, 56, 56, 1] : 14" [label=" (0,1) [1, 64, 56, 56, 1]"]
+   subgraph "cluster_Instruction: fusion :: 5\nconvaten::conv2d/Add_2\n[1, 64, 56, 56, 1] : 105" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 5\nconvaten::conv2d/Add_2\n[1, 64, 56, 56, 1]
+DDR: 0x00031000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_2\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1] : 103"[label="Instruction: conv 3x3 p1,1_1,1 vp0,0_0,0\nconvaten::conv2d/Add_2\n Precision Mode: Arch\n Is identity: False\n[1, 64, 56, 56, 1]",color=green,penwidth=3.0]
+}
+   "Instruction: slice [:,:,107:224,0:114,:] l-1 s2\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 114, 1] : 1" -> "Instruction: conv 7x7 s2x2 p5,0_0,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 106" [label=" (0,0) [1, 32, 117, 114, 1]"]
+   subgraph "cluster_Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 114, 1] : 107" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 114, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: slice [:,:,107:224,0:114,:] l-1 s2\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 114, 1] : 1"[label="Instruction: slice [:,:,107:224,0:114,:] l-1 s2\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 117, 114, 1]",color=purple,penwidth=3.0]
+}
+   "Instruction: maxpool 3x3 s2x2 vp1,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 108" -> "Instruction: concat W\naten::max_pool2d/MaxPool_h1\n[1, 64, 28, 56, 1] : 8" [label=" (0,0) [1, 64, 28, 28, 1]"]
+   subgraph "cluster_Instruction: fusion :: 2\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 109" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 2\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: maxpool 3x3 s2x2 vp1,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 108"[label="Instruction: maxpool 3x3 s2x2 vp1,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 110"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 110" -> "Instruction: maxpool 3x3 s2x2 vp1,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 108"[edgetooltip="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 110 -> Instruction: maxpool 3x3 s2x2 vp1,0_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 108" label=" (0,0) [1, 64, 57, 57, 1]"]
+      "Instruction: conv 7x7 s2x2 p5,0_0,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 106"[label="Instruction: conv 7x7 s2x2 p5,0_0,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 7x7 s2x2 p5,0_0,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 106" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 110"[edgetooltip="Instruction: conv 7x7 s2x2 p5,0_0,2 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 106 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 110" label=" (0,0) [1, 64, 57, 57, 1]"]
+}
+   "Instruction: slice [:,:,0:114,107:224,:] l-1 s1\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 117, 1] : 2" -> "Instruction: conv 7x7 s2x2 p0,5_2,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 111" [label=" (0,0) [1, 32, 114, 117, 1]"]
+   subgraph "cluster_Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 117, 1] : 112" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 117, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: slice [:,:,0:114,107:224,:] l-1 s1\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 117, 1] : 2"[label="Instruction: slice [:,:,0:114,107:224,:] l-1 s1\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 117, 1]",color=purple,penwidth=3.0]
+}
+   "Instruction: maxpool 3x3 s2x2 vp0,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 113" -> "Instruction: concat W\naten::max_pool2d/MaxPool_h0\n[1, 64, 28, 56, 1] : 114" [label=" (0,1) [1, 64, 28, 28, 1]"]
+   subgraph "cluster_Instruction: fusion :: 1\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 115" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 1\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: maxpool 3x3 s2x2 vp0,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 113"[label="Instruction: maxpool 3x3 s2x2 vp0,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 116"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 116" -> "Instruction: maxpool 3x3 s2x2 vp0,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 113"[edgetooltip="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 116 -> Instruction: maxpool 3x3 s2x2 vp0,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 113" label=" (0,0) [1, 64, 57, 57, 1]"]
+      "Instruction: conv 7x7 s2x2 p0,5_2,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 111"[label="Instruction: conv 7x7 s2x2 p0,5_2,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 7x7 s2x2 p0,5_2,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 111" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 116"[edgetooltip="Instruction: conv 7x7 s2x2 p0,5_2,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 111 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 116" label=" (0,0) [1, 64, 57, 57, 1]"]
+}
+   "Instruction: concat W\naten::max_pool2d/MaxPool_h0\n[1, 64, 28, 56, 1] : 114" -> "Instruction: concat H\naten::max_pool2d/MaxPool\n[1, 64, 56, 56, 1] : 11" [label=" (0,0) [1, 64, 28, 56, 1]"]
+   subgraph "cluster_Instruction: fusion\naten::max_pool2d/MaxPool_h0\n[1, 64, 28, 56, 1] : 117" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\naten::max_pool2d/MaxPool_h0\n[1, 64, 28, 56, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: concat W\naten::max_pool2d/MaxPool_h0\n[1, 64, 28, 56, 1] : 114"[label="Instruction: concat W\naten::max_pool2d/MaxPool_h0\n[1, 64, 28, 56, 1]",color=orange,penwidth=3.0]
+}
+   "Instruction: slice [:,:,0:114,0:114,:] l-1 s0\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 114, 1] : 3" -> "Instruction: conv 7x7 s2x2 p5,5_0,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 118" [label=" (0,0) [1, 32, 114, 114, 1]"]
+   subgraph "cluster_Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 114, 1] : 119" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 114, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: slice [:,:,0:114,0:114,:] l-1 s0\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 114, 1] : 3"[label="Instruction: slice [:,:,0:114,0:114,:] l-1 s0\ntransform_node_slice_0,,,,:1,,,,\n[1, 32, 114, 114, 1]",color=purple,penwidth=3.0]
+}
+   "Instruction: maxpool 3x3 s2x2 vp1,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 120" -> "Instruction: concat W\naten::max_pool2d/MaxPool_h0\n[1, 64, 28, 56, 1] : 114" [label=" (0,0) [1, 64, 28, 28, 1]"]
+   subgraph "cluster_Instruction: fusion :: 0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 121" {
+      orientation=portrait
+      compound=true
+      label="Instruction: fusion :: 0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]
+DDR: 0x00000000"
+      ranksep=1
+      node [style=rounded,shape=box]
+      color=red
+      "Instruction: maxpool 3x3 s2x2 vp1,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 120"[label="Instruction: maxpool 3x3 s2x2 vp1,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 122"[label="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1]"]
+      "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 122" -> "Instruction: maxpool 3x3 s2x2 vp1,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 120"[edgetooltip="Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 122 -> Instruction: maxpool 3x3 s2x2 vp1,1_0,0\naten::max_pool2d/MaxPool\n[1, 64, 28, 28, 1] : 120" label=" (0,0) [1, 64, 57, 57, 1]"]
+      "Instruction: conv 7x7 s2x2 p5,5_0,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 118"[label="Instruction: conv 7x7 s2x2 p5,5_0,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1]",color=green,penwidth=3.0]
+      "Instruction: conv 7x7 s2x2 p5,5_0,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 118" -> "Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 122"[edgetooltip="Instruction: conv 7x7 s2x2 p5,5_0,0 vp0,0_0,0\nfolded_conv\n Precision Mode: Arch\n Is identity: False\n[1, 64, 57, 57, 1] : 118 -> Instruction: CustomUnary-Round_Clamp\naten::relu_/Relu_as_clamp\n[1, 64, 57, 57, 1] : 122" label=" (0,0) [1, 64, 57, 57, 1]"]
+}
+}
