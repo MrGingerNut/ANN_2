@@ -22,7 +22,6 @@ build/
 *.h5
 *.pt
 *.pth
-*.png
 *.bin
 *.onnx
 *.weights
@@ -31,8 +30,6 @@ saved_models/
 runs/
 
 #datasets
-*.png
-*.jpg
 *.bmp
 data/
 datasets/
